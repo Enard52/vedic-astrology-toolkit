@@ -1,0 +1,409 @@
+{
+  "system": "moola",
+  "profile": "rath_1999_table",
+  "source": "https://srath.com/jyoti%E1%B9%A3a/dasa/mula-dasa/",
+  "seed": "Asc",
+  "order": [
+    "Mercury",
+    "Sun",
+    "Venus",
+    "Saturn",
+    "Ketu",
+    "Mars",
+    "Jupiter",
+    "Rahu",
+    "Moon"
+  ],
+  "group_houses": [
+    [
+      1,
+      4,
+      7,
+      10
+    ],
+    [
+      2,
+      5,
+      8,
+      11
+    ],
+    [
+      3,
+      6,
+      9,
+      12
+    ]
+  ],
+  "ordering_evidence": [
+    {
+      "sign": "Aq",
+      "key": [
+        2,
+        1,
+        1,
+        23.8340407269423,
+        1
+      ],
+      "planets": [
+        "Mercury",
+        "Sun"
+      ]
+    },
+    {
+      "sign": "Pi",
+      "key": [
+        2,
+        5,
+        2,
+        22.07137878411294,
+        5
+      ],
+      "planets": [
+        "Venus",
+        "Saturn"
+      ]
+    },
+    {
+      "sign": "Li",
+      "key": [
+        2,
+        2,
+        0,
+        13.5975019292376,
+        5
+      ],
+      "planets": [
+        "Ketu",
+        "Mars"
+      ]
+    },
+    {
+      "sign": "Cn",
+      "key": [
+        1,
+        5,
+        0,
+        1.29869420068361,
+        1
+      ],
+      "planets": [
+        "Jupiter"
+      ]
+    },
+    {
+      "sign": "Ar",
+      "key": [
+        1,
+        2,
+        0,
+        13.59750192923762,
+        1
+      ],
+      "planets": [
+        "Rahu"
+      ]
+    },
+    {
+      "sign": "Cp",
+      "key": [
+        1,
+        1,
+        0,
+        24.17169050178313,
+        1
+      ],
+      "planets": [
+        "Moon"
+      ]
+    }
+  ],
+  "order_override_used": false,
+  "ordering_ties": [],
+  "duration_evidence": {
+    "Sun": {
+      "years": 6,
+      "vimshottari_allotment": 6,
+      "count_minus_one": 6,
+      "dignity_adjustment": 0,
+      "raw_years": 0,
+      "moolatrikona_target": "Le",
+      "zero_reset": true
+    },
+    "Moon": {
+      "years": 6,
+      "vimshottari_allotment": 10,
+      "count_minus_one": 4,
+      "dignity_adjustment": 0,
+      "raw_years": 6,
+      "moolatrikona_target": "Ta",
+      "zero_reset": false
+    },
+    "Mars": {
+      "years": 1,
+      "vimshottari_allotment": 7,
+      "count_minus_one": 6,
+      "dignity_adjustment": 0,
+      "raw_years": 1,
+      "moolatrikona_target": "Ar",
+      "zero_reset": false
+    },
+    "Mercury": {
+      "years": 10,
+      "vimshottari_allotment": 17,
+      "count_minus_one": 7,
+      "dignity_adjustment": 0,
+      "raw_years": 10,
+      "moolatrikona_target": "Vi",
+      "zero_reset": false
+    },
+    "Jupiter": {
+      "years": 10,
+      "vimshottari_allotment": 16,
+      "count_minus_one": 5,
+      "dignity_adjustment": 1,
+      "raw_years": 10,
+      "moolatrikona_target": "Sg",
+      "zero_reset": false
+    },
+    "Venus": {
+      "years": 12,
+      "vimshottari_allotment": 20,
+      "count_minus_one": 7,
+      "dignity_adjustment": 1,
+      "raw_years": 12,
+      "moolatrikona_target": "Li",
+      "zero_reset": false
+    },
+    "Saturn": {
+      "years": 8,
+      "vimshottari_allotment": 19,
+      "count_minus_one": 11,
+      "dignity_adjustment": 0,
+      "raw_years": 8,
+      "moolatrikona_target": "Aq",
+      "zero_reset": false
+    },
+    "Rahu": {
+      "years": 8,
+      "vimshottari_allotment": 18,
+      "count_minus_one": 10,
+      "dignity_adjustment": 0,
+      "raw_years": 8,
+      "moolatrikona_target": "Aq",
+      "zero_reset": false
+    },
+    "Ketu": {
+      "years": 6,
+      "vimshottari_allotment": 7,
+      "count_minus_one": 1,
+      "dignity_adjustment": 0,
+      "raw_years": 6,
+      "moolatrikona_target": "Sc",
+      "zero_reset": false
+    }
+  },
+  "first_cycle_years": 67,
+  "second_cycle_years": 53,
+  "scope": "Mahadasas from the Rath profile; optional experimental subperiods have separate software provenance.",
+  "subperiod_policy": null,
+  "subperiod_depth": 0,
+  "subperiod_provenance": null,
+  "source_conflicts": [
+    "The worked duration table reverses the prose exaltation/debilitation adjustment; the named profile records which is used.",
+    "The worked sequence starts Jupiter, although one prose sentence says Moon; the worked sequence is followed.",
+    "Some equal-status and friendship rankings require disclosed operational choices or an explicit reviewed order."
+  ],
+  "policies": {
+    "dignity_conflict": "rath_1999_table",
+    "negative_first_period": "absolute value",
+    "zero_period": "full Vimshottari allotment",
+    "degree_ranking": "reversed nodes except explicit Saturn/Ketu lagna precedence",
+    "friendship_rank": "natural relationship; neutral rank for otherwise undignified nodes",
+    "same_status_multioccupancy": "best occupant dignity then maximum advancement"
+  },
+  "interpretation": "Traditional timing intervals only; no claim about lifespan, curses or verified events.",
+  "year_model": "solar_arc",
+  "calendar_year_convention": "Project choice, not specified by the Rath article",
+  "periods": [
+    {
+      "lord": "Mercury",
+      "start_year": 0.0,
+      "end_year": 10.0,
+      "duration_years": 10.0,
+      "cycle": 1,
+      "start": "1967-03-08T17:40:00.000004+05:30",
+      "end": "1977-03-08T07:12:45.851529+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Sun",
+      "start_year": 10.0,
+      "end_year": 16.0,
+      "duration_years": 6.0,
+      "cycle": 1,
+      "start": "1977-03-08T07:12:45.851529+05:30",
+      "end": "1983-03-08T20:04:42.089505+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Venus",
+      "start_year": 16.0,
+      "end_year": 28.0,
+      "duration_years": 12.0,
+      "cycle": 1,
+      "start": "1983-03-08T20:04:42.089505+05:30",
+      "end": "1995-03-08T21:45:17.843007+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Saturn",
+      "start_year": 28.0,
+      "end_year": 36.0,
+      "duration_years": 8.0,
+      "cycle": 1,
+      "start": "1995-03-08T21:45:17.843007+05:30",
+      "end": "2003-03-08T23:03:47.897282+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Ketu",
+      "start_year": 36.0,
+      "end_year": 42.0,
+      "duration_years": 6.0,
+      "cycle": 1,
+      "start": "2003-03-08T23:03:47.897282+05:30",
+      "end": "2009-03-08T12:00:20.537259+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Mars",
+      "start_year": 42.0,
+      "end_year": 43.0,
+      "duration_years": 1.0,
+      "cycle": 1,
+      "start": "2009-03-08T12:00:20.537259+05:30",
+      "end": "2010-03-08T18:19:35.901742+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Jupiter",
+      "start_year": 43.0,
+      "end_year": 53.0,
+      "duration_years": 10.0,
+      "cycle": 1,
+      "start": "2010-03-08T18:19:35.901742+05:30",
+      "end": "2020-03-08T07:38:35.258574+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Rahu",
+      "start_year": 53.0,
+      "end_year": 61.0,
+      "duration_years": 8.0,
+      "cycle": 1,
+      "start": "2020-03-08T07:38:35.258574+05:30",
+      "end": "2028-03-08T08:59:35.911590+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Moon",
+      "start_year": 61.0,
+      "end_year": 67.0,
+      "duration_years": 6.0,
+      "cycle": 1,
+      "start": "2028-03-08T08:59:35.911590+05:30",
+      "end": "2034-03-08T22:02:42.773810+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Mercury",
+      "start_year": 67.0,
+      "end_year": 74.0,
+      "duration_years": 7.0,
+      "cycle": 2,
+      "start": "2034-03-08T22:02:42.773810+05:30",
+      "end": "2041-03-08T17:00:55.432396+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Sun",
+      "start_year": 74.0,
+      "end_year": 74.0,
+      "duration_years": 0.0,
+      "cycle": 2,
+      "start": "2041-03-08T17:00:55.432396+05:30",
+      "end": "2041-03-08T17:00:55.432396+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Venus",
+      "start_year": 74.0,
+      "end_year": 82.0,
+      "duration_years": 8.0,
+      "cycle": 2,
+      "start": "2041-03-08T17:00:55.432396+05:30",
+      "end": "2049-03-08T18:17:58.155260+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Saturn",
+      "start_year": 82.0,
+      "end_year": 93.0,
+      "duration_years": 11.0,
+      "cycle": 2,
+      "start": "2049-03-08T18:17:58.155260+05:30",
+      "end": "2060-03-08T13:59:14.365633+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Ketu",
+      "start_year": 93.0,
+      "end_year": 94.0,
+      "duration_years": 1.0,
+      "cycle": 2,
+      "start": "2060-03-08T13:59:14.365633+05:30",
+      "end": "2061-03-08T20:12:25.779566+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Mars",
+      "start_year": 94.0,
+      "end_year": 100.0,
+      "duration_years": 6.0,
+      "cycle": 2,
+      "start": "2061-03-08T20:12:25.779566+05:30",
+      "end": "2067-03-09T08:57:04.708669+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Jupiter",
+      "start_year": 100.0,
+      "end_year": 106.0,
+      "duration_years": 6.0,
+      "cycle": 2,
+      "start": "2067-03-09T08:57:04.708669+05:30",
+      "end": "2073-03-08T22:03:56.658101+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Rahu",
+      "start_year": 106.0,
+      "end_year": 116.0,
+      "duration_years": 10.0,
+      "cycle": 2,
+      "start": "2073-03-08T22:03:56.658101+05:30",
+      "end": "2083-03-09T11:35:22.835867+05:30",
+      "year_model": "solar_arc"
+    },
+    {
+      "lord": "Moon",
+      "start_year": 116.0,
+      "end_year": 120.0,
+      "duration_years": 4.0,
+      "cycle": 2,
+      "start": "2083-03-09T11:35:22.835867+05:30",
+      "end": "2087-03-09T12:09:23.909809+05:30",
+      "year_model": "solar_arc"
+    }
+  ]
+}

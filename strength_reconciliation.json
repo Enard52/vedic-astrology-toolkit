@@ -1,0 +1,2809 @@
+{
+  "version": "0.4.0",
+  "external_reference": {
+    "name": "PyJHora",
+    "version": "4.8.7",
+    "source_url": "https://github.com/naturalstupid/PyJHora",
+    "strength_module_sha256": "30eb03b2514992b1f8c864d78f5897fdd10b8723884f2d9bb247814c1b059efa",
+    "external_code_modified": false,
+    "astronomy_independent": false,
+    "note": "Independent strength implementation; both engines use Swiss Ephemeris astronomy."
+  },
+  "cases": [
+    {
+      "case": "raman_1918",
+      "input": {
+        "datetime": "1918-10-16T14:22:16+05:30",
+        "latitude": 13,
+        "longitude": 77.58333333333333,
+        "settings": {
+          "ayanamsa": "raman",
+          "node": "mean",
+          "engine": "moshier"
+        }
+      },
+      "planets": [
+        {
+          "planet": "Sun",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 3.031589689563797,
+              "external": 3.03,
+              "difference": 0.0015896895637972364
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 90.0,
+              "external": 90.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 48.59938315340307,
+              "external": 48.62,
+              "difference": -0.02061684659692986
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 16.556095914182002,
+              "external": 16.56,
+              "difference": -0.0039040858179966165
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 38.10974616740009,
+              "external": 37.94,
+              "difference": 0.16974616740009196
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.001589689563815,
+            "kala": 0.14522523498516193,
+            "dig": 0.0028848223727635514,
+            "chesta": 0,
+            "naisargika": 0.0,
+            "drik": 0.002250583810949891
+          },
+          "native_total_difference": 0.15195033073274544,
+          "decomposition_residual": 5.5067062021407764e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 1.4210854715202004e-14
+          },
+          "angle_adjusted_diagnostic_total": 425.4,
+          "our_total_minus_angle_adjusted": 0.15195033073274544,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Moon",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 32.74564772958754,
+              "external": 32.75,
+              "difference": -0.004352270412461223
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 48.75,
+              "external": 48.75,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 11.400616846596932,
+              "external": 11.38,
+              "difference": 0.020616846596931637
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 86.887808171636,
+              "external": 86.88,
+              "difference": 0.007808171636000338
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 43.45332602843365,
+              "external": 43.51,
+              "difference": -0.05667397156634735
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.004352270412454118,
+            "kala": -0.02824895333341715,
+            "dig": -0.0032110918092165264,
+            "chesta": 0,
+            "naisargika": -0.0014285714285691142,
+            "drik": 0.001269746502405411
+          },
+          "native_total_difference": -0.035971140481251496,
+          "decomposition_residual": 0.0,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 2.842170943040401e-14
+          },
+          "angle_adjusted_diagnostic_total": 389.79,
+          "our_total_minus_angle_adjusted": -0.035971140481251496,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Mars",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 37.15087545687442,
+              "external": 37.15,
+              "difference": 0.0008754568744180347
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 90.0,
+              "external": 90.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 11.400616846596932,
+              "external": 11.38,
+              "difference": 0.020616846596931637
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 16.556095914182002,
+              "external": 16.56,
+              "difference": -0.0039040858179966165
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 1.9721693398446627,
+              "external": 1.77,
+              "difference": 0.20216933984466268
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0008754568744109292,
+            "kala": 0.21888210062359548,
+            "dig": -9.155349968810974,
+            "chesta": 0.17103262118106244,
+            "naisargika": 0.002857142857141781,
+            "drik": 0.002315712836840289
+          },
+          "native_total_difference": -8.759386934437941,
+          "decomposition_residual": -1.7763568394002505e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 297.4420428685414,
+          "our_total_minus_angle_adjusted": 0.39857019702066054,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Mercury",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 54.49908358615254,
+              "external": 54.49,
+              "difference": 0.009083586152534906
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 135.0,
+              "external": 135.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 16.556095914182002,
+              "external": 16.56,
+              "difference": -0.0039040858179966165
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 45,
+              "external": 45.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 41.22811822711902,
+              "external": 41.32,
+              "difference": -0.09188177288098132
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.009083586152542011,
+            "kala": -0.09578585869897438,
+            "dig": -0.0010594612876175802,
+            "chesta": 0.01663493047019049,
+            "naisargika": 0.004285714285714448,
+            "drik": 0.008181217473275382
+          },
+          "native_total_difference": -0.05865987160484565,
+          "decomposition_residual": 2.398081733190338e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 537.3520223049213,
+          "our_total_minus_angle_adjusted": -0.06068217652614294,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Jupiter",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 56.334753804555376,
+              "external": 56.34,
+              "difference": -0.005246195444627233
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 71.25,
+              "external": 71.25,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 48.59938315340307,
+              "external": 48.62,
+              "difference": -0.02061684659692986
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 43.443904085818,
+              "external": 43.44,
+              "difference": 0.003904085818000169
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 58.85724537254406,
+              "external": 58.88,
+              "difference": -0.02275462745594581
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.005246195444641444,
+            "kala": -0.039467388234868395,
+            "dig": 0.0005554039130437616,
+            "chesta": 0.01086703528346078,
+            "naisargika": -0.004285714285714448,
+            "drik": -0.00027145669403338957
+          },
+          "native_total_difference": -0.03784831546278156,
+          "decomposition_residual": -2.842170943040401e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 433.1811327316324,
+          "our_total_minus_angle_adjusted": -0.038981047095148824,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Venus",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 1.9518171625344394,
+              "external": 1.95,
+              "difference": 0.0018171625344394204
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 116.25,
+              "external": 116.25,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 48.59938315340307,
+              "external": 48.62,
+              "difference": -0.02061684659692986
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 43.443904085818,
+              "external": 43.44,
+              "difference": 0.003904085818000169
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 23.752730041100136,
+              "external": 23.73,
+              "difference": 0.022730041100135878
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0018171625344507447,
+            "kala": 0.006017280321188423,
+            "dig": 0.0006759839312024951,
+            "chesta": 0.017090919381007375,
+            "naisargika": -0.002857142857145334,
+            "drik": 0.0001141529268871011
+          },
+          "native_total_difference": 0.022858356237634325,
+          "decomposition_residual": 4.3520742565306136e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 1.4210854715202004e-14
+          },
+          "angle_adjusted_diagnostic_total": 376.0946763313204,
+          "our_total_minus_angle_adjusted": 0.018182024917223316,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Saturn",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 34.7908309539949,
+              "external": 34.79,
+              "difference": 0.0008309539948996303
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 97.5,
+              "external": 97.5,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 11.400616846596932,
+              "external": 11.38,
+              "difference": 0.020616846596931637
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 16.556095914182002,
+              "external": 16.56,
+              "difference": -0.0039040858179966165
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 13.549142561627793,
+              "external": 13.44,
+              "difference": 0.10914256162779346
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0008309539948925249,
+            "kala": 0.12585532240673558,
+            "dig": 0.004478254473511356,
+            "chesta": 0.003466262339671289,
+            "naisargika": 0.0014285714285708906,
+            "drik": -0.0012129209289444276
+          },
+          "native_total_difference": 0.13484644371447985,
+          "decomposition_residual": 4.263256414560601e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 388.27939703871266,
+          "our_total_minus_angle_adjusted": 0.13544940500179337,
+          "angle_adjusted_is_independent_validation": false
+        }
+      ],
+      "motion_diagnostics": {
+        "Mars": {
+          "external_mean": 265.31146462968354,
+          "external_true": 229.460470211396,
+          "external_seeghrochcha": 181.22983881491564,
+          "external_native": 22.05,
+          "our_circular_formula_on_external_inputs": 22.052042868541378,
+          "native_minus_circular": -0.0020428685413769188,
+          "circular_minus_our_chart": -0.16898975263968552
+        },
+        "Mercury": {
+          "external_mean": 181.22983881491564,
+          "external_true": 181.51659186730564,
+          "external_seeghrochcha": 174.55714842634666,
+          "external_native": 2.27,
+          "our_circular_formula_on_external_inputs": 2.2720223049213266,
+          "native_minus_circular": -0.002022304921326601,
+          "circular_minus_our_chart": -0.014612625548863889
+        },
+        "Jupiter": {
+          "external_mean": 66.88695185186009,
+          "external_true": 84.00592938817697,
+          "external_seeghrochcha": 181.22983881491564,
+          "external_native": 35.26,
+          "our_circular_formula_on_external_inputs": 35.26113273163238,
+          "native_minus_circular": -0.0011327316323814784,
+          "circular_minus_our_chart": -0.009734303651079301
+        },
+        "Venus": {
+          "external_mean": 181.22983881491564,
+          "external_true": 171.15669324740998,
+          "external_seeghrochcha": 158.3892370372016,
+          "external_native": 5.93,
+          "our_circular_formula_on_external_inputs": 5.934676331320399,
+          "native_minus_circular": -0.004676331320399463,
+          "circular_minus_our_chart": -0.012414588060607912
+        },
+        "Saturn": {
+          "external_mean": 111.2458319444475,
+          "external_true": 124.37746345310792,
+          "external_seeghrochcha": 181.22983881491564,
+          "external_native": 21.14,
+          "our_circular_formula_on_external_inputs": 21.139397038712644,
+          "native_minus_circular": 0.0006029612873561518,
+          "circular_minus_our_chart": -0.004069223627027441
+        }
+      },
+      "our_wars": [],
+      "external_war_recipients": [],
+      "external_ayana_longitudes_requiring_wrap": {},
+      "external_paksha_outside_range": []
+    },
+    {
+      "case": "rao_example118",
+      "input": {
+        "label": "Book Example 118 \u2014 solar return verification, not the user's chart",
+        "datetime": "1967-03-08T17:40:00",
+        "timezone": "UTC+05:30",
+        "latitude": 26.3,
+        "longitude": 73.06666666666666,
+        "settings": {
+          "ayanamsa": "lahiri",
+          "node": "mean",
+          "engine": "moshier"
+        }
+      },
+      "planets": [
+        {
+          "planet": "Sun",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 44.61134690898077,
+              "external": 44.61,
+              "difference": 0.0013469089807713885
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 78.75,
+              "external": 78.75,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 35.72570847985581,
+              "external": 35.72,
+              "difference": 0.005708479855812243
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 50.11254992494694,
+              "external": 50.11,
+              "difference": 0.002549924946940507
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 47.15906150563306,
+              "external": 47.14,
+              "difference": 0.019061505633061415
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0013469089807642831,
+            "kala": 0.02731991043580706,
+            "dig": -0.0059176602934485345,
+            "chesta": 0,
+            "naisargika": 0.0,
+            "drik": 0.0018982644331346776
+          },
+          "native_total_difference": 0.02464742355624594,
+          "decomposition_residual": -1.1546319456101628e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 430.48,
+          "our_total_minus_angle_adjusted": 0.02464742355624594,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Moon",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 27.057230167261043,
+              "external": 27.06,
+              "difference": -0.002769832738955813
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 116.25,
+              "external": 116.25,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 24.27429152014419,
+              "external": 24.28,
+              "difference": -0.005708479855812243
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 100.22509984989388,
+              "external": 100.22,
+              "difference": 0.005099849893881014
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 49.808709650109094,
+              "external": 49.89,
+              "difference": -0.08129034989090655
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.0027698327389487076,
+            "kala": -0.08189897985283778,
+            "dig": -49.636632264653485,
+            "chesta": 0,
+            "naisargika": -0.0014285714285691142,
+            "drik": -0.002510025674601568
+          },
+          "native_total_difference": -49.72523967434847,
+          "decomposition_residual": -2.842170943040401e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 448.25,
+          "our_total_minus_angle_adjusted": -0.085239674348486,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Mars",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 23.932924802026804,
+              "external": 23.93,
+              "difference": 0.0029248020268042296
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 67.5,
+              "external": 67.5,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 24.27429152014419,
+              "external": 24.28,
+              "difference": -0.005708479855812243
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 50.11254992494694,
+              "external": 50.11,
+              "difference": 0.002549924946940507
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 14.027462306518956,
+              "external": 13.94,
+              "difference": 0.08746230651895637
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.002924802026797124,
+            "kala": 0.0843037516100793,
+            "dig": 0.004339767247413917,
+            "chesta": -0.8303454166296262,
+            "naisargika": 0.002857142857141781,
+            "drik": 0.0028788389396314784
+          },
+          "native_total_difference": -0.7330411139485591,
+          "decomposition_residual": 3.552713678800501e-15,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 304.0943841328766,
+          "our_total_minus_angle_adjusted": -0.7374252468251825,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Mercury",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 9.848822303716247,
+              "external": 9.85,
+              "difference": -0.0011776962837526384
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 101.25,
+              "external": 101.25,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 50.11254992494694,
+              "external": 50.11,
+              "difference": 0.002549924946940507
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 45,
+              "external": 45.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 40.45461262058669,
+              "external": 40.53,
+              "difference": -0.07538737941331419
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.0011776962837473093,
+            "kala": -0.07283745446636658,
+            "dig": 0.005858366833376705,
+            "chesta": 0.2873732672268261,
+            "naisargika": 0.004285714285714448,
+            "drik": 0.004334809671754147
+          },
+          "native_total_difference": 0.22783700726751022,
+          "decomposition_residual": -4.729550084903167e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 499.6629985789723,
+          "our_total_minus_angle_adjusted": 0.22483842829524292,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Jupiter",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 58.766231400227866,
+              "external": 58.77,
+              "difference": -0.003768599772136838
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 43.125,
+              "external": 43.12,
+              "difference": 0.005000000000002558
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 35.72570847985581,
+              "external": 35.72,
+              "difference": 0.005708479855812243
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 9.887450075053058,
+              "external": 9.89,
+              "difference": -0.0025499249469422836
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 56.89694596021969,
+              "external": 57.12,
+              "difference": -0.22305403978030824
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0012314002278799308,
+            "kala": -0.21989548487144361,
+            "dig": -26.322421262555842,
+            "chesta": -32.1584968337635,
+            "naisargika": -0.004285714285714448,
+            "drik": 0.004698273299739597
+          },
+          "native_total_difference": -58.699169621948954,
+          "decomposition_residual": -7.105427357601002e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 463.8721901479112,
+          "our_total_minus_angle_adjusted": -0.0013597698601302,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Venus",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 58.357126261370986,
+              "external": 58.36,
+              "difference": -0.0028737386290131894
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 41.25,
+              "external": 41.25,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 35.72570847985581,
+              "external": 35.72,
+              "difference": 0.005708479855812243
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 9.887450075053058,
+              "external": 9.89,
+              "difference": -0.0025499249469422836
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 37.7630059656414,
+              "external": 22.22,
+              "difference": 15.543005965641399
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.0028737386290345057,
+            "kala": 15.546164520550263,
+            "dig": -88.23652835876344,
+            "chesta": -80.55912616276568,
+            "naisargika": -0.002857142857145334,
+            "drik": 0.002420490856134494
+          },
+          "native_total_difference": -153.25280039160884,
+          "decomposition_residual": 5.684341886080802e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 352.991539777128,
+          "our_total_minus_angle_adjusted": 15.265659831263122,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Saturn",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 14.278224410712124,
+              "external": 14.28,
+              "difference": -0.0017755892878756896
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 75.0,
+              "external": 75.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 24.27429152014419,
+              "external": 24.28,
+              "difference": -0.005708479855812243
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 50.11254992494694,
+              "external": 50.11,
+              "difference": 0.002549924946940507
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 29.71779487660911,
+              "external": 30.29,
+              "difference": -0.5722051233908907
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.0017755892878739132,
+            "kala": -0.575363678299766,
+            "dig": -17.593122926504165,
+            "chesta": 0.23031686118281236,
+            "naisargika": 0.0014285714285708906,
+            "drik": 0.004104486288238007
+          },
+          "native_total_difference": -17.934412275192187,
+          "decomposition_residual": -3.552713678800501e-15,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 376.6744951046437,
+          "our_total_minus_angle_adjusted": -0.33890737983591634,
+          "angle_adjusted_is_independent_validation": false
+        }
+      ],
+      "motion_diagnostics": {
+        "Mars": {
+          "external_mean": 164.80999185179678,
+          "external_true": 189.79878720258966,
+          "external_seeghrochcha": 321.85754192582317,
+          "external_native": 48.18,
+          "our_circular_formula_on_external_inputs": 48.18438413287665,
+          "native_minus_circular": -0.004384132876651847,
+          "circular_minus_our_chart": 0.8347295495062781
+        },
+        "Mercury": {
+          "external_mean": 321.85754192582317,
+          "external_true": 315.4502702878899,
+          "external_seeghrochcha": 146.83491036993973,
+          "external_native": 57.27,
+          "our_circular_formula_on_external_inputs": 57.27299857897227,
+          "native_minus_circular": -0.002998578972267296,
+          "circular_minus_our_chart": -0.2843746882545588
+        },
+        "Jupiter": {
+          "external_mean": 95.29064074073221,
+          "external_true": 91.29758399838096,
+          "external_seeghrochcha": 321.85754192582317,
+          "external_native": 76.19,
+          "our_circular_formula_on_external_inputs": 43.812190147911146,
+          "native_minus_circular": 32.37780985208885,
+          "circular_minus_our_chart": -0.21931301832535155
+        },
+        "Venus": {
+          "external_mean": 321.85754192582317,
+          "external_true": 352.08144904070156,
+          "external_seeghrochcha": 36.55411481464637,
+          "external_native": 100.14,
+          "our_circular_formula_on_external_inputs": 19.861539777128012,
+          "native_minus_circular": 80.27846022287198,
+          "circular_minus_our_chart": 0.2806659398936908
+        },
+        "Saturn": {
+          "external_mean": 342.32932777777455,
+          "external_true": 337.17272670173406,
+          "external_seeghrochcha": 321.85754192582317,
+          "external_native": 5.96,
+          "our_circular_formula_on_external_inputs": 5.964495104643713,
+          "native_minus_circular": -0.004495104643712722,
+          "circular_minus_our_chart": -0.22582175653909964
+        }
+      },
+      "our_wars": [],
+      "external_war_recipients": [],
+      "external_ayana_longitudes_requiring_wrap": {
+        "Venus": 375.4801441637527,
+        "Saturn": 360.5714218247852
+      },
+      "external_paksha_outside_range": []
+    },
+    {
+      "case": "rao_example118_return",
+      "input": {
+        "label": "Book Example 118 \u2014 solar return verification, not the user's chart",
+        "datetime": "2000-03-08T04:41:11.969815+05:30",
+        "timezone": "UTC+05:30",
+        "latitude": 26.3,
+        "longitude": 73.06666666666666,
+        "settings": {
+          "ayanamsa": "lahiri",
+          "node": "mean",
+          "engine": "moshier"
+        }
+      },
+      "planets": [
+        {
+          "planet": "Sun",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 44.611346909458256,
+              "external": 44.61,
+              "difference": 0.001346909458256107
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 93.75,
+              "external": 93.75,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 19.38626226523529,
+              "external": 19.4,
+              "difference": -0.013737734764710297
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 52.868079722107474,
+              "external": 52.87,
+              "difference": -0.0019202778925233588
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 60.0,
+              "difference": -60.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 47.62132753320783,
+              "external": 47.6,
+              "difference": 0.021327533207831095
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0013469094582490015,
+            "kala": -59.99433047944942,
+            "dig": -78.93688948346058,
+            "chesta": 0,
+            "naisargika": 0.0,
+            "drik": 0.0
+          },
+          "native_total_difference": -138.9298730534518,
+          "decomposition_residual": -5.684341886080802e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 443.76,
+          "our_total_minus_angle_adjusted": -59.98987305345173,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Moon",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 44.07660052068411,
+              "external": 44.08,
+              "difference": -0.003399479315888243
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 123.75,
+              "external": 123.75,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 40.61373773476471,
+              "external": 40.6,
+              "difference": 0.013737734764710297
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 105.73615944421495,
+              "external": 14.26,
+              "difference": 91.47615944421494
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 25.432023147574885,
+              "external": 34.59,
+              "difference": -9.157976852425119
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.003399479315902454,
+            "kala": 82.33192032655454,
+            "dig": -0.0011902386469060389,
+            "chesta": 0,
+            "naisargika": -0.0014285714285691142,
+            "drik": -0.0030108797605135074
+          },
+          "native_total_difference": 82.3228911574027,
+          "decomposition_residual": 4.263256414560601e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 2.842170943040401e-14,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 401.83,
+          "our_total_minus_angle_adjusted": 82.3228911574027,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Mars",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 41.01309945433955,
+              "external": 41.01,
+              "difference": 0.0030994543395550522
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 142.5,
+              "external": 142.5,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 40.61373773476471,
+              "external": 40.6,
+              "difference": 0.013737734764710297
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 52.868079722107474,
+              "external": 52.87,
+              "difference": -0.0019202778925233588
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 45,
+              "external": 45.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 60,
+              "external": 0.0,
+              "difference": 60.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 39.34914611670046,
+              "external": 20.58,
+              "difference": 18.769146116700462
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0030994543395763685,
+            "kala": 78.78096357357265,
+            "dig": -99.69244311966277,
+            "chesta": -34.47949641108185,
+            "naisargika": 0.002857142857141781,
+            "drik": -0.003843493336337822
+          },
+          "native_total_difference": -55.38886285331159,
+          "decomposition_residual": -7.105427357601002e-15,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 473.84216884613403,
+          "our_total_minus_angle_adjusted": 79.08896830055443,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Mercury",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 11.17906486771083,
+              "external": 11.18,
+              "difference": -0.0009351322891699709
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 127.5,
+              "external": 127.5,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 52.868079722107474,
+              "external": 52.87,
+              "difference": -0.0019202778925233588
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 42.12694085257568,
+              "external": 42.21,
+              "difference": -0.08305914742432208
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.0009351322891859581,
+            "kala": -0.08497942531687386,
+            "dig": -20.455710183844367,
+            "chesta": 0.2877909274817583,
+            "naisargika": 0.004285714285714448,
+            "drik": -0.0015000863785843421
+          },
+          "native_total_difference": -20.251048186061496,
+          "decomposition_residual": 4.263256414560601e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 2.842170943040401e-14
+          },
+          "angle_adjusted_diagnostic_total": 486.438165484311,
+          "our_total_minus_angle_adjusted": 0.21078632962746724,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Jupiter",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 31.72540596104896,
+              "external": 31.73,
+              "difference": -0.004594038951040602
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 150.0,
+              "external": 150.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 19.38626226523529,
+              "external": 19.4,
+              "difference": -0.013737734764710297
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 7.131920277892523,
+              "external": 7.13,
+              "difference": 0.0019202778925233588
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 46.32018978879955,
+              "external": 46.43,
+              "difference": -0.10981021120044687
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.62,
+              "difference": -0.62
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.004594038951040602,
+            "kala": -0.7416276680726526,
+            "dig": 0.003152320729185476,
+            "chesta": -85.33795573828851,
+            "naisargika": -0.004285714285714448,
+            "drik": 0.0003826569173793759
+          },
+          "native_total_difference": -86.08492818195134,
+          "decomposition_residual": 1.4210854715202004e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 2.842170943040401e-14
+          },
+          "angle_adjusted_diagnostic_total": 502.85586413019115,
+          "our_total_minus_angle_adjusted": -0.5407923121425142,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Venus",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 40.775630811650544,
+              "external": 40.78,
+              "difference": -0.004369188349457431
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 127.5,
+              "external": 127.5,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 30,
+              "external": 30.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 19.38626226523529,
+              "external": 19.4,
+              "difference": -0.013737734764710297
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 7.131920277892523,
+              "external": 7.13,
+              "difference": 0.0019202778925233588
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 12.523039359618464,
+              "external": 12.4,
+              "difference": 0.12303935961846335
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            }
+          ],
+          "component_differences": {
+            "sthana": -0.004369188349414799,
+            "kala": 0.11122190274627286,
+            "dig": -0.002159947680475227,
+            "chesta": 0.29246331229259503,
+            "naisargika": -0.002857142857145334,
+            "drik": -0.00232352559366511
+          },
+          "native_total_difference": 0.3919754105581319,
+          "decomposition_residual": -3.552713678800501e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 388.1955922417182,
+          "our_total_minus_angle_adjusted": 0.3963831688399182,
+          "angle_adjusted_is_independent_validation": false
+        },
+        {
+          "planet": "Saturn",
+          "subcomponents": [
+            {
+              "family": "sthana",
+              "term": "uchcha",
+              "ours": 0.2817313040346055,
+              "external": 0.28,
+              "difference": 0.0017313040346054742
+            },
+            {
+              "family": "sthana",
+              "term": "saptavargaja",
+              "ours": 82.5,
+              "external": 82.5,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "ojhayugma",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "kendradi",
+              "ours": 60,
+              "external": 60.0,
+              "difference": 0.0
+            },
+            {
+              "family": "sthana",
+              "term": "drekkana",
+              "ours": 15,
+              "external": 15.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "nathonnatha",
+              "ours": 40.61373773476471,
+              "external": 40.6,
+              "difference": 0.013737734764710297
+            },
+            {
+              "family": "kala",
+              "term": "paksha",
+              "ours": 52.868079722107474,
+              "external": 52.87,
+              "difference": -0.0019202778925233588
+            },
+            {
+              "family": "kala",
+              "term": "tribhaga",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "year",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "month",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "weekday",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "hora",
+              "ours": 0,
+              "external": 0.0,
+              "difference": 0.0
+            },
+            {
+              "family": "kala",
+              "term": "ayana",
+              "ours": 9.951202053950393,
+              "external": 9.88,
+              "difference": 0.07120205395039214
+            },
+            {
+              "family": "kala",
+              "term": "yuddha",
+              "ours": 0,
+              "external": -0.62,
+              "difference": 0.62
+            }
+          ],
+          "component_differences": {
+            "sthana": 0.0017313040346209618,
+            "kala": 0.7030195108225712,
+            "dig": -54.42028958581274,
+            "chesta": -79.423766205653,
+            "naisargika": 0.0014285714285708906,
+            "drik": -0.9817429951916884
+          },
+          "native_total_difference": -134.11961940037168,
+          "decomposition_residual": -2.842170943040401e-14,
+          "decomposition_closes_within_0_011": true,
+          "external_subtotal_rounding_residuals": {
+            "sthana": 0.0,
+            "kala": 0.0
+          },
+          "angle_adjusted_diagnostic_total": 337.41203610030703,
+          "our_total_minus_angle_adjusted": -0.06165550067868253,
+          "angle_adjusted_is_independent_validation": false
+        }
+      ],
+      "motion_diagnostics": {
+        "Mars": {
+          "external_mean": 4.1965950020335185,
+          "external_true": 354.97021057097015,
+          "external_seeghrochcha": 321.7468962480998,
+          "external_native": 47.39,
+          "our_circular_formula_on_external_inputs": 12.612168846134011,
+          "native_minus_circular": 34.77783115386599,
+          "circular_minus_our_chart": -0.29833474278414407
+        },
+        "Mercury": {
+          "external_mean": 321.7468962480998,
+          "external_true": 311.46011787271823,
+          "external_seeghrochcha": 153.37901060747595,
+          "external_native": 54.41,
+          "our_circular_formula_on_external_inputs": 54.40816548431102,
+          "native_minus_circular": 0.0018345156889765235,
+          "circular_minus_our_chart": -0.2896254431707348
+        },
+        "Jupiter": {
+          "external_mean": 16.66627404611188,
+          "external_true": 10.18270323123498,
+          "external_seeghrochcha": 321.7468962480998,
+          "external_native": 102.77,
+          "our_circular_formula_on_external_inputs": 17.225864130191212,
+          "native_minus_circular": 85.54413586980878,
+          "circular_minus_our_chart": -0.20618013152026649
+        },
+        "Venus": {
+          "external_mean": 321.7468962480998,
+          "external_true": 299.33761904668916,
+          "external_seeghrochcha": 267.9554809222399,
+          "external_native": 14.2,
+          "our_circular_formula_on_external_inputs": 14.195592241718202,
+          "native_minus_circular": 0.0044077582817969585,
+          "circular_minus_our_chart": -0.296871070574392
+        },
+        "Saturn": {
+          "external_mean": 25.426102767292036,
+          "external_true": 19.159906330749475,
+          "external_seeghrochcha": 321.7468962480998,
+          "external_native": 99.82,
+          "our_circular_formula_on_external_inputs": 20.182036100306977,
+          "native_minus_circular": 79.63796389969302,
+          "circular_minus_our_chart": -0.2141976940400241
+        }
+      },
+      "our_wars": [],
+      "external_war_recipients": [
+        "Jupiter",
+        "Saturn"
+      ],
+      "external_ayana_longitudes_requiring_wrap": {
+        "Moon": 369.0895959809717,
+        "Mars": 378.8298536388197
+      },
+      "external_paksha_outside_range": []
+    }
+  ],
+  "total_differences_decomposed": 21,
+  "decompositions_closed": 21,
+  "kala_subcomponent_comparisons": 189,
+  "sthana_subcomponent_comparisons": 105,
+  "interpretation": "Every native total difference is attributed to explicit component deltas, allowing rounded external sums. Attribution is not proof that either complete total is correct.",
+  "findings": [
+    {
+      "term": "Dig",
+      "classification": "reference_angle_error",
+      "evidence": "Native absolute longitude subtraction can exceed 180 degrees; its built-in circular alternative is reported separately."
+    },
+    {
+      "term": "Cheshta",
+      "classification": "reference_angle_error_and_input_difference",
+      "evidence": "Native midpoint is linear and final angle unwrapped. Separate circular-formula output retains external historical mean-motion inputs."
+    },
+    {
+      "term": "Hora",
+      "classification": "different_convention",
+      "evidence": "Our 12 daytime/12 nighttime temporal hours differ from external elapsed civil-hour arithmetic."
+    },
+    {
+      "term": "Ayana",
+      "classification": "reference_wrap_error_and_different_interpolation",
+      "evidence": "External declination_of_planets tests north/south before normalizing sidereal longitude plus ayanamsa; values >=360 receive the wrong hemisphere. Its inverse-Lagrange interpolation also differs from our six piecewise linear segments. Neither is modern physical declination."
+    },
+    {
+      "term": "Yuddha",
+      "classification": "different_pair_selection",
+      "evidence": "Our eligible pairs require <1 degree; native closest-pair routine has no 1-degree cutoff and can discard all wars if a luminary is closest."
+    },
+    {
+      "term": "Paksha",
+      "classification": "reference_angle_risk_and_nature_convention",
+      "evidence": "Native Sun-Moon absolute subtraction is unwrapped. Actual range violations and signed classifications are not silently corrected."
+    },
+    {
+      "term": "Sthana",
+      "classification": "inspect_subcomponent_residuals",
+      "evidence": "Degree-zone, varga and rounding policies are visible term by term; no aggregate match is asserted."
+    }
+  ],
+  "full_independent_equivalence_established": false
+}

@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.png binary
+*.bsp binary
+examples/*.json linguist-generated=true
+*_results.json linguist-generated=true
+strength_reconciliation.json linguist-generated=true

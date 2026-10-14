@@ -1,0 +1,2288 @@
+{
+  "title": "Vedic Astrology: An Integrated Approach",
+  "author": "P. V. R. Narasimha Rao",
+  "pdf_pages": 442,
+  "edition": "first published 2001; reprint 2004",
+  "original_filename": "vedic-astrology-an-integrated-approach2.pdf",
+  "sha256": "94a9c79b77c9396c337274a45a2e3e8fd90566c4242a23cf040ccb3a8888ecfb",
+  "size_bytes": 8785968,
+  "page_reference_convention": "1-based PDF page numbers",
+  "source_not_bundled": true,
+  "outline": [
+    [
+      1,
+      "Title",
+      1
+    ],
+    [
+      1,
+      "About the author",
+      5
+    ],
+    [
+      1,
+      "Preface",
+      6
+    ],
+    [
+      1,
+      "Contents",
+      10
+    ],
+    [
+      1,
+      "Part 1: Chart Analysis",
+      12
+    ],
+    [
+      2,
+      "1. Basic Concepts",
+      13
+    ],
+    [
+      3,
+      "1.1 What is astrology",
+      13
+    ],
+    [
+      3,
+      "1.2 Indian Astrology",
+      13
+    ],
+    [
+      3,
+      "1.3 Basics",
+      15
+    ],
+    [
+      4,
+      "1.3.1 Grahas (planets)",
+      15
+    ],
+    [
+      4,
+      "1.3.2 Rasis (signs)",
+      15
+    ],
+    [
+      4,
+      "1.3.3 Bhavas (houses)",
+      16
+    ],
+    [
+      4,
+      "1.3.4 Chakras (charts)",
+      17
+    ],
+    [
+      4,
+      "1.3.5 Varga chakras (divisional charts)",
+      19
+    ],
+    [
+      4,
+      "1.3.6 Nakshatras (constellations)",
+      19
+    ],
+    [
+      4,
+      "1.3.7 Solar Calendar",
+      21
+    ],
+    [
+      4,
+      "1.3.8 Tithis and Lunar Calendar",
+      21
+    ],
+    [
+      4,
+      "1.3.8.1 Tithis",
+      21
+    ],
+    [
+      4,
+      "1.3.8.2 Lunar Months",
+      23
+    ],
+    [
+      4,
+      "1.3.9 Yogas",
+      24
+    ],
+    [
+      4,
+      "1.3.10 Karanas",
+      25
+    ],
+    [
+      4,
+      "1.3.11 Hora",
+      25
+    ],
+    [
+      4,
+      "1.3.12 Panchaanga",
+      26
+    ],
+    [
+      4,
+      "1.3.13 Ayanamsa",
+      26
+    ],
+    [
+      3,
+      "1.4 Dasa Systems",
+      26
+    ],
+    [
+      3,
+      "1.5 Conclusion",
+      27
+    ],
+    [
+      3,
+      "1.6 Answers to Exercises",
+      28
+    ],
+    [
+      2,
+      "2. Rasis",
+      29
+    ],
+    [
+      3,
+      "2.1 Introduction",
+      29
+    ],
+    [
+      3,
+      "2.2 Characteristics of Rasis",
+      29
+    ],
+    [
+      4,
+      "2.2.1 Limbs of Vishnu",
+      29
+    ],
+    [
+      4,
+      "2.2.2 Odd and Even",
+      29
+    ],
+    [
+      4,
+      "2.2.3 Odd-footed and Even-footed",
+      29
+    ],
+    [
+      4,
+      "2.2.4 Movable, Fixed and Dual",
+      29
+    ],
+    [
+      4,
+      "2.2.5 Rasis & Five Elements",
+      30
+    ],
+    [
+      4,
+      "2.2.6 Pitta, Vaata and Kapha",
+      30
+    ],
+    [
+      4,
+      "2.2.7 Sattwa, Rajas and Tamas",
+      31
+    ],
+    [
+      4,
+      "2.2.8 Rasis and Directions",
+      31
+    ],
+    [
+      4,
+      "2.2.9 Rasis and Colors",
+      32
+    ],
+    [
+      4,
+      "2.2.10 Day and Night",
+      32
+    ],
+    [
+      4,
+      "2.2.11 Rising of rasis",
+      32
+    ],
+    [
+      4,
+      "2.2.12 Varna or Class",
+      32
+    ],
+    [
+      3,
+      "2.3 Indications of Rasis",
+      33
+    ],
+    [
+      2,
+      "3. Planets",
+      34
+    ],
+    [
+      3,
+      "3.1 Introduction",
+      34
+    ],
+    [
+      3,
+      "3.2 Characteristics of Planets",
+      34
+    ],
+    [
+      4,
+      "3.2.1 Vishnu's Avataras",
+      34
+    ],
+    [
+      4,
+      "3.2.2 Benefics and Malefics",
+      34
+    ],
+    [
+      4,
+      "3.2.3 Main Governance",
+      35
+    ],
+    [
+      4,
+      "3.2.4 Planets and Colors",
+      35
+    ],
+    [
+      4,
+      "3.2.5 Planetary Cabinet",
+      35
+    ],
+    [
+      4,
+      "3.2.6 Planetary Deities",
+      35
+    ],
+    [
+      4,
+      "3.2.7 Sex of Planets",
+      35
+    ],
+    [
+      4,
+      "3.2.8 Planets and Five Elements",
+      35
+    ],
+    [
+      4,
+      "3.2.9 Planets and Varnas",
+      36
+    ],
+    [
+      4,
+      "3.2.10 Planets and Gunas",
+      36
+    ],
+    [
+      4,
+      "3.2.11 Planetary Abodes",
+      37
+    ],
+    [
+      4,
+      "3.2.12 Seven Dhaatus",
+      37
+    ],
+    [
+      4,
+      "3.2.13 Planets and Time Periods",
+      37
+    ],
+    [
+      4,
+      "3.2.14 Planets & Tastes",
+      37
+    ],
+    [
+      4,
+      "3.2.15 Planetary Strengths",
+      38
+    ],
+    [
+      4,
+      "3.2.16 Planets & Ritus",
+      38
+    ],
+    [
+      4,
+      "3.2.17 Dhatu, Moola and Jeeva",
+      38
+    ],
+    [
+      3,
+      "3.3 Planetary Dignities",
+      38
+    ],
+    [
+      3,
+      "3.4 Planetary Relationships",
+      41
+    ],
+    [
+      4,
+      "3.4.1 Natural Relationships",
+      41
+    ],
+    [
+      4,
+      "3.4.2 Temporary Relationships",
+      41
+    ],
+    [
+      4,
+      "3.4.3 Compound Relationships",
+      42
+    ],
+    [
+      3,
+      "3.5 Answers to Exercises",
+      43
+    ],
+    [
+      2,
+      "4. Upagrahas",
+      44
+    ],
+    [
+      3,
+      "4.1 Introduction",
+      44
+    ],
+    [
+      3,
+      "4.2 Sun-based Upagrahas",
+      44
+    ],
+    [
+      3,
+      "4.3 Other Upagrahas",
+      45
+    ],
+    [
+      3,
+      "4.4 Answer to Exercise",
+      47
+    ],
+    [
+      2,
+      "5. Special Lagnas",
+      48
+    ],
+    [
+      3,
+      "5.1 Introduction",
+      48
+    ],
+    [
+      3,
+      "5.2 Bhaava Lagna",
+      48
+    ],
+    [
+      3,
+      "5.3 Hora Lagna",
+      48
+    ],
+    [
+      3,
+      "5.4 Ghati Lagna",
+      49
+    ],
+    [
+      3,
+      "5.5 Comments",
+      50
+    ],
+    [
+      3,
+      "5.6 Use of Special Lagnas",
+      51
+    ],
+    [
+      3,
+      "5.7 Sree Lagna",
+      51
+    ],
+    [
+      3,
+      "5.8 Answers to Exercises",
+      52
+    ],
+    [
+      2,
+      "6. Divisional Charts",
+      53
+    ],
+    [
+      3,
+      "6.1 Divisions of A Rasi",
+      53
+    ],
+    [
+      3,
+      "6.2 Computing Divisional Charts",
+      53
+    ],
+    [
+      4,
+      "6.2.1 Rasi Chart (D-1)",
+      54
+    ],
+    [
+      4,
+      "6.2.2 Hora Chart (D-2)",
+      54
+    ],
+    [
+      4,
+      "6.2.3 Drekkana Chart (D-3)",
+      54
+    ],
+    [
+      4,
+      "6.2.4 Chaturthamsa Chart (D-4)",
+      54
+    ],
+    [
+      4,
+      "6.2.5 Panchamsa Chart (D-5)",
+      55
+    ],
+    [
+      4,
+      "6.2.6 Shashthamsa Chart (D-6)",
+      55
+    ],
+    [
+      4,
+      "6.2.7 Saptamsa Chart (D-7)",
+      55
+    ],
+    [
+      4,
+      "6.2.8 Ashtamsa Chart (D-8)",
+      55
+    ],
+    [
+      4,
+      "6.2.9 Navamsa Chart (D-9)",
+      56
+    ],
+    [
+      4,
+      "6.2.10 Dasamsa Chart (D-10)",
+      56
+    ],
+    [
+      4,
+      "6.2.11 Rudramsa Chart (D-11)",
+      57
+    ],
+    [
+      4,
+      "6.2.12 Dwadasamsa Chart (D-12)",
+      57
+    ],
+    [
+      4,
+      "6.2.13 Shodasamsa Chart (D-16)",
+      57
+    ],
+    [
+      4,
+      "6.2.14 Vimsamsa Chart (D-20)",
+      58
+    ],
+    [
+      4,
+      "6.2.15 Chaturvimsamsa Chart (D-24)",
+      58
+    ],
+    [
+      4,
+      "6.2.16 Nakshatramsa Chart (D-27)",
+      58
+    ],
+    [
+      4,
+      "6.2.17 Trimsamsa Chart (D-30)",
+      59
+    ],
+    [
+      4,
+      "6.2.18 Khavedamsa Chart (D-40)",
+      59
+    ],
+    [
+      4,
+      "6.2.19 Akshavedamsa Chart (D-45)",
+      59
+    ],
+    [
+      4,
+      "6.2.20 Shaslttyamsa Chart (D-60)",
+      60
+    ],
+    [
+      3,
+      "6.3 Divisional Chart Significations",
+      60
+    ],
+    [
+      3,
+      "6.4 Insights on Divisional Charts",
+      61
+    ],
+    [
+      3,
+      "6.5 Using Divisional Charts",
+      62
+    ],
+    [
+      3,
+      "6.6 Varga Grouping and Amsabala",
+      63
+    ],
+    [
+      4,
+      "6.6.1 Shadvarga",
+      63
+    ],
+    [
+      4,
+      "6.6.2 Sapta varga",
+      63
+    ],
+    [
+      4,
+      "6.6.3 Dasa varga",
+      63
+    ],
+    [
+      4,
+      "6.6.4 Shodasa varga",
+      64
+    ],
+    [
+      3,
+      "6.7 Conclusion",
+      65
+    ],
+    [
+      2,
+      "7. Houses",
+      66
+    ],
+    [
+      3,
+      "7.1 Introduction",
+      66
+    ],
+    [
+      3,
+      "7.2 Significations of Houses",
+      66
+    ],
+    [
+      3,
+      "7.3 Common References for Houses",
+      68
+    ],
+    [
+      4,
+      "7.3.1 Lagna",
+      68
+    ],
+    [
+      4,
+      "7.3.2 Chandra Lagna (Moon lagna)",
+      69
+    ],
+    [
+      4,
+      "7.3.3 Ravi Lagna (Sun lagna)",
+      69
+    ],
+    [
+      4,
+      "7.3.4 Arudha Lagna",
+      69
+    ],
+    [
+      4,
+      "7.3.5 Paaka Lagna",
+      69
+    ],
+    [
+      4,
+      "7.3.6 Karakamsa Lagna",
+      70
+    ],
+    [
+      4,
+      "7.3.7 Ghati Lagna",
+      71
+    ],
+    [
+      4,
+      "7.3.8 Hora Lagna",
+      71
+    ],
+    [
+      4,
+      "7.3.9 Graha Lagnas",
+      71
+    ],
+    [
+      3,
+      "7.4 Special Categories",
+      72
+    ],
+    [
+      4,
+      "7.4.1 Trines",
+      73
+    ],
+    [
+      4,
+      "7.4.2 Quadrants",
+      73
+    ],
+    [
+      4,
+      "7.4.3 Upachayas",
+      74
+    ],
+    [
+      4,
+      "7.4.4 Dusthanas",
+      74
+    ],
+    [
+      4,
+      "7.4.5 Visible Half and Invisible Half",
+      74
+    ],
+    [
+      4,
+      "7.4.6 Quick Summary",
+      74
+    ],
+    [
+      3,
+      "7.5 A Controversy",
+      74
+    ],
+    [
+      2,
+      "8. Karakas",
+      76
+    ],
+    [
+      3,
+      "8.1 Introduction",
+      76
+    ],
+    [
+      3,
+      "8.2 Chara Karakas",
+      77
+    ],
+    [
+      3,
+      "8.3 Sthira Karakas",
+      78
+    ],
+    [
+      3,
+      "8.4 Naisargika Karakas",
+      79
+    ],
+    [
+      3,
+      "8.5 Answer to Exercise",
+      81
+    ],
+    [
+      2,
+      "9. Arudha Padas",
+      82
+    ],
+    [
+      3,
+      "9.1 Introduction",
+      82
+    ],
+    [
+      3,
+      "9.2 Computation of Bhava Arudhas",
+      82
+    ],
+    [
+      3,
+      "9.3 Use of Arudha Lagna",
+      85
+    ],
+    [
+      3,
+      "9.4 Use of Bhava Arudhas",
+      86
+    ],
+    [
+      3,
+      "9.5 Computation of Graha Arudhas",
+      89
+    ],
+    [
+      3,
+      "9.6 Use of Graha Arudhas",
+      91
+    ],
+    [
+      3,
+      "9.7 Summary",
+      94
+    ],
+    [
+      3,
+      "9.8 Answers to Exercises",
+      94
+    ],
+    [
+      2,
+      "10. Aspects and Argalas",
+      95
+    ],
+    [
+      3,
+      "10.1 Introduction",
+      95
+    ],
+    [
+      3,
+      "10.2 Graha Drishti",
+      95
+    ],
+    [
+      3,
+      "10.3 Rasi Drishti",
+      96
+    ],
+    [
+      3,
+      "10.4 Graha Drishti vs Rasi Drishti",
+      97
+    ],
+    [
+      3,
+      "10.5 Argala (Intervention)",
+      98
+    ],
+    [
+      3,
+      "10.6 Virodhaargala (Obstruction)",
+      100
+    ],
+    [
+      3,
+      "10.7 Use of Argala",
+      100
+    ],
+    [
+      3,
+      "10.8 Answers to Exercises",
+      103
+    ],
+    [
+      2,
+      "11. Yogas",
+      106
+    ],
+    [
+      3,
+      "11.1 Introduction",
+      106
+    ],
+    [
+      3,
+      "11.2 Ravi Yogas",
+      106
+    ],
+    [
+      4,
+      "11.2.1 Vesi Yoga",
+      107
+    ],
+    [
+      4,
+      "11.2.2 Vosi Yoga",
+      107
+    ],
+    [
+      4,
+      "11.2.3 Ubhayachara Yoga",
+      107
+    ],
+    [
+      4,
+      "11.2.4 Budha-Aaditya Yoga (Nipuna Yoga)",
+      107
+    ],
+    [
+      3,
+      "11.3 Chandra Yogas",
+      107
+    ],
+    [
+      4,
+      "General Guidelines:",
+      108
+    ],
+    [
+      4,
+      "11.3.1 Sunaphaa Yoga",
+      108
+    ],
+    [
+      4,
+      "11.3.2 Anaphaa Yoga",
+      108
+    ],
+    [
+      4,
+      "11.3.3 Duradhara Yoga",
+      108
+    ],
+    [
+      4,
+      "11.3.4 Kemadruma Yoga",
+      109
+    ],
+    [
+      4,
+      "11.3.5 Chandra-Mangala Yoga",
+      109
+    ],
+    [
+      4,
+      "11.3.6 Adhi Yoga",
+      109
+    ],
+    [
+      3,
+      "11.4 Pancha Mahapurusha Yogas",
+      109
+    ],
+    [
+      4,
+      "11.4.1 Ruchaka Yoga",
+      110
+    ],
+    [
+      4,
+      "11.4.2 Bhadra Yoga",
+      110
+    ],
+    [
+      4,
+      "11.4.3 Sasa Yoga",
+      110
+    ],
+    [
+      4,
+      "11.4.4 Maalavya Yoga",
+      111
+    ],
+    [
+      4,
+      "11.4.5 Hamsa Yoga",
+      111
+    ],
+    [
+      3,
+      "11.5 Naabhasa Yogas",
+      111
+    ],
+    [
+      4,
+      "11.5.1 Aasraya Yogas",
+      111
+    ],
+    [
+      4,
+      "11.5.2 Dala Yogas",
+      112
+    ],
+    [
+      4,
+      "11.5.3 Aakriti Yogas",
+      112
+    ],
+    [
+      4,
+      "11.5.4 Sankhya Yogas",
+      115
+    ],
+    [
+      3,
+      "11.6 Other Popular Yogas",
+      116
+    ],
+    [
+      3,
+      "11.7 Raaja Yogas",
+      123
+    ],
+    [
+      4,
+      "11.7.1 Basics",
+      124
+    ],
+    [
+      4,
+      "11.7.2 Magnitude of a Raaja Yoga",
+      124
+    ],
+    [
+      4,
+      "11.7.3 More Raaja Yogas",
+      127
+    ],
+    [
+      3,
+      "11.8 Raaja Sambandha Yogas",
+      128
+    ],
+    [
+      3,
+      "11.9 Dhana Yogas",
+      129
+    ],
+    [
+      3,
+      "11.10 Daridra Yogas",
+      131
+    ],
+    [
+      3,
+      "11.11 Conclusion",
+      132
+    ],
+    [
+      2,
+      "12. Ashtakavarga",
+      133
+    ],
+    [
+      3,
+      "12.1 Introduction",
+      133
+    ],
+    [
+      3,
+      "12.2 Benefic and Malefic Houses",
+      133
+    ],
+    [
+      3,
+      "12.3 Bhinna Ashtakavarga",
+      139
+    ],
+    [
+      3,
+      "12.4 Samudaaya Ashtakavarga",
+      140
+    ],
+    [
+      3,
+      "12.5 Divisional Charts",
+      141
+    ],
+    [
+      3,
+      "12.6 Prastaara Ashtakavarga",
+      143
+    ],
+    [
+      3,
+      "12.7 Sodhya Pindas",
+      144
+    ],
+    [
+      4,
+      "12.7.1 Trikona Sodhana (Trinal Reduction)",
+      144
+    ],
+    [
+      4,
+      "12.7.2 Ekaadhipatya Sodhana (Co-owned Reduction)",
+      144
+    ],
+    [
+      4,
+      "12.7.3 Sodhya Pindas",
+      146
+    ],
+    [
+      3,
+      "12.8 Controversies",
+      147
+    ],
+    [
+      3,
+      "12.9 Answers to Exercises",
+      149
+    ],
+    [
+      2,
+      "13. Interpreting Charts",
+      152
+    ],
+    [
+      3,
+      "13.1 Introduction",
+      152
+    ],
+    [
+      3,
+      "13.2 Functional Nature",
+      152
+    ],
+    [
+      3,
+      "13.3 Baadhakas",
+      154
+    ],
+    [
+      3,
+      "13.4 Analyzing Charts",
+      154
+    ],
+    [
+      4,
+      "13.4.1 Basic Guidelines",
+      154
+    ],
+    [
+      4,
+      "13.4.2 Family Members",
+      157
+    ],
+    [
+      3,
+      "13.5 Examples",
+      157
+    ],
+    [
+      3,
+      "13.6 Conclusion",
+      164
+    ],
+    [
+      2,
+      "14. Topics Related to Longevity",
+      165
+    ],
+    [
+      3,
+      "14.1 Introduction",
+      165
+    ],
+    [
+      3,
+      "14.2 Marakas (Killers)",
+      165
+    ],
+    [
+      3,
+      "14.3 Rudra, Trishoola and Maheswara",
+      166
+    ],
+    [
+      3,
+      "14.4 The Method of Three Pairs",
+      168
+    ],
+    [
+      3,
+      "14.5 The Eighth Lord Method",
+      169
+    ],
+    [
+      3,
+      "14.6 Conclusion",
+      169
+    ],
+    [
+      3,
+      "14.7 Answer to Exercise",
+      170
+    ],
+    [
+      2,
+      "15. Strength of Planets and Rasis",
+      171
+    ],
+    [
+      3,
+      "15.1 Introduction",
+      171
+    ],
+    [
+      3,
+      "15.2 Why Different Strengths",
+      171
+    ],
+    [
+      3,
+      "15.3 Shadbala and Astakavarga Bala",
+      173
+    ],
+    [
+      3,
+      "15.4 Avasthas (States)",
+      173
+    ],
+    [
+      4,
+      "15.4.1 State Related to Age",
+      173
+    ],
+    [
+      4,
+      "15.4.2 State Related to Alertness",
+      174
+    ],
+    [
+      4,
+      "15.4.3 State Related to Attitude and Mood",
+      174
+    ],
+    [
+      4,
+      "15.4.4 States Relates to Activity",
+      175
+    ],
+    [
+      3,
+      "15.5 Other Simple Strengths",
+      183
+    ],
+    [
+      4,
+      "15.5.1 Stronger Co-Lord",
+      183
+    ],
+    [
+      4,
+      "15.5.2 Stronger Rasi",
+      185
+    ],
+    [
+      3,
+      "15.6 Anwers to Exercises",
+      187
+    ],
+    [
+      1,
+      "Part 2: Dasa Analysis",
+      188
+    ],
+    [
+      2,
+      "16. Vimsottari Dasa",
+      189
+    ],
+    [
+      3,
+      "16.1 Introduction",
+      189
+    ],
+    [
+      3,
+      "16.2 Dasa Computation",
+      189
+    ],
+    [
+      3,
+      "16.3 Antardasa Computation",
+      191
+    ],
+    [
+      3,
+      "16.4 Vimsottari Dasa Variations",
+      192
+    ],
+    [
+      4,
+      "16.4.1 Computation of Variations",
+      192
+    ],
+    [
+      4,
+      "16.4.2 Dasa from Lagna",
+      193
+    ],
+    [
+      3,
+      "16.5 Using Vimsottari Dasa",
+      193
+    ],
+    [
+      4,
+      "16.5.1 General Principles",
+      193
+    ],
+    [
+      4,
+      "16.5.2 Using Dasa Variations",
+      193
+    ],
+    [
+      4,
+      "16.5.3 Rath's \"Tripod of Life\" Principle",
+      194
+    ],
+    [
+      3,
+      "16.6 Practical Examples",
+      194
+    ],
+    [
+      4,
+      "16.6.1 As A Phalita Dasa",
+      194
+    ],
+    [
+      4,
+      "16.6.2 As An Ayur Dasa",
+      199
+    ],
+    [
+      3,
+      "16.7 Conclusion",
+      202
+    ],
+    [
+      2,
+      "17. Ashtottari Dasa",
+      203
+    ],
+    [
+      3,
+      "17.1 Introduction",
+      203
+    ],
+    [
+      3,
+      "17.2 Computation",
+      203
+    ],
+    [
+      4,
+      "17.2.1 Dasas",
+      203
+    ],
+    [
+      4,
+      "17.2.2 Antardasas",
+      205
+    ],
+    [
+      4,
+      "17.2.3 Application",
+      205
+    ],
+    [
+      3,
+      "17.3 Examples",
+      206
+    ],
+    [
+      3,
+      "17.4 Conclusion",
+      207
+    ],
+    [
+      2,
+      "18. Narayana Dasa",
+      208
+    ],
+    [
+      3,
+      "18.1 Introduction",
+      208
+    ],
+    [
+      3,
+      "18.2 Computation",
+      208
+    ],
+    [
+      4,
+      "18.2.1 Dasa Progression",
+      208
+    ],
+    [
+      4,
+      "18.2.2 Dasa Length",
+      211
+    ],
+    [
+      3,
+      "18.3 Antardasas",
+      214
+    ],
+    [
+      3,
+      "18.4 Interpretation",
+      214
+    ],
+    [
+      3,
+      "18.5 Narayana Dasa of Vargas",
+      220
+    ],
+    [
+      3,
+      "18.6 Sub-divisions of Narayana Dasa",
+      229
+    ],
+    [
+      3,
+      "18.7 Conclusion",
+      230
+    ],
+    [
+      3,
+      "18.8 Answers to Exercises",
+      230
+    ],
+    [
+      2,
+      "19. Lagna Kendradi Rasi Dasa",
+      234
+    ],
+    [
+      3,
+      "19.1 Introduction",
+      234
+    ],
+    [
+      3,
+      "19.2 Computation",
+      234
+    ],
+    [
+      3,
+      "19.3 Interpretation",
+      235
+    ],
+    [
+      3,
+      "19.4 Conclusion",
+      237
+    ],
+    [
+      2,
+      "20. Sudasa",
+      238
+    ],
+    [
+      3,
+      "20.1 Introduction",
+      238
+    ],
+    [
+      3,
+      "20.2 Computation",
+      238
+    ],
+    [
+      3,
+      "20.3 Interpretation",
+      239
+    ],
+    [
+      2,
+      "21. Drigdasa",
+      242
+    ],
+    [
+      3,
+      "21.1 Introduction",
+      242
+    ],
+    [
+      3,
+      "21.2 Computation",
+      242
+    ],
+    [
+      3,
+      "21.3 Interpretation",
+      243
+    ],
+    [
+      2,
+      "22. Niryaana Shoola Dasa",
+      247
+    ],
+    [
+      3,
+      "22.1 Introduction",
+      247
+    ],
+    [
+      3,
+      "22.2 Computation and Interpretation",
+      247
+    ],
+    [
+      3,
+      "22.3 Conclusion",
+      252
+    ],
+    [
+      3,
+      "22.4 Answer to Exercise",
+      252
+    ],
+    [
+      2,
+      "23. Shoola Dasa",
+      254
+    ],
+    [
+      3,
+      "23.1 Introduction",
+      254
+    ],
+    [
+      3,
+      "23.2 Computation",
+      254
+    ],
+    [
+      3,
+      "23.3 Interpretation",
+      254
+    ],
+    [
+      3,
+      "23.4 Examples",
+      255
+    ],
+    [
+      3,
+      "23.5 Death of Near Relatives",
+      256
+    ],
+    [
+      3,
+      "23.6 Answers to Exercises",
+      259
+    ],
+    [
+      2,
+      "24. Kalachakra Dasa",
+      261
+    ],
+    [
+      3,
+      "24.1 Introduction",
+      261
+    ],
+    [
+      3,
+      "24.2 Computation",
+      261
+    ],
+    [
+      3,
+      "24.3 Interpretation",
+      267
+    ],
+    [
+      4,
+      "24.3.1 Basics",
+      267
+    ],
+    [
+      4,
+      "24.3.2 Deha and Jeeva Rasis",
+      268
+    ],
+    [
+      4,
+      "24.3.3 Gatis (special movements)",
+      268
+    ],
+    [
+      3,
+      "24.4 Practical Examples",
+      270
+    ],
+    [
+      3,
+      "24.5 Conclusion",
+      277
+    ],
+    [
+      3,
+      "24.6 Answers to Exercises",
+      279
+    ],
+    [
+      1,
+      "Part 3: Transit Analysis",
+      281
+    ],
+    [
+      2,
+      "25. Transits and Natal References",
+      282
+    ],
+    [
+      3,
+      "25.1 Introduction",
+      282
+    ],
+    [
+      3,
+      "25.2 Transits from Moon",
+      282
+    ],
+    [
+      3,
+      "25.3 Other Natal References",
+      287
+    ],
+    [
+      3,
+      "25.4 Transits and Divisional Charts",
+      290
+    ],
+    [
+      3,
+      "25.5 Transits and Ashtakavarga",
+      298
+    ],
+    [
+      4,
+      "25.5.1 Samudaaya Ashtakavarga",
+      298
+    ],
+    [
+      4,
+      "25.5.2 Kakshyas and Prastaara Ashtakavarga",
+      301
+    ],
+    [
+      3,
+      "25.6 Timing with Sodhya Pindas",
+      303
+    ],
+    [
+      3,
+      "25.7 Conclusion",
+      307
+    ],
+    [
+      3,
+      "25.8 Answer to the Exercises",
+      308
+    ],
+    [
+      2,
+      "26. Transits: Miscellaneous Topics",
+      313
+    ],
+    [
+      3,
+      "26.1 Introduction",
+      313
+    ],
+    [
+      3,
+      "26.2 Murthis (Forms/Idols)",
+      313
+    ],
+    [
+      3,
+      "26.3 Rasi Gochara Vedha",
+      314
+    ],
+    [
+      3,
+      "26.4 Taras (Stars)",
+      315
+    ],
+    [
+      4,
+      "26.4.1 Basic Tara Classification",
+      315
+    ],
+    [
+      4,
+      "26.4.2 Special Nakshatras/Taras",
+      316
+    ],
+    [
+      3,
+      "26.5 Nakshatra-based Aspects",
+      318
+    ],
+    [
+      3,
+      "26.6 Constellations and Body Parts",
+      318
+    ],
+    [
+      3,
+      "26.7 Latta (Kick)",
+      320
+    ],
+    [
+      3,
+      "26.8 Sarvatobhadra Chakra",
+      322
+    ],
+    [
+      3,
+      "26.9 Conclusion",
+      327
+    ],
+    [
+      3,
+      "26.10 Answers to the Exercises",
+      327
+    ],
+    [
+      1,
+      "Part 4: Tajaka Analysis",
+      330
+    ],
+    [
+      2,
+      "27. Tajaka Chart Basics",
+      331
+    ],
+    [
+      3,
+      "27.1 Casting Annual Charts",
+      331
+    ],
+    [
+      3,
+      "27.2 An Approximate Method",
+      332
+    ],
+    [
+      3,
+      "27.3 Casting Monthly Charts",
+      334
+    ],
+    [
+      3,
+      "27.4 Casting Sixty-hour Charts",
+      335
+    ],
+    [
+      3,
+      "27.5 Conclusion",
+      336
+    ],
+    [
+      3,
+      "27.6 Answers to Exercises",
+      336
+    ],
+    [
+      2,
+      "28. Techniques of Tajaka Charts",
+      337
+    ],
+    [
+      3,
+      "28.1 Muntha",
+      337
+    ],
+    [
+      3,
+      "28.2 Aspects",
+      337
+    ],
+    [
+      3,
+      "28.3 Harsha Bala",
+      338
+    ],
+    [
+      3,
+      "28.4 Pancha Vargeeya Bala",
+      339
+    ],
+    [
+      4,
+      "28.4.1 Kshetra Bala",
+      339
+    ],
+    [
+      4,
+      "28.4.2 Uchcha Bala",
+      339
+    ],
+    [
+      4,
+      "28.4.3 Hadda Bala",
+      340
+    ],
+    [
+      4,
+      "28.4.4 Drekkana Bala",
+      340
+    ],
+    [
+      4,
+      "25.4.5 Navamsa Bala",
+      341
+    ],
+    [
+      4,
+      "28.4.6 Final Computation",
+      341
+    ],
+    [
+      3,
+      "28.5 Dwaadasa Vargeeya Bala",
+      341
+    ],
+    [
+      3,
+      "28.6 Lord of the Year",
+      341
+    ],
+    [
+      3,
+      "28.7 Lord of the Month",
+      343
+    ],
+    [
+      3,
+      "28.8 Sahams",
+      343
+    ],
+    [
+      4,
+      "28.8.1 Calculation",
+      343
+    ],
+    [
+      4,
+      "28.8.2 Use of sahams",
+      346
+    ],
+    [
+      2,
+      "29. Tajaka Yogas",
+      348
+    ],
+    [
+      3,
+      "29.1 Introduction",
+      348
+    ],
+    [
+      3,
+      "29.2 Definitions",
+      348
+    ],
+    [
+      4,
+      "29.2.1 Ishkavala Yoga",
+      348
+    ],
+    [
+      4,
+      "29.2.2 Induvara Yoga",
+      348
+    ],
+    [
+      4,
+      "29.2.3 Ithasala Yoga",
+      348
+    ],
+    [
+      4,
+      "29.2.4 Eesarpha Yoga",
+      351
+    ],
+    [
+      4,
+      "29.2.5 Nakta Yoga",
+      351
+    ],
+    [
+      4,
+      "29.2.6 Yamaya Yoga",
+      352
+    ],
+    [
+      4,
+      "29.2.7 Manahoo Yoga",
+      352
+    ],
+    [
+      4,
+      "29.2.8 Kamboola Yoga",
+      353
+    ],
+    [
+      4,
+      "29.2.9 Gairi-Kamboola Yoga",
+      353
+    ],
+    [
+      4,
+      "29.2.10 Khallasara Yoga",
+      353
+    ],
+    [
+      4,
+      "29.2.11 Radda Yoga",
+      353
+    ],
+    [
+      4,
+      "29.2.12 Duhphali-Kutta Yoga",
+      354
+    ],
+    [
+      4,
+      "29.2.13 Duttota Yoga",
+      354
+    ],
+    [
+      4,
+      "29.2.14 Thambira Yoga",
+      354
+    ],
+    [
+      4,
+      "29.2.15 Kutta Yoga",
+      355
+    ],
+    [
+      4,
+      "29.2.16 Durupha Yoga",
+      355
+    ],
+    [
+      3,
+      "29.3 Conclusion",
+      355
+    ],
+    [
+      2,
+      "30. Annual Dasas",
+      356
+    ],
+    [
+      3,
+      "30.1 Introduction",
+      356
+    ],
+    [
+      3,
+      "30.2 Patyayini Dasa",
+      357
+    ],
+    [
+      3,
+      "30.3 Mudda Dasa (Varsha Vimsottari Dasa)",
+      359
+    ],
+    [
+      3,
+      "30.4 Varsha Narayana Dasa",
+      360
+    ],
+    [
+      3,
+      "30.5 Conclusion",
+      365
+    ],
+    [
+      3,
+      "30.6 Answers to Exercises",
+      365
+    ],
+    [
+      2,
+      "31. Sudarsana Chakra Dasa",
+      366
+    ],
+    [
+      3,
+      "31.1 Introduction",
+      366
+    ],
+    [
+      3,
+      "31.2 Sudarsana Chakra",
+      366
+    ],
+    [
+      3,
+      "31.3 Dasa Computation",
+      367
+    ],
+    [
+      3,
+      "31.4 Dasa Interpretation",
+      369
+    ],
+    [
+      3,
+      "31.5 Conclusion",
+      371
+    ],
+    [
+      1,
+      "Part 5: Special Topics",
+      373
+    ],
+    [
+      2,
+      "32. Impact of Birthtime Error",
+      374
+    ],
+    [
+      3,
+      "32.1 Introduction",
+      374
+    ],
+    [
+      3,
+      "32.2 Robustness of Computations",
+      376
+    ],
+    [
+      4,
+      "32.2.1 Divisional Charts",
+      376
+    ],
+    [
+      4,
+      "32.2.2 Dasas",
+      378
+    ],
+    [
+      4,
+      "32.2.3 Tajaka Charts",
+      379
+    ],
+    [
+      3,
+      "32.3 A Practical Approach",
+      380
+    ],
+    [
+      3,
+      "32.4 Practical Examples",
+      380
+    ],
+    [
+      3,
+      "32.5 Conclusion",
+      388
+    ],
+    [
+      3,
+      "32.6 Answers to Exercises",
+      389
+    ],
+    [
+      2,
+      "33. Rational Thinking",
+      391
+    ],
+    [
+      3,
+      "33.1 Introduction",
+      391
+    ],
+    [
+      3,
+      "33.2 Irrational Explanations",
+      391
+    ],
+    [
+      3,
+      "33.3 Known Past vs Future",
+      393
+    ],
+    [
+      3,
+      "33.4 Probability Analysis",
+      395
+    ],
+    [
+      3,
+      "33.5 Statistical Research",
+      396
+    ],
+    [
+      3,
+      "33.6 Why Astrology Works",
+      397
+    ],
+    [
+      3,
+      "33.7 Conclusion",
+      398
+    ],
+    [
+      3,
+      "33.8 Answers to Eexrcises",
+      398
+    ],
+    [
+      2,
+      "34. Remedial Measures",
+      399
+    ],
+    [
+      3,
+      "34.1 Introduction",
+      399
+    ],
+    [
+      4,
+      "34.1.1 Commonsense Remedies",
+      399
+    ],
+    [
+      4,
+      "34.1.2 Pacifying Planets",
+      399
+    ],
+    [
+      3,
+      "34.2 Gemstones",
+      400
+    ],
+    [
+      3,
+      "34.3 Good Deeds",
+      401
+    ],
+    [
+      3,
+      "34.4 Propitiation of Planets",
+      402
+    ],
+    [
+      3,
+      "34.5 Propitiation of Deities",
+      404
+    ],
+    [
+      3,
+      "34.6 Conclusion",
+      406
+    ],
+    [
+      2,
+      "35. Mundane Astrology",
+      407
+    ],
+    [
+      3,
+      "35.1 Introduction",
+      407
+    ],
+    [
+      3,
+      "35.2 Re-interpreted Significations",
+      407
+    ],
+    [
+      3,
+      "35.3 Using Birthcharts",
+      408
+    ],
+    [
+      3,
+      "35.4 Lunar charts",
+      409
+    ],
+    [
+      3,
+      "35.5 Solar charts",
+      412
+    ],
+    [
+      3,
+      "35.6 Swearing-in Charts",
+      414
+    ],
+    [
+      3,
+      "35.7 Conclusion",
+      415
+    ],
+    [
+      2,
+      "36. Muhurta or Electional Astrology",
+      417
+    ],
+    [
+      3,
+      "36.1 Introduction",
+      417
+    ],
+    [
+      3,
+      "36.2 Definition of Muhurta",
+      417
+    ],
+    [
+      3,
+      "36.3 Basics of Muhurta",
+      418
+    ],
+    [
+      3,
+      "36.4 Planetary Strength",
+      420
+    ],
+    [
+      3,
+      "36.5 Conclusion",
+      425
+    ],
+    [
+      2,
+      "37. Ethical Behavior of a Jyotishi",
+      426
+    ],
+    [
+      1,
+      "Part 6: Real-life Examples",
+      428
+    ],
+    [
+      2,
+      "Real-life Example 1:",
+      428
+    ],
+    [
+      2,
+      "Real-life Example 2:",
+      430
+    ],
+    [
+      2,
+      "Real-life Example 3:",
+      433
+    ],
+    [
+      2,
+      "Real-life Example 4:",
+      437
+    ],
+    [
+      2,
+      "Real-life Example 5:",
+      439
+    ],
+    [
+      1,
+      "One Last Word",
+      442
+    ]
+  ],
+  "low_text_pages": [
+    135,
+    294,
+    295,
+    309,
+    312,
+    372
+  ],
+  "toolkit_version": "0.4.0",
+  "supporting_primary_sources": [
+    {
+      "title": "BPHS, chapters 7, 27, 41, 46, 68",
+      "urls": [
+        "https://jyotishvidya.com/ch7.htm",
+        "https://jyotishvidya.com/ch27.htm",
+        "https://jyotishvidya.com/ch41.htm",
+        "https://jyotishvidya.com/ch46.htm",
+        "https://jyotishvidya.com/ch68.htm"
+      ],
+      "use": "Vimsopaka, requirements, missing Dhana planet, Kalachakra groups and reduction variants"
+    },
+    {
+      "title": "Sanjay Rath, Narayana Dasa (2004), p39",
+      "url": null,
+      "use": "Maximum twelve-year sign duration"
+    },
+    {
+      "title": "Balabhadra, Hayanaratna; Gansten translation (2020)",
+      "urls": [
+        "https://www.wisdomlib.org/hinduism/book/hayanaratna-the-jewel-of-annual-astrology/d/doc1500895.html",
+        "https://www.wisdomlib.org/hinduism/book/hayanaratna-the-jewel-of-annual-astrology/d/doc1500896.html",
+        "https://www.wisdomlib.org/hinduism/book/hayanaratna-the-jewel-of-annual-astrology/d/doc1500907.html",
+        "https://www.wisdomlib.org/hinduism/book/hayanaratna-the-jewel-of-annual-astrology/d/doc1500914.html",
+        "https://www.wisdomlib.org/hinduism/book/hayanaratna-the-jewel-of-annual-astrology/d/doc1500918.html"
+      ],
+      "use": "Tajaka friendship/strength profiles and configuration variants"
+    },
+    {
+      "title": "B. V. Raman, Graha and Bhava Balas, 13th edition (1992)",
+      "url": null,
+      "text_url": null,
+      "use": "Strength formulas and component fixtures; source scan checked for OCR issues"
+    },
+    {
+      "title": "NASA/JPL DE440s",
+      "url": "https://ssd.jpl.nasa.gov/ftp/eph/planets/bsp/de440s.bsp",
+      "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+      "use": "Independent astronomy benchmark through Skyfield 1.55",
+      "bundled": false
+    },
+    {
+      "title": "Sanjay Rath, Mula Dasa (1999)",
+      "url": "https://srath.com/jyoti%E1%B9%A3a/dasa/mula-dasa/",
+      "use": "Named mahadasa profile, worked durations and disclosed prose/table conflict"
+    },
+    {
+      "title": "PyJHora 4.8.7",
+      "url": "https://github.com/naturalstupid/PyJHora",
+      "use": "Unmodified independent strength implementation comparison; mismatches retained",
+      "source_sha256": "30eb03b2514992b1f8c864d78f5897fdd10b8723884f2d9bb247814c1b059efa"
+    }
+  ],
+  "adjudication_ledger": "RESOLUTION_LEDGER.md",
+  "validation_scope": "225 passing tests; 590 deterministic yoga cases, 100300 evaluations, 165/170 entries with met/not-met witnesses and five conditional profile conflicts. All 21 strength differences decomposed; native totals still agree in only 4/21 within 0.05 virupa. Retained 153 internal strength checks and 67 independent astronomy comparisons. No empirical prediction validation.",
+  "research_sources": "RESEARCH_SOURCES.json"
+}

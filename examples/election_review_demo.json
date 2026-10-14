@@ -1,0 +1,1030 @@
+{
+  "task": "house_entry",
+  "local_datetime": "1967-03-08T17:40:00+05:30",
+  "input": {
+    "label": "Book Example 118 \u2014 solar return verification, not the user's chart",
+    "datetime": "1967-03-08T17:40:00",
+    "timezone": "UTC+05:30",
+    "latitude": 26.3,
+    "longitude": 73.06666666666666,
+    "settings": {
+      "ayanamsa": "lahiri",
+      "node": "mean",
+      "engine": "moshier"
+    }
+  },
+  "panchanga": {
+    "tithi": 28,
+    "paksha": "Krishna",
+    "tithi_in_paksha": 13,
+    "elongation": 330.3376497748408,
+    "nakshatra": {
+      "index": 23,
+      "name": "Dhanishtha",
+      "pada": 1,
+      "lord": "Mars",
+      "elapsed_fraction": 0.06287678763373475,
+      "remaining_fraction": 0.9371232123662653
+    },
+    "yoga_index": 20,
+    "yoga": "Shiva",
+    "karana": "Vanija",
+    "weekday_sunday0": 3,
+    "weekday_lord": "Mercury",
+    "hora_lord": "Jupiter"
+  },
+  "table79": {
+    "task": "house_entry",
+    "conditions": {
+      "tithi": true,
+      "weekday": true,
+      "ascendant": true,
+      "nakshatra": true
+    },
+    "all_table_guidelines_met": true,
+    "tithi_in_paksha": 13,
+    "paksha": "Krishna",
+    "nakshatra_index": 23,
+    "ascendant": "Le",
+    "tara_number": null,
+    "natal_hora_lord_assessment": "requires natal task-specific judgment",
+    "optional_table_entries_included": false,
+    "meaning": "Table screening only; natal promise, strength and task-specific factors remain separate."
+  },
+  "tara": {
+    "count_from_natal": 1,
+    "number": 1,
+    "name": "Janma",
+    "classification": "mixed",
+    "good": false,
+    "not_adverse": true,
+    "source_pdf_pages": [
+      315,
+      316,
+      418
+    ]
+  },
+  "natal_hora": {
+    "lord": "Jupiter",
+    "natal_functional_nature": "benefics",
+    "natal_owned_houses": [
+      5,
+      8
+    ],
+    "natal_occupied_house": 12,
+    "source_pdf_page": 418,
+    "owns_eighth_from_topic": false,
+    "topic_arudha": "Vi",
+    "occupies_badhaka_from_topic_arudha": false
+  },
+  "task_context": {
+    "vargas": [
+      1,
+      4
+    ],
+    "houses": [
+      1,
+      4
+    ],
+    "references": [
+      "Asc",
+      "Venus"
+    ],
+    "topic_house": 4,
+    "arudha": "A4"
+  },
+  "task_house_evidence": [
+    {
+      "varga": 1,
+      "reference": "Asc",
+      "house": 1,
+      "sign": "Le",
+      "lord": "Sun",
+      "lord_in_own_or_exaltation_sign": false,
+      "lord_debilitated": false,
+      "occupants": [],
+      "aspected_by": [
+        "Sun",
+        "Mercury"
+      ],
+      "physical_chart_shadbala_ratio": 1.1038580703168108
+    },
+    {
+      "varga": 1,
+      "reference": "Asc",
+      "house": 4,
+      "sign": "Sc",
+      "lord": "Mars",
+      "lord_in_own_or_exaltation_sign": false,
+      "lord_debilitated": false,
+      "occupants": [],
+      "aspected_by": [
+        "Jupiter"
+      ],
+      "physical_chart_shadbala_ratio": 1.0111898629535048
+    },
+    {
+      "varga": 1,
+      "reference": "Venus",
+      "house": 1,
+      "sign": "Pi",
+      "lord": "Jupiter",
+      "lord_in_own_or_exaltation_sign": true,
+      "lord_debilitated": false,
+      "occupants": [
+        "Venus",
+        "Saturn"
+      ],
+      "aspected_by": [
+        "Jupiter"
+      ],
+      "physical_chart_shadbala_ratio": 1.1894123855847465
+    },
+    {
+      "varga": 1,
+      "reference": "Venus",
+      "house": 4,
+      "sign": "Ge",
+      "lord": "Mercury",
+      "lord_in_own_or_exaltation_sign": false,
+      "lord_debilitated": false,
+      "occupants": [],
+      "aspected_by": [],
+      "physical_chart_shadbala_ratio": 1.1902091357315894
+    },
+    {
+      "varga": 4,
+      "reference": "Asc",
+      "house": 1,
+      "sign": "Sc",
+      "lord": "Mars",
+      "lord_in_own_or_exaltation_sign": true,
+      "lord_debilitated": false,
+      "occupants": [
+        "Sun"
+      ],
+      "aspected_by": [
+        "Jupiter"
+      ],
+      "physical_chart_shadbala_ratio": 1.0111898629535048
+    },
+    {
+      "varga": 4,
+      "reference": "Asc",
+      "house": 4,
+      "sign": "Aq",
+      "lord": "Saturn",
+      "lord_in_own_or_exaltation_sign": false,
+      "lord_debilitated": false,
+      "occupants": [],
+      "aspected_by": [
+        "Mercury"
+      ],
+      "physical_chart_shadbala_ratio": 1.2544519590826926
+    },
+    {
+      "varga": 4,
+      "reference": "Venus",
+      "house": 1,
+      "sign": "Vi",
+      "lord": "Mercury",
+      "lord_in_own_or_exaltation_sign": false,
+      "lord_debilitated": false,
+      "occupants": [
+        "Venus"
+      ],
+      "aspected_by": [
+        "Saturn"
+      ],
+      "physical_chart_shadbala_ratio": 1.1902091357315894
+    },
+    {
+      "varga": 4,
+      "reference": "Venus",
+      "house": 4,
+      "sign": "Sg",
+      "lord": "Jupiter",
+      "lord_in_own_or_exaltation_sign": true,
+      "lord_debilitated": false,
+      "occupants": [],
+      "aspected_by": [
+        "Saturn"
+      ],
+      "physical_chart_shadbala_ratio": 1.1894123855847465
+    }
+  ],
+  "arudha_evidence": [
+    {
+      "varga": 1,
+      "name": "A4",
+      "sign": "Vi",
+      "status": "calculated"
+    },
+    {
+      "varga": 4,
+      "name": "A4",
+      "sign": "Ge",
+      "status": "calculated"
+    }
+  ],
+  "first_dasa_assessment": [
+    {
+      "varga": 1,
+      "lord": "Mars",
+      "owns_eighth": false,
+      "functional_nature": "benefics"
+    },
+    {
+      "varga": 4,
+      "lord": "Mars",
+      "owns_eighth": false,
+      "functional_nature": "neutrals"
+    }
+  ],
+  "task_dasha": {
+    "periods": [
+      {
+        "lord": "Mars",
+        "start_day": 0.0,
+        "end_day": 21.0,
+        "duration_days": 21.0,
+        "children": [
+          {
+            "lord": "Mars",
+            "start_day": 0.0,
+            "end_day": 1.225,
+            "duration_days": 1.225,
+            "start_local": "1967-03-08T17:40:00.000004+05:30",
+            "end_local": "1967-03-09T23:04:00.000013+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 1.225,
+            "end_day": 4.375,
+            "duration_days": 3.15,
+            "start_local": "1967-03-09T23:04:00.000013+05:30",
+            "end_local": "1967-03-13T02:40:00.000004+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 4.375,
+            "end_day": 7.175,
+            "duration_days": 2.8,
+            "start_local": "1967-03-13T02:40:00.000004+05:30",
+            "end_local": "1967-03-15T21:51:59.999988+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 7.175,
+            "end_day": 10.5,
+            "duration_days": 3.325,
+            "start_local": "1967-03-15T21:51:59.999988+05:30",
+            "end_local": "1967-03-19T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 10.5,
+            "end_day": 13.475,
+            "duration_days": 2.975,
+            "start_local": "1967-03-19T05:40:00.000004+05:30",
+            "end_local": "1967-03-22T05:04:00.000013+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 13.475,
+            "end_day": 14.7,
+            "duration_days": 1.225,
+            "start_local": "1967-03-22T05:04:00.000013+05:30",
+            "end_local": "1967-03-23T10:28:00.000021+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 14.7,
+            "end_day": 18.2,
+            "duration_days": 3.5,
+            "start_local": "1967-03-23T10:28:00.000021+05:30",
+            "end_local": "1967-03-26T22:28:00.000021+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 18.2,
+            "end_day": 19.25,
+            "duration_days": 1.05,
+            "start_local": "1967-03-26T22:28:00.000021+05:30",
+            "end_local": "1967-03-27T23:40:00.000004+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 19.25,
+            "end_day": 21.0,
+            "duration_days": 1.75,
+            "start_local": "1967-03-27T23:40:00.000004+05:30",
+            "end_local": "1967-03-29T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1967-03-08T17:40:00.000004+05:30",
+        "end_local": "1967-03-29T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Rahu",
+        "start_day": 21.0,
+        "end_day": 75.0,
+        "duration_days": 54.0,
+        "children": [
+          {
+            "lord": "Rahu",
+            "start_day": 21.0,
+            "end_day": 29.1,
+            "duration_days": 8.1,
+            "start_local": "1967-03-29T17:40:00.000004+05:30",
+            "end_local": "1967-04-06T20:04:00.000013+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 29.1,
+            "end_day": 36.3,
+            "duration_days": 7.2,
+            "start_local": "1967-04-06T20:04:00.000013+05:30",
+            "end_local": "1967-04-14T00:51:59.999988+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 36.3,
+            "end_day": 44.85,
+            "duration_days": 8.55,
+            "start_local": "1967-04-14T00:51:59.999988+05:30",
+            "end_local": "1967-04-22T14:04:00.000013+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 44.85,
+            "end_day": 52.5,
+            "duration_days": 7.65,
+            "start_local": "1967-04-22T14:04:00.000013+05:30",
+            "end_local": "1967-04-30T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 52.5,
+            "end_day": 55.65,
+            "duration_days": 3.15,
+            "start_local": "1967-04-30T05:40:00.000004+05:30",
+            "end_local": "1967-05-03T09:15:59.999996+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 55.65,
+            "end_day": 64.65,
+            "duration_days": 9.0,
+            "start_local": "1967-05-03T09:15:59.999996+05:30",
+            "end_local": "1967-05-12T09:15:59.999996+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 64.65,
+            "end_day": 67.35,
+            "duration_days": 2.7,
+            "start_local": "1967-05-12T09:15:59.999996+05:30",
+            "end_local": "1967-05-15T02:04:00.000013+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 67.35,
+            "end_day": 71.85,
+            "duration_days": 4.5,
+            "start_local": "1967-05-15T02:04:00.000013+05:30",
+            "end_local": "1967-05-19T14:04:00.000013+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 71.85,
+            "end_day": 75.0,
+            "duration_days": 3.15,
+            "start_local": "1967-05-19T14:04:00.000013+05:30",
+            "end_local": "1967-05-22T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1967-03-29T17:40:00.000004+05:30",
+        "end_local": "1967-05-22T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Jupiter",
+        "start_day": 75.0,
+        "end_day": 123.0,
+        "duration_days": 48.0,
+        "children": [
+          {
+            "lord": "Jupiter",
+            "start_day": 75.0,
+            "end_day": 81.4,
+            "duration_days": 6.4,
+            "start_local": "1967-05-22T17:40:00.000004+05:30",
+            "end_local": "1967-05-29T03:15:59.999996+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 81.4,
+            "end_day": 89.0,
+            "duration_days": 7.6,
+            "start_local": "1967-05-29T03:15:59.999996+05:30",
+            "end_local": "1967-06-05T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 89.0,
+            "end_day": 95.8,
+            "duration_days": 6.8,
+            "start_local": "1967-06-05T17:40:00.000004+05:30",
+            "end_local": "1967-06-12T12:51:59.999988+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 95.8,
+            "end_day": 98.6,
+            "duration_days": 2.8,
+            "start_local": "1967-06-12T12:51:59.999988+05:30",
+            "end_local": "1967-06-15T08:04:00.000013+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 98.6,
+            "end_day": 106.6,
+            "duration_days": 8.0,
+            "start_local": "1967-06-15T08:04:00.000013+05:30",
+            "end_local": "1967-06-23T08:04:00.000013+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 106.6,
+            "end_day": 109.0,
+            "duration_days": 2.4,
+            "start_local": "1967-06-23T08:04:00.000013+05:30",
+            "end_local": "1967-06-25T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 109.0,
+            "end_day": 113.0,
+            "duration_days": 4.0,
+            "start_local": "1967-06-25T17:40:00.000004+05:30",
+            "end_local": "1967-06-29T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 113.0,
+            "end_day": 115.8,
+            "duration_days": 2.8,
+            "start_local": "1967-06-29T17:40:00.000004+05:30",
+            "end_local": "1967-07-02T12:51:59.999988+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 115.8,
+            "end_day": 123.0,
+            "duration_days": 7.2,
+            "start_local": "1967-07-02T12:51:59.999988+05:30",
+            "end_local": "1967-07-09T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1967-05-22T17:40:00.000004+05:30",
+        "end_local": "1967-07-09T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Saturn",
+        "start_day": 123.0,
+        "end_day": 180.0,
+        "duration_days": 57.0,
+        "children": [
+          {
+            "lord": "Saturn",
+            "start_day": 123.0,
+            "end_day": 132.025,
+            "duration_days": 9.025,
+            "start_local": "1967-07-09T17:40:00.000004+05:30",
+            "end_local": "1967-07-18T18:15:59.999996+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 132.025,
+            "end_day": 140.1,
+            "duration_days": 8.075,
+            "start_local": "1967-07-18T18:15:59.999996+05:30",
+            "end_local": "1967-07-26T20:04:00.000013+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 140.1,
+            "end_day": 143.425,
+            "duration_days": 3.325,
+            "start_local": "1967-07-26T20:04:00.000013+05:30",
+            "end_local": "1967-07-30T03:51:59.999988+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 143.425,
+            "end_day": 152.925,
+            "duration_days": 9.5,
+            "start_local": "1967-07-30T03:51:59.999988+05:30",
+            "end_local": "1967-08-08T15:51:59.999988+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 152.925,
+            "end_day": 155.775,
+            "duration_days": 2.85,
+            "start_local": "1967-08-08T15:51:59.999988+05:30",
+            "end_local": "1967-08-11T12:15:59.999996+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 155.775,
+            "end_day": 160.525,
+            "duration_days": 4.75,
+            "start_local": "1967-08-11T12:15:59.999996+05:30",
+            "end_local": "1967-08-16T06:15:59.999996+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 160.525,
+            "end_day": 163.85,
+            "duration_days": 3.325,
+            "start_local": "1967-08-16T06:15:59.999996+05:30",
+            "end_local": "1967-08-19T14:04:00.000013+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 163.85,
+            "end_day": 172.4,
+            "duration_days": 8.55,
+            "start_local": "1967-08-19T14:04:00.000013+05:30",
+            "end_local": "1967-08-28T03:15:59.999996+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 172.4,
+            "end_day": 180.0,
+            "duration_days": 7.6,
+            "start_local": "1967-08-28T03:15:59.999996+05:30",
+            "end_local": "1967-09-04T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1967-07-09T17:40:00.000004+05:30",
+        "end_local": "1967-09-04T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Mercury",
+        "start_day": 180.0,
+        "end_day": 231.0,
+        "duration_days": 51.0,
+        "children": [
+          {
+            "lord": "Mercury",
+            "start_day": 180.0,
+            "end_day": 187.225,
+            "duration_days": 7.225,
+            "start_local": "1967-09-04T17:40:00.000004+05:30",
+            "end_local": "1967-09-11T23:04:00.000013+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 187.225,
+            "end_day": 190.2,
+            "duration_days": 2.975,
+            "start_local": "1967-09-11T23:04:00.000013+05:30",
+            "end_local": "1967-09-14T22:28:00.000021+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 190.2,
+            "end_day": 198.7,
+            "duration_days": 8.5,
+            "start_local": "1967-09-14T22:28:00.000021+05:30",
+            "end_local": "1967-09-23T10:28:00.000021+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 198.7,
+            "end_day": 201.25,
+            "duration_days": 2.55,
+            "start_local": "1967-09-23T10:28:00.000021+05:30",
+            "end_local": "1967-09-25T23:40:00.000004+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 201.25,
+            "end_day": 205.5,
+            "duration_days": 4.25,
+            "start_local": "1967-09-25T23:40:00.000004+05:30",
+            "end_local": "1967-09-30T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 205.5,
+            "end_day": 208.475,
+            "duration_days": 2.975,
+            "start_local": "1967-09-30T05:40:00.000004+05:30",
+            "end_local": "1967-10-03T05:04:00.000013+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 208.475,
+            "end_day": 216.125,
+            "duration_days": 7.65,
+            "start_local": "1967-10-03T05:04:00.000013+05:30",
+            "end_local": "1967-10-10T20:40:00.000004+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 216.125,
+            "end_day": 222.925,
+            "duration_days": 6.8,
+            "start_local": "1967-10-10T20:40:00.000004+05:30",
+            "end_local": "1967-10-17T15:51:59.999988+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 222.925,
+            "end_day": 231.0,
+            "duration_days": 8.075,
+            "start_local": "1967-10-17T15:51:59.999988+05:30",
+            "end_local": "1967-10-25T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1967-09-04T17:40:00.000004+05:30",
+        "end_local": "1967-10-25T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Ketu",
+        "start_day": 231.0,
+        "end_day": 252.0,
+        "duration_days": 21.0,
+        "children": [
+          {
+            "lord": "Ketu",
+            "start_day": 231.0,
+            "end_day": 232.225,
+            "duration_days": 1.225,
+            "start_local": "1967-10-25T17:40:00.000004+05:30",
+            "end_local": "1967-10-26T23:04:00.000013+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 232.225,
+            "end_day": 235.725,
+            "duration_days": 3.5,
+            "start_local": "1967-10-26T23:04:00.000013+05:30",
+            "end_local": "1967-10-30T11:04:00.000013+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 235.725,
+            "end_day": 236.775,
+            "duration_days": 1.05,
+            "start_local": "1967-10-30T11:04:00.000013+05:30",
+            "end_local": "1967-10-31T12:15:59.999996+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 236.775,
+            "end_day": 238.525,
+            "duration_days": 1.75,
+            "start_local": "1967-10-31T12:15:59.999996+05:30",
+            "end_local": "1967-11-02T06:15:59.999996+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 238.525,
+            "end_day": 239.75,
+            "duration_days": 1.225,
+            "start_local": "1967-11-02T06:15:59.999996+05:30",
+            "end_local": "1967-11-03T11:40:00.000004+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 239.75,
+            "end_day": 242.9,
+            "duration_days": 3.15,
+            "start_local": "1967-11-03T11:40:00.000004+05:30",
+            "end_local": "1967-11-06T15:15:59.999996+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 242.9,
+            "end_day": 245.7,
+            "duration_days": 2.8,
+            "start_local": "1967-11-06T15:15:59.999996+05:30",
+            "end_local": "1967-11-09T10:28:00.000021+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 245.7,
+            "end_day": 249.025,
+            "duration_days": 3.325,
+            "start_local": "1967-11-09T10:28:00.000021+05:30",
+            "end_local": "1967-11-12T18:15:59.999996+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 249.025,
+            "end_day": 252.0,
+            "duration_days": 2.975,
+            "start_local": "1967-11-12T18:15:59.999996+05:30",
+            "end_local": "1967-11-15T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1967-10-25T17:40:00.000004+05:30",
+        "end_local": "1967-11-15T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Venus",
+        "start_day": 252.0,
+        "end_day": 312.0,
+        "duration_days": 60.0,
+        "children": [
+          {
+            "lord": "Venus",
+            "start_day": 252.0,
+            "end_day": 262.0,
+            "duration_days": 10.0,
+            "start_local": "1967-11-15T17:40:00.000004+05:30",
+            "end_local": "1967-11-25T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 262.0,
+            "end_day": 265.0,
+            "duration_days": 3.0,
+            "start_local": "1967-11-25T17:40:00.000004+05:30",
+            "end_local": "1967-11-28T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 265.0,
+            "end_day": 270.0,
+            "duration_days": 5.0,
+            "start_local": "1967-11-28T17:40:00.000004+05:30",
+            "end_local": "1967-12-03T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 270.0,
+            "end_day": 273.5,
+            "duration_days": 3.5,
+            "start_local": "1967-12-03T17:40:00.000004+05:30",
+            "end_local": "1967-12-07T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 273.5,
+            "end_day": 282.5,
+            "duration_days": 9.0,
+            "start_local": "1967-12-07T05:40:00.000004+05:30",
+            "end_local": "1967-12-16T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 282.5,
+            "end_day": 290.5,
+            "duration_days": 8.0,
+            "start_local": "1967-12-16T05:40:00.000004+05:30",
+            "end_local": "1967-12-24T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 290.5,
+            "end_day": 300.0,
+            "duration_days": 9.5,
+            "start_local": "1967-12-24T05:40:00.000004+05:30",
+            "end_local": "1968-01-02T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 300.0,
+            "end_day": 308.5,
+            "duration_days": 8.5,
+            "start_local": "1968-01-02T17:40:00.000004+05:30",
+            "end_local": "1968-01-11T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 308.5,
+            "end_day": 312.0,
+            "duration_days": 3.5,
+            "start_local": "1968-01-11T05:40:00.000004+05:30",
+            "end_local": "1968-01-14T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1967-11-15T17:40:00.000004+05:30",
+        "end_local": "1968-01-14T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Sun",
+        "start_day": 312.0,
+        "end_day": 330.0,
+        "duration_days": 18.0,
+        "children": [
+          {
+            "lord": "Sun",
+            "start_day": 312.0,
+            "end_day": 312.9,
+            "duration_days": 0.9,
+            "start_local": "1968-01-14T17:40:00.000004+05:30",
+            "end_local": "1968-01-15T15:15:59.999996+05:30"
+          },
+          {
+            "lord": "Moon",
+            "start_day": 312.9,
+            "end_day": 314.4,
+            "duration_days": 1.5,
+            "start_local": "1968-01-15T15:15:59.999996+05:30",
+            "end_local": "1968-01-17T03:15:59.999996+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 314.4,
+            "end_day": 315.45,
+            "duration_days": 1.05,
+            "start_local": "1968-01-17T03:15:59.999996+05:30",
+            "end_local": "1968-01-18T04:28:00.000021+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 315.45,
+            "end_day": 318.15,
+            "duration_days": 2.7,
+            "start_local": "1968-01-18T04:28:00.000021+05:30",
+            "end_local": "1968-01-20T21:15:59.999996+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 318.15,
+            "end_day": 320.55,
+            "duration_days": 2.4,
+            "start_local": "1968-01-20T21:15:59.999996+05:30",
+            "end_local": "1968-01-23T06:51:59.999988+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 320.55,
+            "end_day": 323.4,
+            "duration_days": 2.85,
+            "start_local": "1968-01-23T06:51:59.999988+05:30",
+            "end_local": "1968-01-26T03:15:59.999996+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 323.4,
+            "end_day": 325.95,
+            "duration_days": 2.55,
+            "start_local": "1968-01-26T03:15:59.999996+05:30",
+            "end_local": "1968-01-28T16:28:00.000021+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 325.95,
+            "end_day": 327.0,
+            "duration_days": 1.05,
+            "start_local": "1968-01-28T16:28:00.000021+05:30",
+            "end_local": "1968-01-29T17:40:00.000004+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 327.0,
+            "end_day": 330.0,
+            "duration_days": 3.0,
+            "start_local": "1968-01-29T17:40:00.000004+05:30",
+            "end_local": "1968-02-01T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1968-01-14T17:40:00.000004+05:30",
+        "end_local": "1968-02-01T17:40:00.000004+05:30"
+      },
+      {
+        "lord": "Moon",
+        "start_day": 330.0,
+        "end_day": 360.0,
+        "duration_days": 30.0,
+        "children": [
+          {
+            "lord": "Moon",
+            "start_day": 330.0,
+            "end_day": 332.5,
+            "duration_days": 2.5,
+            "start_local": "1968-02-01T17:40:00.000004+05:30",
+            "end_local": "1968-02-04T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mars",
+            "start_day": 332.5,
+            "end_day": 334.25,
+            "duration_days": 1.75,
+            "start_local": "1968-02-04T05:40:00.000004+05:30",
+            "end_local": "1968-02-05T23:40:00.000004+05:30"
+          },
+          {
+            "lord": "Rahu",
+            "start_day": 334.25,
+            "end_day": 338.75,
+            "duration_days": 4.5,
+            "start_local": "1968-02-05T23:40:00.000004+05:30",
+            "end_local": "1968-02-10T11:40:00.000004+05:30"
+          },
+          {
+            "lord": "Jupiter",
+            "start_day": 338.75,
+            "end_day": 342.75,
+            "duration_days": 4.0,
+            "start_local": "1968-02-10T11:40:00.000004+05:30",
+            "end_local": "1968-02-14T11:40:00.000004+05:30"
+          },
+          {
+            "lord": "Saturn",
+            "start_day": 342.75,
+            "end_day": 347.5,
+            "duration_days": 4.75,
+            "start_local": "1968-02-14T11:40:00.000004+05:30",
+            "end_local": "1968-02-19T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Mercury",
+            "start_day": 347.5,
+            "end_day": 351.75,
+            "duration_days": 4.25,
+            "start_local": "1968-02-19T05:40:00.000004+05:30",
+            "end_local": "1968-02-23T11:40:00.000004+05:30"
+          },
+          {
+            "lord": "Ketu",
+            "start_day": 351.75,
+            "end_day": 353.5,
+            "duration_days": 1.75,
+            "start_local": "1968-02-23T11:40:00.000004+05:30",
+            "end_local": "1968-02-25T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Venus",
+            "start_day": 353.5,
+            "end_day": 358.5,
+            "duration_days": 5.0,
+            "start_local": "1968-02-25T05:40:00.000004+05:30",
+            "end_local": "1968-03-01T05:40:00.000004+05:30"
+          },
+          {
+            "lord": "Sun",
+            "start_day": 358.5,
+            "end_day": 360.0,
+            "duration_days": 1.5,
+            "start_local": "1968-03-01T05:40:00.000004+05:30",
+            "end_local": "1968-03-02T17:40:00.000004+05:30"
+          }
+        ],
+        "start_local": "1968-02-01T17:40:00.000004+05:30",
+        "end_local": "1968-03-02T17:40:00.000004+05:30"
+      }
+    ],
+    "compressed": true,
+    "duration_days": 360,
+    "first_period": "full at task start",
+    "year_model": "120 units scaled to supplied elapsed days",
+    "nakshatra_start": 1,
+    "source_pdf_pages": [
+      410,
+      411,
+      421
+    ]
+  },
+  "wedding_seventh_house": null,
+  "checks": {
+    "task_chart_strength_favorable": null,
+    "first_dasa_favorable": null,
+    "table79": true,
+    "yoga": null,
+    "karana": null,
+    "tara_good": false,
+    "house_entry_hora_example_guard": true,
+    "natal_hora_favorable": null
+  },
+  "all_declared_checks_met": false,
+  "review_items": [
+    "task_chart_strength_favorable requires review of the evidence; the PDF gives no unique numerical threshold",
+    "first_dasa_favorable requires review of the evidence; the PDF gives no unique numerical threshold",
+    "yoga eligibility needs a declared per-task convention",
+    "karana eligibility needs a declared per-task convention",
+    "Natal hora task suitability is shown as evidence; PDF leaves the final judgment qualitative"
+  ],
+  "caller_judgments": {
+    "task_chart_strength_favorable": null,
+    "first_dasa_favorable": null
+  },
+  "cautions": [],
+  "status": "evidence_for_review",
+  "source_pdf_pages": [
+    418,
+    419,
+    420,
+    421,
+    422
+  ],
+  "limitation": "No continuous-window or success guarantee. Favorable yoga/karana, house strength and natal hora need declared judgments where the book supplies no unique formula.",
+  "example_status": "Format demonstration using the book chart as both natal and task input; not a recommendation"
+}

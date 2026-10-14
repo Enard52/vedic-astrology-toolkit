@@ -1,0 +1,65 @@
+{
+  "book_example120_year_lord": "Mars",
+  "book_example120_Mars_pancha": 13.730258287861629,
+  "printed_Mars_pancha": 13.7,
+  "natal_rule_count": 170,
+  "tajaka_names_checked": 16,
+  "tajaka_perfection_checks": [
+    {
+      "planets": [
+        "Sun",
+        "Moon"
+      ],
+      "status": "perfects_before_sign_change",
+      "jd_ut1": 2451612.151929046,
+      "residual_degrees": -2.3962911654962227e-09,
+      "stations": []
+    },
+    {
+      "planets": [
+        "Sun",
+        "Mars"
+      ],
+      "status": "perfects_before_sign_change",
+      "jd_ut1": 2451615.900512336,
+      "residual_degrees": 7.980816008057445e-11,
+      "stations": []
+    },
+    {
+      "planets": [
+        "Moon",
+        "Saturn"
+      ],
+      "status": "perfects_before_sign_change",
+      "jd_ut1": 2451611.7587464694,
+      "residual_degrees": 1.656587755860528e-09,
+      "stations": []
+    },
+    {
+      "planets": [
+        "Mercury",
+        "Jupiter"
+      ],
+      "status": "perfects_before_sign_change",
+      "jd_ut1": 2451612.9620082416,
+      "residual_degrees": -1.4381384971784428e-10,
+      "stations": []
+    },
+    {
+      "planets": [
+        "Jupiter",
+        "Saturn"
+      ],
+      "status": "not_found_in_window",
+      "window_days": 60,
+      "sample_step_days": 0.125,
+      "stations": []
+    }
+  ],
+  "shadbala_status": "complete_under_declared_profile",
+  "shadbala_limitations": [
+    "Historical motional and Ayana formulae are approximations, not physical strengths.",
+    "Full totals compared with PyJHora 4.8.7; full agreement is not established. See strength_audit_results.json.",
+    "Tests validate components, sums and boundaries; external astronomy checks validate positions only."
+  ]
+}

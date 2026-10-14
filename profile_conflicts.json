@@ -1,0 +1,63 @@
+{
+  "status": "profile_incompatibilities_demonstrated",
+  "rules": [
+    {
+      "rule": "Gola",
+      "pdf_pages": [
+        112,
+        115,
+        116
+      ],
+      "proof": "All seven bodies in one sign necessarily share one modality, so an Ashraya yoga blocks Gola under literal all-Nabhasa precedence.",
+      "cases": 12,
+      "proved_under_profile": true
+    },
+    {
+      "rule": "advanced_raaja_07",
+      "pdf_pages": [
+        127,
+        128
+      ],
+      "proof": "Selected D2 has only Cancer and Leo. Full planetary aspects cannot connect these two signs or a sign to itself.",
+      "D2_signs": [
+        3,
+        4
+      ],
+      "counterexamples": [],
+      "proved_under_profile": true
+    },
+    {
+      "rule": "advanced_raaja_13",
+      "pdf_pages": [
+        128
+      ],
+      "proof": "The exchange puts the two targets opposite. No implemented classical full-aspect set contains an opposite pair, so the same-lord interpretation is unsatisfiable.",
+      "cases": 84,
+      "counterexamples": [],
+      "proved_under_profile": true
+    },
+    {
+      "rule": "advanced_raaja_17",
+      "pdf_pages": [
+        128
+      ],
+      "proof": "Both opposite lunar nodes cannot lie in houses 3,6,11, while the selected profile includes them among malefics.",
+      "counterexamples": [],
+      "proved_under_profile": true
+    },
+    {
+      "rule": "Kulavardhana",
+      "pdf_pages": [
+        122
+      ],
+      "proof": "Once Sun and Moon themselves must occupy a fifth-from-reference target, no allowed target set contains an opposite pair for Rahu/Ketu.",
+      "cases": 1728,
+      "valid_sun_moon_configurations": 36,
+      "counterexamples": [],
+      "proved_under_profile": true
+    }
+  ],
+  "conclusion": "Do not fabricate positive fixtures for these five default-profile combinations. Changing node inclusion, Hora mapping, precedence or the same-lord reading changes the premises and needs an explicitly named alternative.",
+  "textual_adjudication_complete": false,
+  "independent_prediction_evidence": false
+}

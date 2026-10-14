@@ -1,0 +1,18 @@
+{
+  "topic": "illustrative topic only",
+  "window": "illustrative window only",
+  "evidence": [
+    {
+      "id": "support",
+      "polarity": "supportive",
+      "met": true,
+      "source": "synthetic hypothesis A"
+    },
+    {
+      "id": "adverse",
+      "polarity": "adverse",
+      "met": true,
+      "source": "synthetic hypothesis B"
+    }
+  ]
+}

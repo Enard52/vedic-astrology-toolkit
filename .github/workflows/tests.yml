@@ -1,0 +1,31 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run test suite
+        run: python -m unittest discover -s tests -t . -v
+      - name: Smoke-test the CLI
+        run: |
+          python -m vedic_toolkit chart examples/book_example_118.json --output /tmp/chart.json
+          python -m vedic_toolkit dasha examples/book_example_118.json --system vimsottari --depth 1 --output /tmp/vim.json

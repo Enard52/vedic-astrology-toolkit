@@ -1,0 +1,402 @@
+{
+  "system": "moola",
+  "profile": "rath_1999_table",
+  "source": "https://srath.com/jyoti%E1%B9%A3a/dasa/mula-dasa/",
+  "seed": "Asc",
+  "order": [
+    "Jupiter",
+    "Moon",
+    "Mars",
+    "Saturn",
+    "Sun",
+    "Venus",
+    "Rahu",
+    "Ketu",
+    "Mercury"
+  ],
+  "group_houses": [
+    [
+      1,
+      4,
+      7,
+      10
+    ],
+    [
+      3,
+      6,
+      9,
+      12
+    ],
+    [
+      2,
+      5,
+      8,
+      11
+    ]
+  ],
+  "ordering_evidence": [
+    {
+      "sign": "Cn",
+      "key": [
+        2,
+        5,
+        0,
+        0.0,
+        3
+      ],
+      "planets": [
+        "Jupiter",
+        "Moon"
+      ]
+    },
+    {
+      "sign": "Ar",
+      "key": [
+        1,
+        5,
+        0,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Sun"
+      ]
+    },
+    {
+      "sign": "Cp",
+      "key": [
+        1,
+        5,
+        0,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Mars"
+      ]
+    },
+    {
+      "sign": "Li",
+      "key": [
+        1,
+        5,
+        0,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Saturn"
+      ]
+    },
+    {
+      "sign": "Pi",
+      "key": [
+        1,
+        5,
+        2,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Venus"
+      ]
+    },
+    {
+      "sign": "Sg",
+      "key": [
+        1,
+        0,
+        2,
+        30.0,
+        5
+      ],
+      "planets": [
+        "Rahu"
+      ]
+    },
+    {
+      "sign": "Ge",
+      "key": [
+        1,
+        0,
+        2,
+        30.0,
+        2
+      ],
+      "planets": [
+        "Ketu"
+      ]
+    },
+    {
+      "sign": "Ta",
+      "key": [
+        1,
+        2,
+        1,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Mercury"
+      ]
+    }
+  ],
+  "order_override_used": true,
+  "ordering_ties": [
+    {
+      "signs": [
+        "Ar",
+        "Cp"
+      ]
+    },
+    {
+      "signs": [
+        "Cp",
+        "Li"
+      ]
+    }
+  ],
+  "duration_evidence": {
+    "Sun": {
+      "years": 1,
+      "vimshottari_allotment": 6,
+      "count_minus_one": 4,
+      "dignity_adjustment": 1,
+      "raw_years": 1,
+      "moolatrikona_target": "Le",
+      "zero_reset": false
+    },
+    "Moon": {
+      "years": 10,
+      "vimshottari_allotment": 10,
+      "count_minus_one": 10,
+      "dignity_adjustment": 0,
+      "raw_years": 0,
+      "moolatrikona_target": "Ta",
+      "zero_reset": true
+    },
+    "Mars": {
+      "years": 3,
+      "vimshottari_allotment": 7,
+      "count_minus_one": 3,
+      "dignity_adjustment": 1,
+      "raw_years": 3,
+      "moolatrikona_target": "Ar",
+      "zero_reset": false
+    },
+    "Mercury": {
+      "years": 13,
+      "vimshottari_allotment": 17,
+      "count_minus_one": 4,
+      "dignity_adjustment": 0,
+      "raw_years": 13,
+      "moolatrikona_target": "Vi",
+      "zero_reset": false
+    },
+    "Jupiter": {
+      "years": 10,
+      "vimshottari_allotment": 16,
+      "count_minus_one": 5,
+      "dignity_adjustment": 1,
+      "raw_years": 10,
+      "moolatrikona_target": "Sg",
+      "zero_reset": false
+    },
+    "Venus": {
+      "years": 12,
+      "vimshottari_allotment": 20,
+      "count_minus_one": 7,
+      "dignity_adjustment": 1,
+      "raw_years": 12,
+      "moolatrikona_target": "Li",
+      "zero_reset": false
+    },
+    "Saturn": {
+      "years": 14,
+      "vimshottari_allotment": 19,
+      "count_minus_one": 4,
+      "dignity_adjustment": 1,
+      "raw_years": 14,
+      "moolatrikona_target": "Aq",
+      "zero_reset": false
+    },
+    "Rahu": {
+      "years": 17,
+      "vimshottari_allotment": 18,
+      "count_minus_one": 2,
+      "dignity_adjustment": -1,
+      "raw_years": 17,
+      "moolatrikona_target": "Aq",
+      "zero_reset": false
+    },
+    "Ketu": {
+      "years": 3,
+      "vimshottari_allotment": 7,
+      "count_minus_one": 5,
+      "dignity_adjustment": -1,
+      "raw_years": 3,
+      "moolatrikona_target": "Sc",
+      "zero_reset": false
+    }
+  },
+  "first_cycle_years": 83,
+  "second_cycle_years": 37,
+  "periods": [
+    {
+      "lord": "Jupiter",
+      "start_year": 0.0,
+      "end_year": 10.0,
+      "duration_years": 10.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Moon",
+      "start_year": 10.0,
+      "end_year": 20.0,
+      "duration_years": 10.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Mars",
+      "start_year": 20.0,
+      "end_year": 23.0,
+      "duration_years": 3.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Saturn",
+      "start_year": 23.0,
+      "end_year": 37.0,
+      "duration_years": 14.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Sun",
+      "start_year": 37.0,
+      "end_year": 38.0,
+      "duration_years": 1.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Venus",
+      "start_year": 38.0,
+      "end_year": 50.0,
+      "duration_years": 12.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Rahu",
+      "start_year": 50.0,
+      "end_year": 67.0,
+      "duration_years": 17.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Ketu",
+      "start_year": 67.0,
+      "end_year": 70.0,
+      "duration_years": 3.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Mercury",
+      "start_year": 70.0,
+      "end_year": 83.0,
+      "duration_years": 13.0,
+      "cycle": 1
+    },
+    {
+      "lord": "Jupiter",
+      "start_year": 83.0,
+      "end_year": 89.0,
+      "duration_years": 6.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Moon",
+      "start_year": 89.0,
+      "end_year": 89.0,
+      "duration_years": 0.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Mars",
+      "start_year": 89.0,
+      "end_year": 93.0,
+      "duration_years": 4.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Saturn",
+      "start_year": 93.0,
+      "end_year": 98.0,
+      "duration_years": 5.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Sun",
+      "start_year": 98.0,
+      "end_year": 103.0,
+      "duration_years": 5.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Venus",
+      "start_year": 103.0,
+      "end_year": 111.0,
+      "duration_years": 8.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Rahu",
+      "start_year": 111.0,
+      "end_year": 112.0,
+      "duration_years": 1.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Ketu",
+      "start_year": 112.0,
+      "end_year": 116.0,
+      "duration_years": 4.0,
+      "cycle": 2
+    },
+    {
+      "lord": "Mercury",
+      "start_year": 116.0,
+      "end_year": 120.0,
+      "duration_years": 4.0,
+      "cycle": 2
+    }
+  ],
+  "scope": "Mahadasas from the Rath profile; optional experimental subperiods have separate software provenance.",
+  "subperiod_policy": null,
+  "subperiod_depth": 0,
+  "subperiod_provenance": null,
+  "source_conflicts": [
+    "The worked duration table reverses the prose exaltation/debilitation adjustment; the named profile records which is used.",
+    "The worked sequence starts Jupiter, although one prose sentence says Moon; the worked sequence is followed.",
+    "Some equal-status and friendship rankings require disclosed operational choices or an explicit reviewed order."
+  ],
+  "policies": {
+    "dignity_conflict": "rath_1999_table",
+    "negative_first_period": "absolute value",
+    "zero_period": "full Vimshottari allotment",
+    "degree_ranking": "reversed nodes except explicit Saturn/Ketu lagna precedence",
+    "friendship_rank": "natural relationship; neutral rank for otherwise undignified nodes",
+    "same_status_multioccupancy": "best occupant dignity then maximum advancement"
+  },
+  "interpretation": "Traditional timing intervals only; no claim about lifespan, curses or verified events.",
+  "fixture_scope": "Traditional illustrative chart: source signs and explicitly printed sequence only. Zero degrees are placeholders, not reported birth positions or historical evidence.",
+  "published_durations": [
+    10,
+    10,
+    3,
+    14,
+    1,
+    12,
+    17,
+    3,
+    13
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "toolkit_version": "0.4.0",
+  "checked_date": "2026-10-14",
+  "sources": [
+    {
+      "id": "R01",
+      "title": "Supplied Rao book",
+      "url": null,
+      "access": "442-page supplied PDF extracted; relevant pages visually checked",
+      "scope": "Numerical definitions, worked fixtures and source wording; not independent verification of every case history",
+      "sha256": "94a9c79b77c9396c337274a45a2e3e8fd90566c4242a23cf040ccb3a8888ecfb"
+    },
+    {
+      "id": "R02",
+      "title": "Sanjay Rath, Mula Dasa",
+      "url": "https://srath.com/jyoti%E1%B9%A3a/dasa/mula-dasa/",
+      "access": "Article read",
+      "scope": "Named mahadasa source; no complete antardasa algorithm located"
+    },
+    {
+      "id": "R03",
+      "title": "Rao class notes, Volume II",
+      "url": "https://www.vedicastrologer.org/classes/book2-for-CD.pdf",
+      "access": "PDF read, Moola Lesson 47 inspected",
+      "scope": "Moola usage and historical software caveat; not a complete subperiod specification"
+    },
+    {
+      "id": "R04",
+      "title": "Jagannatha Hora features",
+      "url": "https://www.vedicastrologer.org/jh/features.htm",
+      "access": "Official feature page read",
+      "scope": "Feature description only; no proprietary algorithm inferred"
+    },
+    {
+      "id": "R05",
+      "title": "PyJHora 4.8.7",
+      "url": "https://github.com/naturalstupid/PyJHora",
+      "access": "Installed unmodified 4.8.7 source inspected and executed; current web Moola file retrieval failed",
+      "scope": "Pinned strength comparison and software-derived Moola subdivision; no assertion about other versions"
+    },
+    {
+      "id": "R06",
+      "title": "OSF registration guidance",
+      "url": "https://help.osf.io/article/330-welcome-to-registrations",
+      "access": "Official guide read",
+      "scope": "Proposed fixed, externally recorded protocol; no registration performed"
+    },
+    {
+      "id": "R07",
+      "title": "Astro-Databank",
+      "url": "https://www.astro.com/astro-databank/Main_Page",
+      "access": "Official search listing; direct access to related pages blocked or unavailable",
+      "scope": "Dataset candidate only; no acquired cohort or verified reuse license"
+    },
+    {
+      "id": "R08",
+      "title": "Astro-Databank XML format",
+      "url": "https://www.astro.com/astro-databank/Help%3AXML_export_format",
+      "access": "Search listing; direct page hit browser check",
+      "scope": "Export candidate, not successful extraction"
+    },
+    {
+      "id": "R09",
+      "title": "The Big Astrology Book of Research",
+      "url": "https://bigastrologybook.com/",
+      "access": "Author site read",
+      "scope": "Book landscape; project count is an author claim, not replicated results"
+    },
+    {
+      "id": "R10",
+      "title": "Big Astrology Book companion repository",
+      "url": "https://github.com/renayo/big_astrology_book",
+      "access": "Public repository listing and displayed CC0 license read",
+      "scope": "Data/code candidate; upstream rights and study quality not independently established"
+    },
+    {
+      "id": "R11",
+      "title": "Gansten, The Jewel of Annual Astrology, 2020",
+      "url": "https://portal.research.lu.se/en/publications/the-jewel-of-annual-astrology-a-parallel-sanskrit-english-critica/",
+      "access": "University publication record read",
+      "scope": "Bibliographic and edition description; the entire volume was not audited this release"
+    },
+    {
+      "id": "R12",
+      "title": "Jyotisha Corpus",
+      "url": "https://github.com/maximally0/jyotisha-corpus",
+      "access": "Repository description read",
+      "scope": "Related provenance project, not independently verified predictive evidence"
+    },
+    {
+      "id": "R13",
+      "title": "NASA lunar orbit visualization",
+      "url": "https://svs.gsfc.nasa.gov/5326/",
+      "access": "Official page read",
+      "scope": "Astronomical geometry and nodes, not astrological causation"
+    },
+    {
+      "id": "R14",
+      "title": "ESO precession",
+      "url": "https://www.eso.org/public/videos/cs0004e/",
+      "access": "Official page read",
+      "scope": "Precession explanation, not adjudication of ayanamsa or event meaning"
+    },
+    {
+      "id": "R15",
+      "title": "Rao book resources",
+      "url": "https://www.vedicastrologer.org/articles/astro_books.htm",
+      "access": "Author resource page inspected in this research sequence",
+      "scope": "Book description and landscape comparison"
+    }
+  ],
+  "reference_package": "PyJHora 4.8.7",
+  "installed_reference_sha256": {
+    "horoscope/chart/strength.py": "30eb03b2514992b1f8c864d78f5897fdd10b8723884f2d9bb247814c1b059efa",
+    "panchanga/drik.py": "7573c487e039a1a8b7cd99e40d671992217ee768a394a008c57cbcef143350ca",
+    "horoscope/dhasa/graha/moola.py": "5e51aa4fe1fc2ac62f42dcca9ee5c37563d3dc2953575b7dead90f5235c17b07"
+  },
+  "earlier_primary_sources": "source_manifest.json and RESOLUTION_LEDGER.md retain earlier supporting editions and URLs",
+  "search_limit": "Targeted primary-source investigation, not an exhaustive multilingual bibliography or empirical meta-analysis",
+  "third_party_material_not_bundled": true
+}

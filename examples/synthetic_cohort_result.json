@@ -1,0 +1,42 @@
+{
+  "status": "descriptive_holdout_evaluation",
+  "estimand": "equal weight per person; equal window weight within person",
+  "training_people": 2,
+  "holdout_people": 2,
+  "holdout_predictions": 2,
+  "baseline_probability_from_training": 0.5,
+  "brier_score": 0.039999999999999994,
+  "baseline_brier_score": 0.25,
+  "improvement": 0.21000000000000002,
+  "brier_skill_score": 0.8400000000000001,
+  "improvement_percentile_interval_95": [
+    0.21,
+    0.21000000000000002
+  ],
+  "bootstrap_unit": "person",
+  "bootstrap_replicates": 100,
+  "seed": 20261014,
+  "scores": [
+    {
+      "id": "h1",
+      "person_id": "h1",
+      "brier": 0.03999999999999998,
+      "baseline_brier": 0.25
+    },
+    {
+      "id": "h2",
+      "person_id": "h2",
+      "brier": 0.04000000000000001,
+      "baseline_brier": 0.25
+    }
+  ],
+  "input_sha256": "36fb4b50c1df1a1419b5baeddb5d0d1574e007dfcbf251b01af93418e0b4ff03",
+  "preregistration_authenticated": false,
+  "predictive_validity_established": false,
+  "limits": [
+    "A local split/hash cannot prove blinding or prior registration.",
+    "Small or selected cohorts, many hypotheses, and nonrepresentative controls can invalidate generalization.",
+    "The bootstrap interval is approximate; it is not a probability that astrology is true."
+  ],
+  "example_status": "Entirely invented software-test observations; this is NOT an astrology experiment."
+}

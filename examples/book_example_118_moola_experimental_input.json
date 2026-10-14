@@ -1,0 +1,15 @@
+{
+  "label": "Book Example 118 \u2014 solar return verification, not the user's chart",
+  "datetime": "1967-03-08T17:40:00",
+  "timezone": "UTC+05:30",
+  "latitude": 26.3,
+  "longitude": 73.06666666666666,
+  "settings": {
+    "ayanamsa": "lahiri",
+    "node": "mean",
+    "engine": "moshier"
+  },
+  "moola_options": {
+    "subperiod_policy": "experimental_cycle1_weights"
+  }
+}

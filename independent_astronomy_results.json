@@ -1,0 +1,674 @@
+{
+  "reference": "Skyfield 1.55 / JPL DE440s",
+  "swiss_engine": "Moshier",
+  "kernel_sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+  "comparison_frame": "tropical apparent geocentric ecliptic/equinox of date; same UT1",
+  "time_note": "Each implementation uses its own TT-minus-UT1 model; polar motion omitted.",
+  "limitations": [
+    "Finite modern/historical fixtures, not validation of every epoch.",
+    "Ascendant is geometry, independent of ayanamsa choice.",
+    "Sunrise compares solar centre at geometric horizon; observed refraction and terrain are not tested.",
+    "Mars, Jupiter and Saturn use JPL system barycentres.",
+    "Astronomical agreement does not validate astrological interpretation."
+  ],
+  "tolerances": {
+    "Moon_arcsec": 30,
+    "other_bodies_arcsec": 10,
+    "ascendant_arcsec": 2,
+    "geometric_sunrise_seconds": 5
+  },
+  "positions": [
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "jd_ut1": 2415020.5,
+      "planet": "Sun",
+      "jpl_target": "sun",
+      "swiss_degrees": 280.15336162832176,
+      "jpl_degrees": 280.15336125199946,
+      "difference_arcsec": 0.001354760297544999,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "jd_ut1": 2415020.5,
+      "planet": "Moon",
+      "jpl_target": "moon",
+      "swiss_degrees": 272.41637255213647,
+      "jpl_degrees": 272.4163279548525,
+      "difference_arcsec": 0.1605502223583244,
+      "tolerance_arcsec": 30,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "jd_ut1": 2415020.5,
+      "planet": "Mars",
+      "jpl_target": "mars barycenter",
+      "swiss_degrees": 283.867741773444,
+      "jpl_degrees": 283.8677425636444,
+      "difference_arcsec": -0.0028447215527194203,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "jd_ut1": 2415020.5,
+      "planet": "Mercury",
+      "jpl_target": "mercury",
+      "swiss_degrees": 258.9977739983533,
+      "jpl_degrees": 258.9977697964268,
+      "difference_arcsec": 0.015126935454645718,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "jd_ut1": 2415020.5,
+      "planet": "Jupiter",
+      "jpl_target": "jupiter barycenter",
+      "swiss_degrees": 241.13590836677633,
+      "jpl_degrees": 241.1359457062203,
+      "difference_arcsec": -0.13442199826840806,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "jd_ut1": 2415020.5,
+      "planet": "Venus",
+      "jpl_target": "venus",
+      "swiss_degrees": 306.37445117933646,
+      "jpl_degrees": 306.37443956893355,
+      "difference_arcsec": 0.04179745046712924,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "jd_ut1": 2415020.5,
+      "planet": "Saturn",
+      "jpl_target": "saturn barycenter",
+      "swiss_degrees": 267.71681085249736,
+      "jpl_degrees": 267.7168087589239,
+      "difference_arcsec": 0.007536864495705231,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "jd_ut1": 2439558.0069444445,
+      "planet": "Sun",
+      "jpl_target": "sun",
+      "swiss_degrees": 347.23000591720415,
+      "jpl_degrees": 347.2300122135467,
+      "difference_arcsec": -0.022666833069706627,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "jd_ut1": 2439558.0069444445,
+      "planet": "Moon",
+      "jpl_target": "moon",
+      "swiss_degrees": 317.567655692045,
+      "jpl_degrees": 317.56757757952477,
+      "difference_arcsec": 0.2812050727698079,
+      "tolerance_arcsec": 30,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "jd_ut1": 2439558.0069444445,
+      "planet": "Mars",
+      "jpl_target": "mars barycenter",
+      "swiss_degrees": 213.19473959634232,
+      "jpl_degrees": 213.19477878642286,
+      "difference_arcsec": -0.1410842899531417,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "jd_ut1": 2439558.0069444445,
+      "planet": "Mercury",
+      "jpl_target": "mercury",
+      "swiss_degrees": 338.84949827911316,
+      "jpl_degrees": 338.8495229624258,
+      "difference_arcsec": -0.08885992547220667,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "jd_ut1": 2439558.0069444445,
+      "planet": "Jupiter",
+      "jpl_target": "jupiter barycenter",
+      "swiss_degrees": 114.6946593909455,
+      "jpl_degrees": 114.6946224150854,
+      "difference_arcsec": 0.13311309635355428,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "jd_ut1": 2439558.0069444445,
+      "planet": "Venus",
+      "jpl_target": "venus",
+      "swiss_degrees": 15.467343974374788,
+      "jpl_degrees": 15.467338603110258,
+      "difference_arcsec": 0.019336552327331447,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "jd_ut1": 2439558.0069444445,
+      "planet": "Saturn",
+      "jpl_target": "saturn barycenter",
+      "swiss_degrees": 0.5612919581255297,
+      "jpl_degrees": 0.5613207006739176,
+      "difference_arcsec": -0.10347317416972146,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "jd_ut1": 2451545.00000411,
+      "planet": "Sun",
+      "jpl_target": "sun",
+      "swiss_degrees": 280.3689238651328,
+      "jpl_degrees": 280.3689225919539,
+      "difference_arcsec": 0.0045834440243197605,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "jd_ut1": 2451545.00000411,
+      "planet": "Moon",
+      "jpl_target": "moon",
+      "swiss_degrees": 223.32382484474917,
+      "jpl_degrees": 223.32380034933723,
+      "difference_arcsec": 0.08818348296699696,
+      "tolerance_arcsec": 30,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "jd_ut1": 2451545.00000411,
+      "planet": "Mars",
+      "jpl_target": "mars barycenter",
+      "swiss_degrees": 327.9633165065077,
+      "jpl_degrees": 327.96330557392224,
+      "difference_arcsec": 0.03935730758257705,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "jd_ut1": 2451545.00000411,
+      "planet": "Mercury",
+      "jpl_target": "mercury",
+      "swiss_degrees": 271.8892814035699,
+      "jpl_degrees": 271.8892831927292,
+      "difference_arcsec": -0.006440973425014818,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "jd_ut1": 2451545.00000411,
+      "planet": "Jupiter",
+      "jpl_target": "jupiter barycenter",
+      "swiss_degrees": 25.253030476953455,
+      "jpl_degrees": 25.25308720505885,
+      "difference_arcsec": -0.2042211794105242,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "jd_ut1": 2451545.00000411,
+      "planet": "Venus",
+      "jpl_target": "venus",
+      "swiss_degrees": 241.5658032952332,
+      "jpl_degrees": 241.56579310682318,
+      "difference_arcsec": 0.03667827605795537,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "jd_ut1": 2451545.00000411,
+      "planet": "Saturn",
+      "jpl_target": "saturn barycenter",
+      "swiss_degrees": 40.39563887401931,
+      "jpl_degrees": 40.39566307960613,
+      "difference_arcsec": -0.08714011252095588,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "jd_ut1": 2459021.7499978035,
+      "planet": "Sun",
+      "jpl_target": "sun",
+      "swiss_degrees": 90.32901322018026,
+      "jpl_degrees": 90.32902105936938,
+      "difference_arcsec": -0.028221080845014512,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "jd_ut1": 2459021.7499978035,
+      "planet": "Moon",
+      "jpl_target": "moon",
+      "swiss_degrees": 89.9844771102557,
+      "jpl_degrees": 89.98444176915017,
+      "difference_arcsec": 0.12722797990818435,
+      "tolerance_arcsec": 30,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "jd_ut1": 2459021.7499978035,
+      "planet": "Mars",
+      "jpl_target": "mars barycenter",
+      "swiss_degrees": 355.7956259604345,
+      "jpl_degrees": 355.795609265539,
+      "difference_arcsec": 0.060101623876107624,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "jd_ut1": 2459021.7499978035,
+      "planet": "Mercury",
+      "jpl_target": "mercury",
+      "swiss_degrees": 104.42208442899613,
+      "jpl_degrees": 104.42210308158649,
+      "difference_arcsec": -0.06714932533213869,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "jd_ut1": 2459021.7499978035,
+      "planet": "Jupiter",
+      "jpl_target": "jupiter barycenter",
+      "swiss_degrees": 295.12374143428355,
+      "jpl_degrees": 295.12370982140175,
+      "difference_arcsec": 0.11380637447473418,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "jd_ut1": 2459021.7499978035,
+      "planet": "Venus",
+      "jpl_target": "venus",
+      "swiss_degrees": 65.65419846373273,
+      "jpl_degrees": 65.654241414194,
+      "difference_arcsec": -0.15462166060160598,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "jd_ut1": 2459021.7499978035,
+      "planet": "Saturn",
+      "jpl_target": "saturn barycenter",
+      "swiss_degrees": 300.6765177571674,
+      "jpl_degrees": 300.6765251661278,
+      "difference_arcsec": -0.02667225749064528,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "jd_ut1": 2461327.000004261,
+      "planet": "Sun",
+      "jpl_target": "sun",
+      "swiss_degrees": 200.17094302842546,
+      "jpl_degrees": 200.17095057447503,
+      "difference_arcsec": -0.027165778465132462,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "jd_ut1": 2461327.000004261,
+      "planet": "Moon",
+      "jpl_target": "moon",
+      "swiss_degrees": 233.35511758301303,
+      "jpl_degrees": 233.3554513438972,
+      "difference_arcsec": -1.20153918297774,
+      "tolerance_arcsec": 30,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "jd_ut1": 2461327.000004261,
+      "planet": "Mars",
+      "jpl_target": "mars barycenter",
+      "swiss_degrees": 128.8071163890482,
+      "jpl_degrees": 128.80711546851663,
+      "difference_arcsec": 0.0033139136235149635,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "jd_ut1": 2461327.000004261,
+      "planet": "Mercury",
+      "jpl_target": "mercury",
+      "swiss_degrees": 225.1385720727318,
+      "jpl_degrees": 225.13857574973164,
+      "difference_arcsec": -0.013237199470950145,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "jd_ut1": 2461327.000004261,
+      "planet": "Jupiter",
+      "jpl_target": "jupiter barycenter",
+      "swiss_degrees": 141.71092679261852,
+      "jpl_degrees": 141.71088495157142,
+      "difference_arcsec": 0.15062776958529867,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "jd_ut1": 2461327.000004261,
+      "planet": "Venus",
+      "jpl_target": "venus",
+      "swiss_degrees": 216.44799613370373,
+      "jpl_degrees": 216.44802883096787,
+      "difference_arcsec": -0.11771015092563175,
+      "tolerance_arcsec": 10,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "jd_ut1": 2461327.000004261,
+      "planet": "Saturn",
+      "jpl_target": "saturn barycenter",
+      "swiss_degrees": 10.60037594209471,
+      "jpl_degrees": 10.600386856705088,
+      "difference_arcsec": -0.0392925973869751,
+      "tolerance_arcsec": 10,
+      "passed": true
+    }
+  ],
+  "ascendants": [
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "location": "Jodhpur",
+      "swiss_degrees": 252.95640848155904,
+      "independent_degrees": 252.95640849131843,
+      "difference_arcsec": -3.513380306685576e-05,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "location": "London",
+      "swiss_degrees": 187.09365339461903,
+      "independent_degrees": 187.0936534072402,
+      "difference_arcsec": -4.543621798802633e-05,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "location": "Sydney",
+      "swiss_degrees": 344.322397243068,
+      "independent_degrees": 344.32239726079405,
+      "difference_arcsec": -6.381378625519574e-05,
+      "passed": true
+    },
+    {
+      "utc_label": "1900-01-01T00:00:00Z",
+      "location": "Quito",
+      "swiss_degrees": 110.00684096865619,
+      "independent_degrees": 110.0068409843704,
+      "difference_arcsec": -5.6571093409729656e-05,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "location": "Jodhpur",
+      "swiss_degrees": 154.18192317864245,
+      "independent_degrees": 154.18192335366524,
+      "difference_arcsec": -0.000630082047337055,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "location": "London",
+      "swiss_degrees": 107.471849988232,
+      "independent_degrees": 107.47185030324994,
+      "difference_arcsec": -0.0011340645414747996,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "location": "Sydney",
+      "swiss_degrees": 246.31304422400825,
+      "independent_degrees": 246.31304457265,
+      "difference_arcsec": -0.0012551102940960845,
+      "passed": true
+    },
+    {
+      "utc_label": "1967-03-08T12:10:00Z",
+      "location": "Quito",
+      "swiss_degrees": 359.50174863824566,
+      "independent_degrees": 359.5017488459565,
+      "difference_arcsec": -0.0007477590770577081,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "location": "Jodhpur",
+      "swiss_degrees": 95.35394099991495,
+      "independent_degrees": 95.35394098791808,
+      "difference_arcsec": 4.318869741837261e-05,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "location": "London",
+      "swiss_degrees": 24.017841917968784,
+      "independent_degrees": 24.01784191313111,
+      "difference_arcsec": 1.7415572983736638e-05,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "location": "Sydney",
+      "swiss_degrees": 152.49103386470105,
+      "independent_degrees": 152.4910336794643,
+      "difference_arcsec": 0.0006668523269581783,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-01-01T12:00:00Z",
+      "location": "Quito",
+      "swiss_degrees": 290.39875993831447,
+      "independent_degrees": 290.39875985132716,
+      "difference_arcsec": 0.0003131543280687765,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "location": "Jodhpur",
+      "swiss_degrees": 164.73658031824138,
+      "independent_degrees": 164.736580397695,
+      "difference_arcsec": -0.00028603305963770254,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "location": "London",
+      "swiss_degrees": 116.4005857108939,
+      "independent_degrees": 116.40058585281659,
+      "difference_arcsec": -0.0005109216090204427,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "location": "Sydney",
+      "swiss_degrees": 258.607611921084,
+      "independent_degrees": 258.6076120818616,
+      "difference_arcsec": -0.0005787992677142029,
+      "passed": true
+    },
+    {
+      "utc_label": "2020-06-21T06:00:00Z",
+      "location": "Quito",
+      "swiss_degrees": 12.406610028548517,
+      "independent_degrees": 12.40661013056548,
+      "difference_arcsec": -0.00036726108874063357,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "location": "Jodhpur",
+      "swiss_degrees": 7.110981991264669,
+      "independent_degrees": 7.1109820205957766,
+      "difference_arcsec": -0.00010559202792137512,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "location": "London",
+      "swiss_degrees": 260.36987249495417,
+      "independent_degrees": 260.36987240915767,
+      "difference_arcsec": 0.0003088674020546023,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "location": "Sydney",
+      "swiss_degrees": 69.34426634214198,
+      "independent_degrees": 69.34426631799177,
+      "difference_arcsec": 8.694075859239092e-05,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-10-13T12:00:00Z",
+      "location": "Quito",
+      "swiss_degrees": 215.95370244368465,
+      "independent_degrees": 215.95370247267198,
+      "difference_arcsec": -0.00010435438753120252,
+      "passed": true
+    }
+  ],
+  "sunrises": [
+    {
+      "utc_label": "2000-03-08T00:00:00Z",
+      "location": "Jodhpur",
+      "swiss_jd_ut1": 2451611.5611992273,
+      "jpl_jd_ut1": 2451611.5611992367,
+      "difference_seconds": -0.0008046627044677734,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-03-08T00:00:00Z",
+      "location": "London",
+      "swiss_jd_ut1": 2451611.7744800877,
+      "jpl_jd_ut1": 2451611.774480086,
+      "difference_seconds": 0.0001609325408935547,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-03-08T00:00:00Z",
+      "location": "Sydney",
+      "swiss_jd_ut1": 2451612.328896122,
+      "jpl_jd_ut1": 2451612.3288961556,
+      "difference_seconds": -0.0028967857360839844,
+      "passed": true
+    },
+    {
+      "utc_label": "2000-03-08T00:00:00Z",
+      "location": "Quito",
+      "swiss_jd_ut1": 2451611.975370137,
+      "jpl_jd_ut1": 2451611.9753701533,
+      "difference_seconds": -0.0014081597328186035,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-06-21T00:00:00Z",
+      "location": "Jodhpur",
+      "swiss_jd_ut1": 2461212.513866949,
+      "jpl_jd_ut1": 2461212.513866977,
+      "difference_seconds": -0.0024139881134033203,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-06-21T00:00:00Z",
+      "location": "London",
+      "swiss_jd_ut1": 2461212.659814276,
+      "jpl_jd_ut1": 2461212.6598143307,
+      "difference_seconds": -0.004747509956359863,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-06-21T00:00:00Z",
+      "location": "Sydney",
+      "swiss_jd_ut1": 2461213.378290022,
+      "jpl_jd_ut1": 2461213.3782900185,
+      "difference_seconds": 0.0002816319465637207,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-06-21T00:00:00Z",
+      "location": "Quito",
+      "swiss_jd_ut1": 2461212.9694483345,
+      "jpl_jd_ut1": 2461212.969448349,
+      "difference_seconds": -0.0012472271919250488,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-12-21T00:00:00Z",
+      "location": "Jodhpur",
+      "swiss_jd_ut1": 2461395.579919436,
+      "jpl_jd_ut1": 2461395.5799194435,
+      "difference_seconds": -0.0006437301635742188,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-12-21T00:00:00Z",
+      "location": "London",
+      "swiss_jd_ut1": 2461395.840728203,
+      "jpl_jd_ut1": 2461395.8407281963,
+      "difference_seconds": 0.0005632638931274414,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-12-21T00:00:00Z",
+      "location": "Sydney",
+      "swiss_jd_ut1": 2461396.28174807,
+      "jpl_jd_ut1": 2461396.281748093,
+      "difference_seconds": -0.0020116567611694336,
+      "passed": true
+    },
+    {
+      "utc_label": "2026-12-21T00:00:00Z",
+      "location": "Quito",
+      "swiss_jd_ut1": 2461395.966400432,
+      "jpl_jd_ut1": 2461395.9664004454,
+      "difference_seconds": -0.0011667609214782715,
+      "passed": true
+    }
+  ],
+  "checks": 67,
+  "passed": 67,
+  "maximum_absolute_errors": {
+    "planet_longitude_arcsec": 1.20153918297774,
+    "ascendant_arcsec": 0.0012551102940960845,
+    "sunrise_seconds": 0.004747509956359863
+  }
+}

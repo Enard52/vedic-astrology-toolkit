@@ -1,0 +1,33 @@
+{
+  "rows": [
+    {
+      "id": "t1",
+      "person_id": "t1",
+      "split": "train",
+      "outcome": 0,
+      "probability": 0.5
+    },
+    {
+      "id": "t2",
+      "person_id": "t2",
+      "split": "train",
+      "outcome": 1,
+      "probability": 0.5
+    },
+    {
+      "id": "h1",
+      "person_id": "h1",
+      "split": "holdout",
+      "outcome": 1,
+      "probability": 0.8
+    },
+    {
+      "id": "h2",
+      "person_id": "h2",
+      "split": "holdout",
+      "outcome": 0,
+      "probability": 0.2
+    }
+  ],
+  "bootstrap_replicates": 100
+}

@@ -1,0 +1,41 @@
+{
+  "policy": "retain_conflicts_v1",
+  "topic": "illustrative topic only",
+  "window": "illustrative window only",
+  "classification": "mixed",
+  "active_evidence": [
+    {
+      "id": "support",
+      "polarity": "supportive",
+      "met": true,
+      "source": "synthetic hypothesis A"
+    },
+    {
+      "id": "adverse",
+      "polarity": "adverse",
+      "met": true,
+      "source": "synthetic hypothesis B"
+    }
+  ],
+  "suppressed": {},
+  "pending_evidence": [],
+  "pending_overrides": [],
+  "needs_review": true,
+  "evidence": [
+    {
+      "id": "support",
+      "polarity": "supportive",
+      "met": true,
+      "source": "synthetic hypothesis A"
+    },
+    {
+      "id": "adverse",
+      "polarity": "adverse",
+      "met": true,
+      "source": "synthetic hypothesis B"
+    }
+  ],
+  "overrides": [],
+  "probability": null,
+  "meaning": "Traditional evidence classification under a declared project policy; no event forecast or calibrated confidence follows."
+}

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vedic-astrology-toolkit"
+version = "0.4.0"
+description = "Test-verified Vedic astrology (Jyotish) calculation engine: charts, vargas, Shadbala, Ashtakavarga, yogas, dashas, Tajaka and Panchanga"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE.txt"]
+authors = [{ name = "Chethan" }]
+keywords = ["vedic astrology", "jyotish", "kundli", "panchang", "dasha", "shadbala", "ashtakavarga", "swiss ephemeris"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = ["pyswisseph==2.10.3.2", "tzdata>=2024.1"]
+
+[project.urls]
+Homepage = "https://github.com/chethandvg/vedic-astrology-toolkit"
+Issues = "https://github.com/chethandvg/vedic-astrology-toolkit/issues"
+
+[project.scripts]
+vedic-toolkit = "vedic_toolkit.__main__:main"
+
+[tool.setuptools]
+packages = ["vedic_toolkit"]

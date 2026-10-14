@@ -1,0 +1,1406 @@
+{
+  "system": "moola",
+  "profile": "rath_1999_table",
+  "source": "https://srath.com/jyoti%E1%B9%A3a/dasa/mula-dasa/",
+  "seed": "Asc",
+  "order": [
+    "Jupiter",
+    "Moon",
+    "Mars",
+    "Saturn",
+    "Sun",
+    "Venus",
+    "Rahu",
+    "Ketu",
+    "Mercury"
+  ],
+  "group_houses": [
+    [
+      1,
+      4,
+      7,
+      10
+    ],
+    [
+      3,
+      6,
+      9,
+      12
+    ],
+    [
+      2,
+      5,
+      8,
+      11
+    ]
+  ],
+  "ordering_evidence": [
+    {
+      "sign": "Cn",
+      "key": [
+        2,
+        5,
+        0,
+        0.0,
+        3
+      ],
+      "planets": [
+        "Jupiter",
+        "Moon"
+      ]
+    },
+    {
+      "sign": "Ar",
+      "key": [
+        1,
+        5,
+        0,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Sun"
+      ]
+    },
+    {
+      "sign": "Cp",
+      "key": [
+        1,
+        5,
+        0,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Mars"
+      ]
+    },
+    {
+      "sign": "Li",
+      "key": [
+        1,
+        5,
+        0,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Saturn"
+      ]
+    },
+    {
+      "sign": "Pi",
+      "key": [
+        1,
+        5,
+        2,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Venus"
+      ]
+    },
+    {
+      "sign": "Sg",
+      "key": [
+        1,
+        0,
+        2,
+        30.0,
+        5
+      ],
+      "planets": [
+        "Rahu"
+      ]
+    },
+    {
+      "sign": "Ge",
+      "key": [
+        1,
+        0,
+        2,
+        30.0,
+        2
+      ],
+      "planets": [
+        "Ketu"
+      ]
+    },
+    {
+      "sign": "Ta",
+      "key": [
+        1,
+        2,
+        1,
+        0.0,
+        5
+      ],
+      "planets": [
+        "Mercury"
+      ]
+    }
+  ],
+  "order_override_used": true,
+  "ordering_ties": [
+    {
+      "signs": [
+        "Ar",
+        "Cp"
+      ]
+    },
+    {
+      "signs": [
+        "Cp",
+        "Li"
+      ]
+    }
+  ],
+  "duration_evidence": {
+    "Sun": {
+      "years": 1,
+      "vimshottari_allotment": 6,
+      "count_minus_one": 4,
+      "dignity_adjustment": 1,
+      "raw_years": 1,
+      "moolatrikona_target": "Le",
+      "zero_reset": false
+    },
+    "Moon": {
+      "years": 10,
+      "vimshottari_allotment": 10,
+      "count_minus_one": 10,
+      "dignity_adjustment": 0,
+      "raw_years": 0,
+      "moolatrikona_target": "Ta",
+      "zero_reset": true
+    },
+    "Mars": {
+      "years": 3,
+      "vimshottari_allotment": 7,
+      "count_minus_one": 3,
+      "dignity_adjustment": 1,
+      "raw_years": 3,
+      "moolatrikona_target": "Ar",
+      "zero_reset": false
+    },
+    "Mercury": {
+      "years": 13,
+      "vimshottari_allotment": 17,
+      "count_minus_one": 4,
+      "dignity_adjustment": 0,
+      "raw_years": 13,
+      "moolatrikona_target": "Vi",
+      "zero_reset": false
+    },
+    "Jupiter": {
+      "years": 10,
+      "vimshottari_allotment": 16,
+      "count_minus_one": 5,
+      "dignity_adjustment": 1,
+      "raw_years": 10,
+      "moolatrikona_target": "Sg",
+      "zero_reset": false
+    },
+    "Venus": {
+      "years": 12,
+      "vimshottari_allotment": 20,
+      "count_minus_one": 7,
+      "dignity_adjustment": 1,
+      "raw_years": 12,
+      "moolatrikona_target": "Li",
+      "zero_reset": false
+    },
+    "Saturn": {
+      "years": 14,
+      "vimshottari_allotment": 19,
+      "count_minus_one": 4,
+      "dignity_adjustment": 1,
+      "raw_years": 14,
+      "moolatrikona_target": "Aq",
+      "zero_reset": false
+    },
+    "Rahu": {
+      "years": 17,
+      "vimshottari_allotment": 18,
+      "count_minus_one": 2,
+      "dignity_adjustment": -1,
+      "raw_years": 17,
+      "moolatrikona_target": "Aq",
+      "zero_reset": false
+    },
+    "Ketu": {
+      "years": 3,
+      "vimshottari_allotment": 7,
+      "count_minus_one": 5,
+      "dignity_adjustment": -1,
+      "raw_years": 3,
+      "moolatrikona_target": "Sc",
+      "zero_reset": false
+    }
+  },
+  "first_cycle_years": 83,
+  "second_cycle_years": 37,
+  "periods": [
+    {
+      "lord": "Jupiter",
+      "start_year": 0.0,
+      "end_year": 10.0,
+      "duration_years": 10.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Jupiter",
+          "start_year": 0.0,
+          "end_year": 1.2048192771084338,
+          "duration_years": 1.2048192771084338
+        },
+        {
+          "lord": "Moon",
+          "start_year": 1.2048192771084338,
+          "end_year": 2.4096385542168677,
+          "duration_years": 1.2048192771084338
+        },
+        {
+          "lord": "Mars",
+          "start_year": 2.4096385542168677,
+          "end_year": 2.7710843373493974,
+          "duration_years": 0.3614457831325301
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 2.7710843373493974,
+          "end_year": 4.457831325301205,
+          "duration_years": 1.6867469879518073
+        },
+        {
+          "lord": "Sun",
+          "start_year": 4.457831325301205,
+          "end_year": 4.578313253012048,
+          "duration_years": 0.12048192771084337
+        },
+        {
+          "lord": "Venus",
+          "start_year": 4.578313253012048,
+          "end_year": 6.024096385542169,
+          "duration_years": 1.4457831325301205
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 6.024096385542169,
+          "end_year": 8.072289156626505,
+          "duration_years": 2.0481927710843375
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 8.072289156626505,
+          "end_year": 8.433734939759036,
+          "duration_years": 0.3614457831325301
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 8.433734939759036,
+          "end_year": 10.0,
+          "duration_years": 1.5662650602409638
+        }
+      ]
+    },
+    {
+      "lord": "Moon",
+      "start_year": 10.0,
+      "end_year": 20.0,
+      "duration_years": 10.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Moon",
+          "start_year": 10.0,
+          "end_year": 11.204819277108435,
+          "duration_years": 1.2048192771084338
+        },
+        {
+          "lord": "Mars",
+          "start_year": 11.204819277108435,
+          "end_year": 11.566265060240964,
+          "duration_years": 0.3614457831325301
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 11.566265060240964,
+          "end_year": 13.25301204819277,
+          "duration_years": 1.6867469879518073
+        },
+        {
+          "lord": "Sun",
+          "start_year": 13.25301204819277,
+          "end_year": 13.373493975903614,
+          "duration_years": 0.12048192771084337
+        },
+        {
+          "lord": "Venus",
+          "start_year": 13.373493975903614,
+          "end_year": 14.819277108433734,
+          "duration_years": 1.4457831325301205
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 14.819277108433734,
+          "end_year": 16.867469879518072,
+          "duration_years": 2.0481927710843375
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 16.867469879518072,
+          "end_year": 17.228915662650603,
+          "duration_years": 0.3614457831325301
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 17.228915662650603,
+          "end_year": 18.795180722891565,
+          "duration_years": 1.5662650602409638
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 18.795180722891565,
+          "end_year": 20.0,
+          "duration_years": 1.2048192771084338
+        }
+      ]
+    },
+    {
+      "lord": "Mars",
+      "start_year": 20.0,
+      "end_year": 23.0,
+      "duration_years": 3.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Mars",
+          "start_year": 20.0,
+          "end_year": 20.10843373493976,
+          "duration_years": 0.10843373493975904
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 20.10843373493976,
+          "end_year": 20.6144578313253,
+          "duration_years": 0.5060240963855421
+        },
+        {
+          "lord": "Sun",
+          "start_year": 20.6144578313253,
+          "end_year": 20.650602409638555,
+          "duration_years": 0.03614457831325301
+        },
+        {
+          "lord": "Venus",
+          "start_year": 20.650602409638555,
+          "end_year": 21.08433734939759,
+          "duration_years": 0.43373493975903615
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 21.08433734939759,
+          "end_year": 21.698795180722893,
+          "duration_years": 0.6144578313253012
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 21.698795180722893,
+          "end_year": 21.80722891566265,
+          "duration_years": 0.10843373493975904
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 21.80722891566265,
+          "end_year": 22.27710843373494,
+          "duration_years": 0.46987951807228917
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 22.27710843373494,
+          "end_year": 22.63855421686747,
+          "duration_years": 0.3614457831325301
+        },
+        {
+          "lord": "Moon",
+          "start_year": 22.63855421686747,
+          "end_year": 23.0,
+          "duration_years": 0.3614457831325301
+        }
+      ]
+    },
+    {
+      "lord": "Saturn",
+      "start_year": 23.0,
+      "end_year": 37.0,
+      "duration_years": 14.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Saturn",
+          "start_year": 23.0,
+          "end_year": 25.36144578313253,
+          "duration_years": 2.36144578313253
+        },
+        {
+          "lord": "Sun",
+          "start_year": 25.36144578313253,
+          "end_year": 25.53012048192771,
+          "duration_years": 0.1686746987951807
+        },
+        {
+          "lord": "Venus",
+          "start_year": 25.53012048192771,
+          "end_year": 27.55421686746988,
+          "duration_years": 2.0240963855421685
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 27.55421686746988,
+          "end_year": 30.42168674698795,
+          "duration_years": 2.8674698795180724
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 30.42168674698795,
+          "end_year": 30.927710843373493,
+          "duration_years": 0.5060240963855421
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 30.927710843373493,
+          "end_year": 33.12048192771084,
+          "duration_years": 2.1927710843373496
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 33.12048192771084,
+          "end_year": 34.80722891566265,
+          "duration_years": 1.6867469879518073
+        },
+        {
+          "lord": "Moon",
+          "start_year": 34.80722891566265,
+          "end_year": 36.493975903614455,
+          "duration_years": 1.6867469879518073
+        },
+        {
+          "lord": "Mars",
+          "start_year": 36.493975903614455,
+          "end_year": 37.0,
+          "duration_years": 0.5060240963855421
+        }
+      ]
+    },
+    {
+      "lord": "Sun",
+      "start_year": 37.0,
+      "end_year": 38.0,
+      "duration_years": 1.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Sun",
+          "start_year": 37.0,
+          "end_year": 37.01204819277108,
+          "duration_years": 0.012048192771084338
+        },
+        {
+          "lord": "Venus",
+          "start_year": 37.01204819277108,
+          "end_year": 37.1566265060241,
+          "duration_years": 0.14457831325301204
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 37.1566265060241,
+          "end_year": 37.36144578313253,
+          "duration_years": 0.20481927710843373
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 37.36144578313253,
+          "end_year": 37.397590361445786,
+          "duration_years": 0.03614457831325301
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 37.397590361445786,
+          "end_year": 37.55421686746988,
+          "duration_years": 0.1566265060240964
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 37.55421686746988,
+          "end_year": 37.674698795180724,
+          "duration_years": 0.12048192771084337
+        },
+        {
+          "lord": "Moon",
+          "start_year": 37.674698795180724,
+          "end_year": 37.795180722891565,
+          "duration_years": 0.12048192771084337
+        },
+        {
+          "lord": "Mars",
+          "start_year": 37.795180722891565,
+          "end_year": 37.83132530120482,
+          "duration_years": 0.03614457831325301
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 37.83132530120482,
+          "end_year": 38.0,
+          "duration_years": 0.1686746987951807
+        }
+      ]
+    },
+    {
+      "lord": "Venus",
+      "start_year": 38.0,
+      "end_year": 50.0,
+      "duration_years": 12.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Venus",
+          "start_year": 38.0,
+          "end_year": 39.734939759036145,
+          "duration_years": 1.7349397590361446
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 39.734939759036145,
+          "end_year": 42.19277108433735,
+          "duration_years": 2.4578313253012047
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 42.19277108433735,
+          "end_year": 42.626506024096386,
+          "duration_years": 0.43373493975903615
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 42.626506024096386,
+          "end_year": 44.506024096385545,
+          "duration_years": 1.8795180722891567
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 44.506024096385545,
+          "end_year": 45.95180722891566,
+          "duration_years": 1.4457831325301205
+        },
+        {
+          "lord": "Moon",
+          "start_year": 45.95180722891566,
+          "end_year": 47.397590361445786,
+          "duration_years": 1.4457831325301205
+        },
+        {
+          "lord": "Mars",
+          "start_year": 47.397590361445786,
+          "end_year": 47.83132530120482,
+          "duration_years": 0.43373493975903615
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 47.83132530120482,
+          "end_year": 49.855421686746986,
+          "duration_years": 2.0240963855421685
+        },
+        {
+          "lord": "Sun",
+          "start_year": 49.855421686746986,
+          "end_year": 50.0,
+          "duration_years": 0.14457831325301204
+        }
+      ]
+    },
+    {
+      "lord": "Rahu",
+      "start_year": 50.0,
+      "end_year": 67.0,
+      "duration_years": 17.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Rahu",
+          "start_year": 50.0,
+          "end_year": 53.48192771084337,
+          "duration_years": 3.4819277108433737
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 53.48192771084337,
+          "end_year": 54.096385542168676,
+          "duration_years": 0.6144578313253012
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 54.096385542168676,
+          "end_year": 56.75903614457831,
+          "duration_years": 2.6626506024096384
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 56.75903614457831,
+          "end_year": 58.80722891566265,
+          "duration_years": 2.0481927710843375
+        },
+        {
+          "lord": "Moon",
+          "start_year": 58.80722891566265,
+          "end_year": 60.855421686746986,
+          "duration_years": 2.0481927710843375
+        },
+        {
+          "lord": "Mars",
+          "start_year": 60.855421686746986,
+          "end_year": 61.46987951807229,
+          "duration_years": 0.6144578313253012
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 61.46987951807229,
+          "end_year": 64.33734939759036,
+          "duration_years": 2.8674698795180724
+        },
+        {
+          "lord": "Sun",
+          "start_year": 64.33734939759036,
+          "end_year": 64.5421686746988,
+          "duration_years": 0.20481927710843373
+        },
+        {
+          "lord": "Venus",
+          "start_year": 64.5421686746988,
+          "end_year": 67.0,
+          "duration_years": 2.4578313253012047
+        }
+      ]
+    },
+    {
+      "lord": "Ketu",
+      "start_year": 67.0,
+      "end_year": 70.0,
+      "duration_years": 3.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Ketu",
+          "start_year": 67.0,
+          "end_year": 67.10843373493977,
+          "duration_years": 0.10843373493975904
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 67.10843373493977,
+          "end_year": 67.57831325301204,
+          "duration_years": 0.46987951807228917
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 67.57831325301204,
+          "end_year": 67.93975903614458,
+          "duration_years": 0.3614457831325301
+        },
+        {
+          "lord": "Moon",
+          "start_year": 67.93975903614458,
+          "end_year": 68.3012048192771,
+          "duration_years": 0.3614457831325301
+        },
+        {
+          "lord": "Mars",
+          "start_year": 68.3012048192771,
+          "end_year": 68.40963855421687,
+          "duration_years": 0.10843373493975904
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 68.40963855421687,
+          "end_year": 68.91566265060241,
+          "duration_years": 0.5060240963855421
+        },
+        {
+          "lord": "Sun",
+          "start_year": 68.91566265060241,
+          "end_year": 68.95180722891567,
+          "duration_years": 0.03614457831325301
+        },
+        {
+          "lord": "Venus",
+          "start_year": 68.95180722891567,
+          "end_year": 69.3855421686747,
+          "duration_years": 0.43373493975903615
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 69.3855421686747,
+          "end_year": 70.0,
+          "duration_years": 0.6144578313253012
+        }
+      ]
+    },
+    {
+      "lord": "Mercury",
+      "start_year": 70.0,
+      "end_year": 83.0,
+      "duration_years": 13.0,
+      "cycle": 1,
+      "children": [
+        {
+          "lord": "Mercury",
+          "start_year": 70.0,
+          "end_year": 72.03614457831326,
+          "duration_years": 2.036144578313253
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 72.03614457831326,
+          "end_year": 73.60240963855422,
+          "duration_years": 1.5662650602409638
+        },
+        {
+          "lord": "Moon",
+          "start_year": 73.60240963855422,
+          "end_year": 75.16867469879519,
+          "duration_years": 1.5662650602409638
+        },
+        {
+          "lord": "Mars",
+          "start_year": 75.16867469879519,
+          "end_year": 75.63855421686748,
+          "duration_years": 0.46987951807228917
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 75.63855421686748,
+          "end_year": 77.83132530120481,
+          "duration_years": 2.1927710843373496
+        },
+        {
+          "lord": "Sun",
+          "start_year": 77.83132530120481,
+          "end_year": 77.98795180722891,
+          "duration_years": 0.1566265060240964
+        },
+        {
+          "lord": "Venus",
+          "start_year": 77.98795180722891,
+          "end_year": 79.86746987951807,
+          "duration_years": 1.8795180722891567
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 79.86746987951807,
+          "end_year": 82.53012048192771,
+          "duration_years": 2.6626506024096384
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 82.53012048192771,
+          "end_year": 83.0,
+          "duration_years": 0.46987951807228917
+        }
+      ]
+    },
+    {
+      "lord": "Jupiter",
+      "start_year": 83.0,
+      "end_year": 89.0,
+      "duration_years": 6.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Jupiter",
+          "start_year": 83.0,
+          "end_year": 83.72289156626506,
+          "duration_years": 0.7228915662650602
+        },
+        {
+          "lord": "Moon",
+          "start_year": 83.72289156626506,
+          "end_year": 84.44578313253012,
+          "duration_years": 0.7228915662650602
+        },
+        {
+          "lord": "Mars",
+          "start_year": 84.44578313253012,
+          "end_year": 84.66265060240964,
+          "duration_years": 0.21686746987951808
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 84.66265060240964,
+          "end_year": 85.67469879518072,
+          "duration_years": 1.0120481927710843
+        },
+        {
+          "lord": "Sun",
+          "start_year": 85.67469879518072,
+          "end_year": 85.74698795180723,
+          "duration_years": 0.07228915662650602
+        },
+        {
+          "lord": "Venus",
+          "start_year": 85.74698795180723,
+          "end_year": 86.6144578313253,
+          "duration_years": 0.8674698795180723
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 86.6144578313253,
+          "end_year": 87.8433734939759,
+          "duration_years": 1.2289156626506024
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 87.8433734939759,
+          "end_year": 88.06024096385542,
+          "duration_years": 0.21686746987951808
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 88.06024096385542,
+          "end_year": 89.0,
+          "duration_years": 0.9397590361445783
+        }
+      ]
+    },
+    {
+      "lord": "Moon",
+      "start_year": 89.0,
+      "end_year": 89.0,
+      "duration_years": 0.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Moon",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Mars",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Sun",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Venus",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 89.0,
+          "end_year": 89.0,
+          "duration_years": 0.0
+        }
+      ]
+    },
+    {
+      "lord": "Mars",
+      "start_year": 89.0,
+      "end_year": 93.0,
+      "duration_years": 4.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Mars",
+          "start_year": 89.0,
+          "end_year": 89.144578313253,
+          "duration_years": 0.14457831325301204
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 89.144578313253,
+          "end_year": 89.81927710843374,
+          "duration_years": 0.6746987951807228
+        },
+        {
+          "lord": "Sun",
+          "start_year": 89.81927710843374,
+          "end_year": 89.86746987951807,
+          "duration_years": 0.04819277108433735
+        },
+        {
+          "lord": "Venus",
+          "start_year": 89.86746987951807,
+          "end_year": 90.44578313253012,
+          "duration_years": 0.5783132530120482
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 90.44578313253012,
+          "end_year": 91.26506024096386,
+          "duration_years": 0.8192771084337349
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 91.26506024096386,
+          "end_year": 91.40963855421687,
+          "duration_years": 0.14457831325301204
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 91.40963855421687,
+          "end_year": 92.03614457831326,
+          "duration_years": 0.6265060240963856
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 92.03614457831326,
+          "end_year": 92.51807228915662,
+          "duration_years": 0.4819277108433735
+        },
+        {
+          "lord": "Moon",
+          "start_year": 92.51807228915662,
+          "end_year": 93.0,
+          "duration_years": 0.4819277108433735
+        }
+      ]
+    },
+    {
+      "lord": "Saturn",
+      "start_year": 93.0,
+      "end_year": 98.0,
+      "duration_years": 5.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Saturn",
+          "start_year": 93.0,
+          "end_year": 93.8433734939759,
+          "duration_years": 0.8433734939759037
+        },
+        {
+          "lord": "Sun",
+          "start_year": 93.8433734939759,
+          "end_year": 93.90361445783132,
+          "duration_years": 0.060240963855421686
+        },
+        {
+          "lord": "Venus",
+          "start_year": 93.90361445783132,
+          "end_year": 94.62650602409639,
+          "duration_years": 0.7228915662650602
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 94.62650602409639,
+          "end_year": 95.65060240963855,
+          "duration_years": 1.0240963855421688
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 95.65060240963855,
+          "end_year": 95.83132530120481,
+          "duration_years": 0.18072289156626506
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 95.83132530120481,
+          "end_year": 96.6144578313253,
+          "duration_years": 0.7831325301204819
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 96.6144578313253,
+          "end_year": 97.21686746987952,
+          "duration_years": 0.6024096385542169
+        },
+        {
+          "lord": "Moon",
+          "start_year": 97.21686746987952,
+          "end_year": 97.81927710843374,
+          "duration_years": 0.6024096385542169
+        },
+        {
+          "lord": "Mars",
+          "start_year": 97.81927710843374,
+          "end_year": 98.0,
+          "duration_years": 0.18072289156626506
+        }
+      ]
+    },
+    {
+      "lord": "Sun",
+      "start_year": 98.0,
+      "end_year": 103.0,
+      "duration_years": 5.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Sun",
+          "start_year": 98.0,
+          "end_year": 98.06024096385542,
+          "duration_years": 0.060240963855421686
+        },
+        {
+          "lord": "Venus",
+          "start_year": 98.06024096385542,
+          "end_year": 98.78313253012048,
+          "duration_years": 0.7228915662650602
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 98.78313253012048,
+          "end_year": 99.80722891566265,
+          "duration_years": 1.0240963855421688
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 99.80722891566265,
+          "end_year": 99.98795180722891,
+          "duration_years": 0.18072289156626506
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 99.98795180722891,
+          "end_year": 100.7710843373494,
+          "duration_years": 0.7831325301204819
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 100.7710843373494,
+          "end_year": 101.37349397590361,
+          "duration_years": 0.6024096385542169
+        },
+        {
+          "lord": "Moon",
+          "start_year": 101.37349397590361,
+          "end_year": 101.97590361445783,
+          "duration_years": 0.6024096385542169
+        },
+        {
+          "lord": "Mars",
+          "start_year": 101.97590361445783,
+          "end_year": 102.1566265060241,
+          "duration_years": 0.18072289156626506
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 102.1566265060241,
+          "end_year": 103.0,
+          "duration_years": 0.8433734939759037
+        }
+      ]
+    },
+    {
+      "lord": "Venus",
+      "start_year": 103.0,
+      "end_year": 111.0,
+      "duration_years": 8.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Venus",
+          "start_year": 103.0,
+          "end_year": 104.1566265060241,
+          "duration_years": 1.1566265060240963
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 104.1566265060241,
+          "end_year": 105.79518072289157,
+          "duration_years": 1.6385542168674698
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 105.79518072289157,
+          "end_year": 106.08433734939759,
+          "duration_years": 0.2891566265060241
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 106.08433734939759,
+          "end_year": 107.33734939759036,
+          "duration_years": 1.2530120481927711
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 107.33734939759036,
+          "end_year": 108.3012048192771,
+          "duration_years": 0.963855421686747
+        },
+        {
+          "lord": "Moon",
+          "start_year": 108.3012048192771,
+          "end_year": 109.26506024096386,
+          "duration_years": 0.963855421686747
+        },
+        {
+          "lord": "Mars",
+          "start_year": 109.26506024096386,
+          "end_year": 109.55421686746988,
+          "duration_years": 0.2891566265060241
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 109.55421686746988,
+          "end_year": 110.90361445783132,
+          "duration_years": 1.3493975903614457
+        },
+        {
+          "lord": "Sun",
+          "start_year": 110.90361445783132,
+          "end_year": 111.0,
+          "duration_years": 0.0963855421686747
+        }
+      ]
+    },
+    {
+      "lord": "Rahu",
+      "start_year": 111.0,
+      "end_year": 112.0,
+      "duration_years": 1.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Rahu",
+          "start_year": 111.0,
+          "end_year": 111.20481927710843,
+          "duration_years": 0.20481927710843373
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 111.20481927710843,
+          "end_year": 111.24096385542168,
+          "duration_years": 0.03614457831325301
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 111.24096385542168,
+          "end_year": 111.39759036144578,
+          "duration_years": 0.1566265060240964
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 111.39759036144578,
+          "end_year": 111.51807228915662,
+          "duration_years": 0.12048192771084337
+        },
+        {
+          "lord": "Moon",
+          "start_year": 111.51807228915662,
+          "end_year": 111.63855421686748,
+          "duration_years": 0.12048192771084337
+        },
+        {
+          "lord": "Mars",
+          "start_year": 111.63855421686748,
+          "end_year": 111.67469879518072,
+          "duration_years": 0.03614457831325301
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 111.67469879518072,
+          "end_year": 111.8433734939759,
+          "duration_years": 0.1686746987951807
+        },
+        {
+          "lord": "Sun",
+          "start_year": 111.8433734939759,
+          "end_year": 111.855421686747,
+          "duration_years": 0.012048192771084338
+        },
+        {
+          "lord": "Venus",
+          "start_year": 111.855421686747,
+          "end_year": 112.0,
+          "duration_years": 0.14457831325301204
+        }
+      ]
+    },
+    {
+      "lord": "Ketu",
+      "start_year": 112.0,
+      "end_year": 116.0,
+      "duration_years": 4.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Ketu",
+          "start_year": 112.0,
+          "end_year": 112.144578313253,
+          "duration_years": 0.14457831325301204
+        },
+        {
+          "lord": "Mercury",
+          "start_year": 112.144578313253,
+          "end_year": 112.7710843373494,
+          "duration_years": 0.6265060240963856
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 112.7710843373494,
+          "end_year": 113.25301204819277,
+          "duration_years": 0.4819277108433735
+        },
+        {
+          "lord": "Moon",
+          "start_year": 113.25301204819277,
+          "end_year": 113.73493975903614,
+          "duration_years": 0.4819277108433735
+        },
+        {
+          "lord": "Mars",
+          "start_year": 113.73493975903614,
+          "end_year": 113.87951807228916,
+          "duration_years": 0.14457831325301204
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 113.87951807228916,
+          "end_year": 114.55421686746988,
+          "duration_years": 0.6746987951807228
+        },
+        {
+          "lord": "Sun",
+          "start_year": 114.55421686746988,
+          "end_year": 114.60240963855422,
+          "duration_years": 0.04819277108433735
+        },
+        {
+          "lord": "Venus",
+          "start_year": 114.60240963855422,
+          "end_year": 115.18072289156626,
+          "duration_years": 0.5783132530120482
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 115.18072289156626,
+          "end_year": 116.0,
+          "duration_years": 0.8192771084337349
+        }
+      ]
+    },
+    {
+      "lord": "Mercury",
+      "start_year": 116.0,
+      "end_year": 120.0,
+      "duration_years": 4.0,
+      "cycle": 2,
+      "children": [
+        {
+          "lord": "Mercury",
+          "start_year": 116.0,
+          "end_year": 116.62650602409639,
+          "duration_years": 0.6265060240963856
+        },
+        {
+          "lord": "Jupiter",
+          "start_year": 116.62650602409639,
+          "end_year": 117.10843373493977,
+          "duration_years": 0.4819277108433735
+        },
+        {
+          "lord": "Moon",
+          "start_year": 117.10843373493977,
+          "end_year": 117.59036144578313,
+          "duration_years": 0.4819277108433735
+        },
+        {
+          "lord": "Mars",
+          "start_year": 117.59036144578313,
+          "end_year": 117.73493975903614,
+          "duration_years": 0.14457831325301204
+        },
+        {
+          "lord": "Saturn",
+          "start_year": 117.73493975903614,
+          "end_year": 118.40963855421687,
+          "duration_years": 0.6746987951807228
+        },
+        {
+          "lord": "Sun",
+          "start_year": 118.40963855421687,
+          "end_year": 118.4578313253012,
+          "duration_years": 0.04819277108433735
+        },
+        {
+          "lord": "Venus",
+          "start_year": 118.4578313253012,
+          "end_year": 119.03614457831326,
+          "duration_years": 0.5783132530120482
+        },
+        {
+          "lord": "Rahu",
+          "start_year": 119.03614457831326,
+          "end_year": 119.855421686747,
+          "duration_years": 0.8192771084337349
+        },
+        {
+          "lord": "Ketu",
+          "start_year": 119.855421686747,
+          "end_year": 120.0,
+          "duration_years": 0.14457831325301204
+        }
+      ]
+    }
+  ],
+  "scope": "Mahadasas from the Rath profile; optional experimental subperiods have separate software provenance.",
+  "subperiod_policy": "experimental_cycle1_weights",
+  "subperiod_depth": 1,
+  "subperiod_provenance": {
+    "source": "https://github.com/naturalstupid/PyJHora/blob/main/src/jhora/horoscope/dhasa/graha/moola.py",
+    "inspected_version": "4.8.7",
+    "rule": "Rotate the full first-cycle order to the parent; split by first-cycle durations divided by their sum, in both cycles.",
+    "status": "experimental_hybrid",
+    "traditional_authority_verified": false,
+    "note": "This imports only the documented subdivision convention, not PyJHora mahadasa order/durations; it is not claimed equivalent to Jagannatha Hora or Rath subperiods."
+  },
+  "source_conflicts": [
+    "The worked duration table reverses the prose exaltation/debilitation adjustment; the named profile records which is used.",
+    "The worked sequence starts Jupiter, although one prose sentence says Moon; the worked sequence is followed.",
+    "Some equal-status and friendship rankings require disclosed operational choices or an explicit reviewed order."
+  ],
+  "policies": {
+    "dignity_conflict": "rath_1999_table",
+    "negative_first_period": "absolute value",
+    "zero_period": "full Vimshottari allotment",
+    "degree_ranking": "reversed nodes except explicit Saturn/Ketu lagna precedence",
+    "friendship_rank": "natural relationship; neutral rank for otherwise undignified nodes",
+    "same_status_multioccupancy": "best occupant dignity then maximum advancement"
+  },
+  "interpretation": "Traditional timing intervals only; no claim about lifespan, curses or verified events.",
+  "fixture_scope": "Synthetic extension of the sign/order fixture. The subperiods are an experimental software convention, not a published Rath worked example."
+}

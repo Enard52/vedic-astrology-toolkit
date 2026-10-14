@@ -1,0 +1,2634 @@
+{
+  "generated_utc": "2026-10-13T19:55:29.763246+00:00",
+  "status": "audit_complete",
+  "arithmetic_checks": 153,
+  "arithmetic_passed": 153,
+  "external_reference": {
+    "name": "PyJHora",
+    "version": "4.8.7",
+    "source_url": "https://github.com/naturalstupid/PyJHora",
+    "strength_module_sha256": "30eb03b2514992b1f8c864d78f5897fdd10b8723884f2d9bb247814c1b059efa",
+    "external_code_modified": false,
+    "astronomy_independent": false,
+    "note": "Independent strength implementation; both engines use Swiss Ephemeris astronomy."
+  },
+  "external_total_comparisons": 21,
+  "external_totals_within_0_05": 4,
+  "external_all_totals_agree": false,
+  "alternative_circular_dig_comparisons": 21,
+  "alternative_circular_dig_within_0_01": 21,
+  "printed_reference_audit": {
+    "source": "B. V. Raman, Graha and Bhava Balas, 13th edition (1992)",
+    "printed_pages": [
+      89,
+      90
+    ],
+    "rows": [
+      {
+        "planet": "Sun",
+        "printed_components": {
+          "sthana": "198",
+          "kala": "102.98",
+          "dig": "48.10",
+          "chesta": "0",
+          "naisargika": "60",
+          "drik": "15.86"
+        },
+        "printed_total": "424.24",
+        "sum_of_printed_components": "424.94",
+        "difference_sum_minus_printed": "0.70"
+      },
+      {
+        "planet": "Moon",
+        "printed_components": {
+          "sthana": "126.50",
+          "kala": "202.04",
+          "dig": "31.56",
+          "chesta": "0",
+          "naisargika": "51.43",
+          "drik": "-21.73"
+        },
+        "printed_total": "389.80",
+        "sum_of_printed_components": "389.80",
+        "difference_sum_minus_printed": "0.00"
+      },
+      {
+        "planet": "Mars",
+        "printed_components": {
+          "sthana": "172.06",
+          "kala": "33.06",
+          "dig": "55.70",
+          "chesta": "22.23",
+          "naisargika": "17.14",
+          "drik": ".95"
+        },
+        "printed_total": "298.14",
+        "sum_of_printed_components": "301.14",
+        "difference_sum_minus_printed": "3.00"
+      },
+      {
+        "planet": "Mercury",
+        "printed_components": {
+          "sthana": "279.50",
+          "kala": "192.79",
+          "dig": "21.09",
+          "chesta": "2.30",
+          "naisargika": "25.70",
+          "drik": "15.64"
+        },
+        "printed_total": "537.02",
+        "sum_of_printed_components": "537.02",
+        "difference_sum_minus_printed": "0.00"
+      },
+      {
+        "planet": "Jupiter",
+        "printed_components": {
+          "sthana": "157.58",
+          "kala": "211.18",
+          "dig": "11.50",
+          "chesta": "35.26",
+          "naisargika": "34.28",
+          "drik": "-16.03"
+        },
+        "printed_total": "433.71",
+        "sum_of_printed_components": "433.77",
+        "difference_sum_minus_printed": "0.06"
+      },
+      {
+        "planet": "Venus",
+        "printed_components": {
+          "sthana": "178.20",
+          "kala": "115.53",
+          "dig": "15.15",
+          "chesta": "5.95",
+          "naisargika": "42.85",
+          "drik": "18.47"
+        },
+        "printed_total": "376.15",
+        "sum_of_printed_components": "376.15",
+        "difference_sum_minus_printed": "0.00"
+      },
+      {
+        "planet": "Saturn",
+        "printed_components": {
+          "sthana": "177.30",
+          "kala": "116.97",
+          "dig": "58.02",
+          "chesta": "21.14",
+          "naisargika": "8.37",
+          "drik": "7.21"
+        },
+        "printed_total": "389.21",
+        "sum_of_printed_components": "389.01",
+        "difference_sum_minus_printed": "-0.20"
+      }
+    ],
+    "adjudications": [
+      "Sun: printed component sum 424.94 differs from total 424.24.",
+      "Mars: final Kala 33.06 conflicts with earlier 30.06; 30.06 gives printed total 298.14.",
+      "Saturn: natural strength is 60/7, approximately 8.57, not printed 8.37; 8.57 gives 389.21.",
+      "Jupiter: displayed components total 433.77, not 433.71.",
+      "Mercury: 537.02/60 = 8.950333... rupas, not printed 8.85.",
+      "Rounding, historical inputs and other formula differences are retained, not fitted away."
+    ]
+  },
+  "cases": [
+    {
+      "case": "raman_1918",
+      "input": {
+        "datetime": "1918-10-16T14:22:16+05:30",
+        "latitude": 13,
+        "longitude": 77.58333333333333,
+        "settings": {
+          "ayanamsa": "raman",
+          "node": "mean",
+          "engine": "moshier"
+        }
+      },
+      "our_profile": "raman_sripati",
+      "arithmetic_checks": [
+        {
+          "check": "Sun:sthana_sum",
+          "observed": 198.03158968956382,
+          "expected": 198.03158968956382,
+          "passed": true
+        },
+        {
+          "check": "Sun:kala_sum",
+          "observed": 103.26522523498517,
+          "expected": 103.26522523498517,
+          "passed": true
+        },
+        {
+          "check": "Sun:six_component_sum",
+          "observed": 425.5519503307327,
+          "expected": 425.5519503307327,
+          "passed": true
+        },
+        {
+          "check": "Sun:rupas",
+          "observed": 7.092532505512212,
+          "expected": 7.092532505512212,
+          "passed": true
+        },
+        {
+          "check": "Sun:required_ratio",
+          "observed": 1.0911588470018787,
+          "expected": 1.0911588470018787,
+          "passed": true
+        },
+        {
+          "check": "Sun:dig_range",
+          "observed": 48.392884822372764,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Sun:chesta_range",
+          "observed": 0,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Moon:sthana_sum",
+          "observed": 126.49564772958755,
+          "expected": 126.49564772958755,
+          "passed": true
+        },
+        {
+          "check": "Moon:kala_sum",
+          "observed": 201.7417510466666,
+          "expected": 201.7417510466666,
+          "passed": true
+        },
+        {
+          "check": "Moon:six_component_sum",
+          "observed": 389.75402885951877,
+          "expected": 389.75402885951877,
+          "passed": true
+        },
+        {
+          "check": "Moon:rupas",
+          "observed": 6.495900480991979,
+          "expected": 6.495900480991979,
+          "passed": true
+        },
+        {
+          "check": "Moon:required_ratio",
+          "observed": 1.0826500801653298,
+          "expected": 1.0826500801653298,
+          "passed": true
+        },
+        {
+          "check": "Moon:dig_range",
+          "observed": 31.836788908190783,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Moon:chesta_range",
+          "observed": 0,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mars:sthana_sum",
+          "observed": 172.15087545687442,
+          "expected": 172.15087545687442,
+          "passed": true
+        },
+        {
+          "check": "Mars:kala_sum",
+          "observed": 29.928882100623596,
+          "expected": 29.928882100623596,
+          "passed": true
+        },
+        {
+          "check": "Mars:six_component_sum",
+          "observed": 297.8406130655621,
+          "expected": 297.8406130655621,
+          "passed": true
+        },
+        {
+          "check": "Mars:rupas",
+          "observed": 4.964010217759368,
+          "expected": 4.964010217759368,
+          "passed": true
+        },
+        {
+          "check": "Mars:required_ratio",
+          "observed": 0.9928020435518736,
+          "expected": 0.9928020435518736,
+          "passed": true
+        },
+        {
+          "check": "Mars:dig_range",
+          "observed": 55.424650031189024,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mars:chesta_range",
+          "observed": 22.221032621181063,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mercury:sthana_sum",
+          "observed": 279.49908358615255,
+          "expected": 279.49908358615255,
+          "passed": true
+        },
+        {
+          "check": "Mercury:kala_sum",
+          "observed": 192.78421414130102,
+          "expected": 192.78421414130102,
+          "passed": true
+        },
+        {
+          "check": "Mercury:six_component_sum",
+          "observed": 537.2913401283952,
+          "expected": 537.2913401283952,
+          "passed": true
+        },
+        {
+          "check": "Mercury:rupas",
+          "observed": 8.954855668806585,
+          "expected": 8.954855668806585,
+          "passed": true
+        },
+        {
+          "check": "Mercury:required_ratio",
+          "observed": 1.279265095543798,
+          "expected": 1.279265095543798,
+          "passed": true
+        },
+        {
+          "check": "Mercury:dig_range",
+          "observed": 21.368940538712383,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mercury:chesta_range",
+          "observed": 2.2866349304701905,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Jupiter:sthana_sum",
+          "observed": 157.58475380455536,
+          "expected": 157.58475380455536,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:kala_sum",
+          "observed": 210.90053261176513,
+          "expected": 210.90053261176513,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:six_component_sum",
+          "observed": 433.1421516845372,
+          "expected": 433.1421516845372,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:rupas",
+          "observed": 7.219035861408954,
+          "expected": 7.219035861408954,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:required_ratio",
+          "observed": 1.1106209017552235,
+          "expected": 1.1106209017552235,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:dig_range",
+          "observed": 11.130555403913045,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Jupiter:chesta_range",
+          "observed": 35.27086703528346,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Venus:sthana_sum",
+          "observed": 178.20181716253444,
+          "expected": 178.20181716253444,
+          "passed": true
+        },
+        {
+          "check": "Venus:kala_sum",
+          "observed": 115.7960172803212,
+          "expected": 115.7960172803212,
+          "passed": true
+        },
+        {
+          "check": "Venus:six_component_sum",
+          "observed": 376.1128583562376,
+          "expected": 376.1128583562376,
+          "passed": true
+        },
+        {
+          "check": "Venus:rupas",
+          "observed": 6.2685476392706265,
+          "expected": 6.2685476392706265,
+          "passed": true
+        },
+        {
+          "check": "Venus:required_ratio",
+          "observed": 1.1397359344128413,
+          "expected": 1.1397359344128413,
+          "passed": true
+        },
+        {
+          "check": "Venus:dig_range",
+          "observed": 14.860675983931202,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Venus:chesta_range",
+          "observed": 5.947090919381007,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Saturn:sthana_sum",
+          "observed": 177.29083095399488,
+          "expected": 177.29083095399488,
+          "passed": true
+        },
+        {
+          "check": "Saturn:kala_sum",
+          "observed": 116.50585532240673,
+          "expected": 116.50585532240673,
+          "passed": true
+        },
+        {
+          "check": "Saturn:six_component_sum",
+          "observed": 388.41484644371445,
+          "expected": 388.41484644371445,
+          "passed": true
+        },
+        {
+          "check": "Saturn:rupas",
+          "observed": 6.473580774061907,
+          "expected": 6.473580774061907,
+          "passed": true
+        },
+        {
+          "check": "Saturn:required_ratio",
+          "observed": 1.2947161548123816,
+          "expected": 1.2947161548123816,
+          "passed": true
+        },
+        {
+          "check": "Saturn:dig_range",
+          "observed": 57.67447825447351,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Saturn:chesta_range",
+          "observed": 21.143466262339672,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "natural_strength_sum",
+          "observed": 240.0,
+          "expected": 240,
+          "passed": true
+        },
+        {
+          "check": "war_transfer_conservation",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        }
+      ],
+      "our_totals": {
+        "Sun": 425.5519503307327,
+        "Moon": 389.75402885951877,
+        "Mars": 297.8406130655621,
+        "Mercury": 537.2913401283952,
+        "Jupiter": 433.1421516845372,
+        "Venus": 376.1128583562376,
+        "Saturn": 388.41484644371445
+      },
+      "comparisons": [
+        {
+          "planet": "Sun",
+          "component": "sthana",
+          "ours": 198.03158968956382,
+          "external": 198.03,
+          "difference": 0.001589689563815,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "sthana",
+          "ours": 126.49564772958755,
+          "external": 126.5,
+          "difference": -0.004352270412454118,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "sthana",
+          "ours": 172.15087545687442,
+          "external": 172.15,
+          "difference": 0.0008754568744109292,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "sthana",
+          "ours": 279.49908358615255,
+          "external": 279.49,
+          "difference": 0.009083586152542011,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "sthana",
+          "ours": 157.58475380455536,
+          "external": 157.59,
+          "difference": -0.005246195444641444,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "sthana",
+          "ours": 178.20181716253444,
+          "external": 178.2,
+          "difference": 0.0018171625344507447,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "sthana",
+          "ours": 177.29083095399488,
+          "external": 177.29,
+          "difference": 0.0008309539948925249,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "kala",
+          "ours": 103.26522523498517,
+          "external": 103.12,
+          "difference": 0.14522523498516193,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Moon",
+          "component": "kala",
+          "ours": 201.7417510466666,
+          "external": 201.77,
+          "difference": -0.02824895333341715,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "kala",
+          "ours": 29.928882100623596,
+          "external": 29.71,
+          "difference": 0.21888210062359548,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "kala",
+          "ours": 192.78421414130102,
+          "external": 192.88,
+          "difference": -0.09578585869897438,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "kala",
+          "ours": 210.90053261176513,
+          "external": 210.94,
+          "difference": -0.039467388234868395,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "kala",
+          "ours": 115.7960172803212,
+          "external": 115.79,
+          "difference": 0.006017280321188423,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "kala",
+          "ours": 116.50585532240673,
+          "external": 116.38,
+          "difference": 0.12585532240673558,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "dig",
+          "ours": 48.392884822372764,
+          "external": 48.39,
+          "difference": 0.0028848223727635514,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "dig",
+          "ours": 31.836788908190783,
+          "external": 31.84,
+          "difference": -0.0032110918092165264,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "dig",
+          "ours": 55.424650031189024,
+          "external": 64.58,
+          "difference": -9.155349968810974,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "dig",
+          "ours": 21.368940538712383,
+          "external": 21.37,
+          "difference": -0.0010594612876175802,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "dig",
+          "ours": 11.130555403913045,
+          "external": 11.13,
+          "difference": 0.0005554039130437616,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "dig",
+          "ours": 14.860675983931202,
+          "external": 14.86,
+          "difference": 0.0006759839312024951,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "dig",
+          "ours": 57.67447825447351,
+          "external": 57.67,
+          "difference": 0.004478254473511356,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "chesta",
+          "ours": 0,
+          "external": 0.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "chesta",
+          "ours": 0,
+          "external": 0.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "chesta",
+          "ours": 22.221032621181063,
+          "external": 22.05,
+          "difference": 0.17103262118106244,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "chesta",
+          "ours": 2.2866349304701905,
+          "external": 2.27,
+          "difference": 0.01663493047019049,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "chesta",
+          "ours": 35.27086703528346,
+          "external": 35.26,
+          "difference": 0.01086703528346078,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "chesta",
+          "ours": 5.947090919381007,
+          "external": 5.93,
+          "difference": 0.017090919381007375,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "chesta",
+          "ours": 21.143466262339672,
+          "external": 21.14,
+          "difference": 0.003466262339671289,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "naisargika",
+          "ours": 60.0,
+          "external": 60.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "naisargika",
+          "ours": 51.42857142857143,
+          "external": 51.43,
+          "difference": -0.0014285714285691142,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "naisargika",
+          "ours": 17.142857142857142,
+          "external": 17.14,
+          "difference": 0.002857142857141781,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "naisargika",
+          "ours": 25.714285714285715,
+          "external": 25.71,
+          "difference": 0.004285714285714448,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "naisargika",
+          "ours": 34.285714285714285,
+          "external": 34.29,
+          "difference": -0.004285714285714448,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "naisargika",
+          "ours": 42.857142857142854,
+          "external": 42.86,
+          "difference": -0.002857142857145334,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "naisargika",
+          "ours": 8.571428571428571,
+          "external": 8.57,
+          "difference": 0.0014285714285708906,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "drik",
+          "ours": 15.86225058381095,
+          "external": 15.86,
+          "difference": 0.002250583810949891,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "drik",
+          "ours": -21.748730253497595,
+          "external": -21.75,
+          "difference": 0.001269746502405411,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "drik",
+          "ours": 0.9723157128368403,
+          "external": 0.97,
+          "difference": 0.002315712836840289,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "drik",
+          "ours": 15.638181217473276,
+          "external": 15.63,
+          "difference": 0.008181217473275382,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "drik",
+          "ours": -16.030271456694035,
+          "external": -16.03,
+          "difference": -0.00027145669403338957,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "drik",
+          "ours": 18.450114152926886,
+          "external": 18.45,
+          "difference": 0.0001141529268871011,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "drik",
+          "ours": 7.228787079071056,
+          "external": 7.23,
+          "difference": -0.0012129209289444276,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "total_virupas",
+          "ours": 425.5519503307327,
+          "external": 425.4,
+          "difference": 0.15195033073274544,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Moon",
+          "component": "total_virupas",
+          "ours": 389.75402885951877,
+          "external": 389.79,
+          "difference": -0.035971140481251496,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "total_virupas",
+          "ours": 297.8406130655621,
+          "external": 306.6,
+          "difference": -8.759386934437941,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "total_virupas",
+          "ours": 537.2913401283952,
+          "external": 537.35,
+          "difference": -0.05865987160484565,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "total_virupas",
+          "ours": 433.1421516845372,
+          "external": 433.18,
+          "difference": -0.03784831546278156,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "total_virupas",
+          "ours": 376.1128583562376,
+          "external": 376.09,
+          "difference": 0.022858356237634325,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "total_virupas",
+          "ours": 388.41484644371445,
+          "external": 388.28,
+          "difference": 0.13484644371447985,
+          "within_0_05_virupa": false
+        }
+      ],
+      "external_dig_outside_formula_range": [
+        "Mars"
+      ],
+      "external_chesta_outside_formula_range": [],
+      "alternative_circular_dig_comparisons": [
+        {
+          "planet": "Sun",
+          "ours": 48.392884822372764,
+          "external_alternative": 48.39,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "ours": 31.836788908190783,
+          "external_alternative": 31.84,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "ours": 55.424650031189024,
+          "external_alternative": 55.42,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "ours": 21.368940538712383,
+          "external_alternative": 21.37,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "ours": 11.130555403913045,
+          "external_alternative": 11.13,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "ours": 14.860675983931202,
+          "external_alternative": 14.86,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "ours": 57.67447825447351,
+          "external_alternative": 57.67,
+          "within_0_01_virupa": true
+        }
+      ],
+      "external_alternative_circular_dig": {
+        "Sun": 48.39,
+        "Moon": 31.84,
+        "Mars": 55.42,
+        "Mercury": 21.37,
+        "Jupiter": 11.13,
+        "Venus": 14.86,
+        "Saturn": 57.67
+      }
+    },
+    {
+      "case": "rao_example118",
+      "input": {
+        "label": "Book Example 118 \u2014 solar return verification, not the user's chart",
+        "datetime": "1967-03-08T17:40:00",
+        "timezone": "UTC+05:30",
+        "latitude": 26.3,
+        "longitude": 73.06666666666666,
+        "settings": {
+          "ayanamsa": "lahiri",
+          "node": "mean",
+          "engine": "moshier"
+        }
+      },
+      "our_profile": "raman_sripati",
+      "arithmetic_checks": [
+        {
+          "check": "Sun:sthana_sum",
+          "observed": 198.36134690898078,
+          "expected": 198.36134690898078,
+          "passed": true
+        },
+        {
+          "check": "Sun:kala_sum",
+          "observed": 132.9973199104358,
+          "expected": 132.9973199104358,
+          "passed": true
+        },
+        {
+          "check": "Sun:six_component_sum",
+          "observed": 430.50464742355626,
+          "expected": 430.50464742355626,
+          "passed": true
+        },
+        {
+          "check": "Sun:rupas",
+          "observed": 7.175077457059271,
+          "expected": 7.175077457059271,
+          "passed": true
+        },
+        {
+          "check": "Sun:required_ratio",
+          "observed": 1.1038580703168108,
+          "expected": 1.1038580703168108,
+          "passed": true
+        },
+        {
+          "check": "Sun:dig_range",
+          "observed": 34.70408233970655,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Sun:chesta_range",
+          "observed": 0,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Moon:sthana_sum",
+          "observed": 188.30723016726105,
+          "expected": 188.30723016726105,
+          "passed": true
+        },
+        {
+          "check": "Moon:kala_sum",
+          "observed": 174.30810102014715,
+          "expected": 174.30810102014715,
+          "passed": true
+        },
+        {
+          "check": "Moon:six_component_sum",
+          "observed": 448.1647603256515,
+          "expected": 448.1647603256515,
+          "passed": true
+        },
+        {
+          "check": "Moon:rupas",
+          "observed": 7.469412672094192,
+          "expected": 7.469412672094192,
+          "passed": true
+        },
+        {
+          "check": "Moon:required_ratio",
+          "observed": 1.2449021120156987,
+          "expected": 1.2449021120156987,
+          "passed": true
+        },
+        {
+          "check": "Moon:dig_range",
+          "observed": 35.18336773534651,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Moon:chesta_range",
+          "observed": 0,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mars:sthana_sum",
+          "observed": 151.4329248020268,
+          "expected": 151.4329248020268,
+          "passed": true
+        },
+        {
+          "check": "Mars:kala_sum",
+          "observed": 88.41430375161008,
+          "expected": 88.41430375161008,
+          "passed": true
+        },
+        {
+          "check": "Mars:six_component_sum",
+          "observed": 303.3569588860514,
+          "expected": 303.3569588860514,
+          "passed": true
+        },
+        {
+          "check": "Mars:rupas",
+          "observed": 5.055949314767523,
+          "expected": 5.055949314767523,
+          "passed": true
+        },
+        {
+          "check": "Mars:required_ratio",
+          "observed": 1.0111898629535048,
+          "expected": 1.0111898629535048,
+          "passed": true
+        },
+        {
+          "check": "Mars:dig_range",
+          "observed": 9.974339767247415,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mars:chesta_range",
+          "observed": 47.34965458337037,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mercury:sthana_sum",
+          "observed": 216.09882230371625,
+          "expected": 216.09882230371625,
+          "passed": true
+        },
+        {
+          "check": "Mercury:kala_sum",
+          "observed": 195.56716254553362,
+          "expected": 195.56716254553362,
+          "passed": true
+        },
+        {
+          "check": "Mercury:six_component_sum",
+          "observed": 499.88783700726754,
+          "expected": 499.88783700726754,
+          "passed": true
+        },
+        {
+          "check": "Mercury:rupas",
+          "observed": 8.331463950121126,
+          "expected": 8.331463950121126,
+          "passed": true
+        },
+        {
+          "check": "Mercury:required_ratio",
+          "observed": 1.1902091357315894,
+          "expected": 1.1902091357315894,
+          "passed": true
+        },
+        {
+          "check": "Mercury:dig_range",
+          "observed": 1.5558583668333767,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mercury:chesta_range",
+          "observed": 57.55737326722683,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Jupiter:sthana_sum",
+          "observed": 131.89123140022787,
+          "expected": 131.89123140022787,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:kala_sum",
+          "observed": 222.51010451512855,
+          "expected": 222.51010451512855,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:six_component_sum",
+          "observed": 463.8708303780511,
+          "expected": 463.8708303780511,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:rupas",
+          "observed": 7.731180506300851,
+          "expected": 7.731180506300851,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:required_ratio",
+          "observed": 1.1894123855847465,
+          "expected": 1.1894123855847465,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:dig_range",
+          "observed": 46.837578737444154,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Jupiter:chesta_range",
+          "observed": 44.0315031662365,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Venus:sthana_sum",
+          "observed": 174.60712626137098,
+          "expected": 174.60712626137098,
+          "passed": true
+        },
+        {
+          "check": "Venus:kala_sum",
+          "observed": 113.37616452055026,
+          "expected": 113.37616452055026,
+          "passed": true
+        },
+        {
+          "check": "Venus:six_component_sum",
+          "observed": 368.25719960839115,
+          "expected": 368.25719960839115,
+          "passed": true
+        },
+        {
+          "check": "Venus:rupas",
+          "observed": 6.137619993473185,
+          "expected": 6.137619993473185,
+          "passed": true
+        },
+        {
+          "check": "Venus:required_ratio",
+          "observed": 1.1159309079042157,
+          "expected": 1.1159309079042157,
+          "passed": true
+        },
+        {
+          "check": "Venus:dig_range",
+          "observed": 15.883471641236573,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Venus:chesta_range",
+          "observed": 19.58087383723432,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Saturn:sthana_sum",
+          "observed": 119.27822441071213,
+          "expected": 119.27822441071213,
+          "passed": true
+        },
+        {
+          "check": "Saturn:kala_sum",
+          "observed": 179.10463632170024,
+          "expected": 179.10463632170024,
+          "passed": true
+        },
+        {
+          "check": "Saturn:six_component_sum",
+          "observed": 376.3355877248078,
+          "expected": 376.3355877248078,
+          "passed": true
+        },
+        {
+          "check": "Saturn:rupas",
+          "observed": 6.272259795413463,
+          "expected": 6.272259795413463,
+          "passed": true
+        },
+        {
+          "check": "Saturn:required_ratio",
+          "observed": 1.2544519590826926,
+          "expected": 1.2544519590826926,
+          "passed": true
+        },
+        {
+          "check": "Saturn:dig_range",
+          "observed": 51.20687707349583,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Saturn:chesta_range",
+          "observed": 6.190316861182812,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "natural_strength_sum",
+          "observed": 240.0,
+          "expected": 240,
+          "passed": true
+        },
+        {
+          "check": "war_transfer_conservation",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        }
+      ],
+      "our_totals": {
+        "Sun": 430.50464742355626,
+        "Moon": 448.1647603256515,
+        "Mars": 303.3569588860514,
+        "Mercury": 499.88783700726754,
+        "Jupiter": 463.8708303780511,
+        "Venus": 368.25719960839115,
+        "Saturn": 376.3355877248078
+      },
+      "comparisons": [
+        {
+          "planet": "Sun",
+          "component": "sthana",
+          "ours": 198.36134690898078,
+          "external": 198.36,
+          "difference": 0.0013469089807642831,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "sthana",
+          "ours": 188.30723016726105,
+          "external": 188.31,
+          "difference": -0.0027698327389487076,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "sthana",
+          "ours": 151.4329248020268,
+          "external": 151.43,
+          "difference": 0.002924802026797124,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "sthana",
+          "ours": 216.09882230371625,
+          "external": 216.1,
+          "difference": -0.0011776962837473093,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "sthana",
+          "ours": 131.89123140022787,
+          "external": 131.89,
+          "difference": 0.0012314002278799308,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "sthana",
+          "ours": 174.60712626137098,
+          "external": 174.61,
+          "difference": -0.0028737386290345057,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "sthana",
+          "ours": 119.27822441071213,
+          "external": 119.28,
+          "difference": -0.0017755892878739132,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "kala",
+          "ours": 132.9973199104358,
+          "external": 132.97,
+          "difference": 0.02731991043580706,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "kala",
+          "ours": 174.30810102014715,
+          "external": 174.39,
+          "difference": -0.08189897985283778,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mars",
+          "component": "kala",
+          "ours": 88.41430375161008,
+          "external": 88.33,
+          "difference": 0.0843037516100793,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "kala",
+          "ours": 195.56716254553362,
+          "external": 195.64,
+          "difference": -0.07283745446636658,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "kala",
+          "ours": 222.51010451512855,
+          "external": 222.73,
+          "difference": -0.21989548487144361,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Venus",
+          "component": "kala",
+          "ours": 113.37616452055026,
+          "external": 97.83,
+          "difference": 15.546164520550263,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Saturn",
+          "component": "kala",
+          "ours": 179.10463632170024,
+          "external": 179.68,
+          "difference": -0.575363678299766,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "dig",
+          "ours": 34.70408233970655,
+          "external": 34.71,
+          "difference": -0.0059176602934485345,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "dig",
+          "ours": 35.18336773534651,
+          "external": 84.82,
+          "difference": -49.636632264653485,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mars",
+          "component": "dig",
+          "ours": 9.974339767247415,
+          "external": 9.97,
+          "difference": 0.004339767247413917,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "dig",
+          "ours": 1.5558583668333767,
+          "external": 1.55,
+          "difference": 0.005858366833376705,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "dig",
+          "ours": 46.837578737444154,
+          "external": 73.16,
+          "difference": -26.322421262555842,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Venus",
+          "component": "dig",
+          "ours": 15.883471641236573,
+          "external": 104.12,
+          "difference": -88.23652835876344,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Saturn",
+          "component": "dig",
+          "ours": 51.20687707349583,
+          "external": 68.8,
+          "difference": -17.593122926504165,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "chesta",
+          "ours": 0,
+          "external": 0.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "chesta",
+          "ours": 0,
+          "external": 0.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "chesta",
+          "ours": 47.34965458337037,
+          "external": 48.18,
+          "difference": -0.8303454166296262,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "chesta",
+          "ours": 57.55737326722683,
+          "external": 57.27,
+          "difference": 0.2873732672268261,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "chesta",
+          "ours": 44.0315031662365,
+          "external": 76.19,
+          "difference": -32.1584968337635,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Venus",
+          "component": "chesta",
+          "ours": 19.58087383723432,
+          "external": 100.14,
+          "difference": -80.55912616276568,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Saturn",
+          "component": "chesta",
+          "ours": 6.190316861182812,
+          "external": 5.96,
+          "difference": 0.23031686118281236,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "naisargika",
+          "ours": 60.0,
+          "external": 60.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "naisargika",
+          "ours": 51.42857142857143,
+          "external": 51.43,
+          "difference": -0.0014285714285691142,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "naisargika",
+          "ours": 17.142857142857142,
+          "external": 17.14,
+          "difference": 0.002857142857141781,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "naisargika",
+          "ours": 25.714285714285715,
+          "external": 25.71,
+          "difference": 0.004285714285714448,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "naisargika",
+          "ours": 34.285714285714285,
+          "external": 34.29,
+          "difference": -0.004285714285714448,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "naisargika",
+          "ours": 42.857142857142854,
+          "external": 42.86,
+          "difference": -0.002857142857145334,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "naisargika",
+          "ours": 8.571428571428571,
+          "external": 8.57,
+          "difference": 0.0014285714285708906,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "drik",
+          "ours": 4.441898264433135,
+          "external": 4.44,
+          "difference": 0.0018982644331346776,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "drik",
+          "ours": -1.0625100256746016,
+          "external": -1.06,
+          "difference": -0.002510025674601568,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "drik",
+          "ours": -10.95712116106037,
+          "external": -10.96,
+          "difference": 0.0028788389396314784,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "drik",
+          "ours": 3.3943348096717543,
+          "external": 3.39,
+          "difference": 0.004334809671754147,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "drik",
+          "ours": -15.68530172670026,
+          "external": -15.69,
+          "difference": 0.004698273299739597,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "drik",
+          "ours": 1.9524204908561344,
+          "external": 1.95,
+          "difference": 0.002420490856134494,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "drik",
+          "ours": 11.984104486288238,
+          "external": 11.98,
+          "difference": 0.004104486288238007,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "total_virupas",
+          "ours": 430.50464742355626,
+          "external": 430.48,
+          "difference": 0.02464742355624594,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "total_virupas",
+          "ours": 448.1647603256515,
+          "external": 497.89,
+          "difference": -49.72523967434847,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mars",
+          "component": "total_virupas",
+          "ours": 303.3569588860514,
+          "external": 304.09,
+          "difference": -0.7330411139485591,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "total_virupas",
+          "ours": 499.88783700726754,
+          "external": 499.66,
+          "difference": 0.22783700726751022,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "total_virupas",
+          "ours": 463.8708303780511,
+          "external": 522.57,
+          "difference": -58.699169621948954,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Venus",
+          "component": "total_virupas",
+          "ours": 368.25719960839115,
+          "external": 521.51,
+          "difference": -153.25280039160884,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Saturn",
+          "component": "total_virupas",
+          "ours": 376.3355877248078,
+          "external": 394.27,
+          "difference": -17.934412275192187,
+          "within_0_05_virupa": false
+        }
+      ],
+      "external_dig_outside_formula_range": [
+        "Moon",
+        "Jupiter",
+        "Venus",
+        "Saturn"
+      ],
+      "external_chesta_outside_formula_range": [
+        "Jupiter",
+        "Venus"
+      ],
+      "alternative_circular_dig_comparisons": [
+        {
+          "planet": "Sun",
+          "ours": 34.70408233970655,
+          "external_alternative": 34.71,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "ours": 35.18336773534651,
+          "external_alternative": 35.18,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "ours": 9.974339767247415,
+          "external_alternative": 9.97,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "ours": 1.5558583668333767,
+          "external_alternative": 1.55,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "ours": 46.837578737444154,
+          "external_alternative": 46.84,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "ours": 15.883471641236573,
+          "external_alternative": 15.88,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "ours": 51.20687707349583,
+          "external_alternative": 51.2,
+          "within_0_01_virupa": true
+        }
+      ],
+      "external_alternative_circular_dig": {
+        "Sun": 34.71,
+        "Moon": 35.18,
+        "Mars": 9.97,
+        "Mercury": 1.55,
+        "Jupiter": 46.84,
+        "Venus": 15.88,
+        "Saturn": 51.2
+      }
+    },
+    {
+      "case": "rao_example118_return",
+      "input": {
+        "label": "Book Example 118 \u2014 solar return verification, not the user's chart",
+        "datetime": "2000-03-08T04:41:11.969815+05:30",
+        "timezone": "UTC+05:30",
+        "latitude": 26.3,
+        "longitude": 73.06666666666666,
+        "settings": {
+          "ayanamsa": "lahiri",
+          "node": "mean",
+          "engine": "moshier"
+        }
+      },
+      "our_profile": "raman_sripati",
+      "arithmetic_checks": [
+        {
+          "check": "Sun:sthana_sum",
+          "observed": 183.36134690945826,
+          "expected": 183.36134690945826,
+          "passed": true
+        },
+        {
+          "check": "Sun:kala_sum",
+          "observed": 119.87566952055059,
+          "expected": 119.87566952055059,
+          "passed": true
+        },
+        {
+          "check": "Sun:six_component_sum",
+          "observed": 383.77012694654826,
+          "expected": 383.77012694654826,
+          "passed": true
+        },
+        {
+          "check": "Sun:rupas",
+          "observed": 6.396168782442471,
+          "expected": 6.396168782442471,
+          "passed": true
+        },
+        {
+          "check": "Sun:required_ratio",
+          "observed": 0.9840259665296109,
+          "expected": 0.9840259665296109,
+          "passed": true
+        },
+        {
+          "check": "Sun:dig_range",
+          "observed": 20.533110516539427,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Sun:chesta_range",
+          "observed": 0,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Moon:sthana_sum",
+          "observed": 212.8266005206841,
+          "expected": 212.8266005206841,
+          "passed": true
+        },
+        {
+          "check": "Moon:kala_sum",
+          "observed": 171.78192032655454,
+          "expected": 171.78192032655454,
+          "passed": true
+        },
+        {
+          "check": "Moon:six_component_sum",
+          "observed": 484.1528911574027,
+          "expected": 484.1528911574027,
+          "passed": true
+        },
+        {
+          "check": "Moon:rupas",
+          "observed": 8.069214852623379,
+          "expected": 8.069214852623379,
+          "passed": true
+        },
+        {
+          "check": "Moon:required_ratio",
+          "observed": 1.3448691421038963,
+          "expected": 1.3448691421038963,
+          "passed": true
+        },
+        {
+          "check": "Moon:dig_range",
+          "observed": 46.598809761353095,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Moon:chesta_range",
+          "observed": 0,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mars:sthana_sum",
+          "observed": 213.51309945433957,
+          "expected": 213.51309945433957,
+          "passed": true
+        },
+        {
+          "check": "Mars:kala_sum",
+          "observed": 297.83096357357266,
+          "expected": 297.83096357357266,
+          "passed": true
+        },
+        {
+          "check": "Mars:six_component_sum",
+          "observed": 552.9311371466885,
+          "expected": 552.9311371466885,
+          "passed": true
+        },
+        {
+          "check": "Mars:rupas",
+          "observed": 9.215518952444807,
+          "expected": 9.215518952444807,
+          "passed": true
+        },
+        {
+          "check": "Mars:required_ratio",
+          "observed": 1.8431037904889616,
+          "expected": 1.8431037904889616,
+          "passed": true
+        },
+        {
+          "check": "Mars:dig_range",
+          "observed": 10.15755688033723,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mars:chesta_range",
+          "observed": 12.910503588918155,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mercury:sthana_sum",
+          "observed": 198.67906486771082,
+          "expected": 198.67906486771082,
+          "passed": true
+        },
+        {
+          "check": "Mercury:kala_sum",
+          "observed": 169.99502057468314,
+          "expected": 169.99502057468314,
+          "passed": true
+        },
+        {
+          "check": "Mercury:six_component_sum",
+          "observed": 486.6489518139385,
+          "expected": 486.6489518139385,
+          "passed": true
+        },
+        {
+          "check": "Mercury:rupas",
+          "observed": 8.11081586356564,
+          "expected": 8.11081586356564,
+          "passed": true
+        },
+        {
+          "check": "Mercury:required_ratio",
+          "observed": 1.1586879805093773,
+          "expected": 1.1586879805093773,
+          "passed": true
+        },
+        {
+          "check": "Mercury:dig_range",
+          "observed": 49.77428981615564,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Mercury:chesta_range",
+          "observed": 54.697790927481755,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Jupiter:sthana_sum",
+          "observed": 256.725405961049,
+          "expected": 256.725405961049,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:kala_sum",
+          "observed": 162.83837233192736,
+          "expected": 162.83837233192736,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:six_component_sum",
+          "observed": 502.31507181804864,
+          "expected": 502.31507181804864,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:rupas",
+          "observed": 8.371917863634144,
+          "expected": 8.371917863634144,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:required_ratio",
+          "observed": 1.2879873636360222,
+          "expected": 1.2879873636360222,
+          "passed": true
+        },
+        {
+          "check": "Jupiter:dig_range",
+          "observed": 30.203152320729185,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Jupiter:chesta_range",
+          "observed": 17.43204426171148,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Venus:sthana_sum",
+          "observed": 273.27563081165056,
+          "expected": 273.27563081165056,
+          "passed": true
+        },
+        {
+          "check": "Venus:kala_sum",
+          "observed": 39.04122190274627,
+          "expected": 39.04122190274627,
+          "passed": true
+        },
+        {
+          "check": "Venus:six_component_sum",
+          "observed": 388.5919754105581,
+          "expected": 388.5919754105581,
+          "passed": true
+        },
+        {
+          "check": "Venus:rupas",
+          "observed": 6.476532923509302,
+          "expected": 6.476532923509302,
+          "passed": true
+        },
+        {
+          "check": "Venus:required_ratio",
+          "observed": 1.177551440638055,
+          "expected": 1.177551440638055,
+          "passed": true
+        },
+        {
+          "check": "Venus:dig_range",
+          "observed": 31.297840052319525,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Venus:chesta_range",
+          "observed": 14.492463312292594,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Saturn:sthana_sum",
+          "observed": 172.78173130403462,
+          "expected": 172.78173130403462,
+          "passed": true
+        },
+        {
+          "check": "Saturn:kala_sum",
+          "observed": 103.43301951082258,
+          "expected": 103.43301951082258,
+          "passed": true
+        },
+        {
+          "check": "Saturn:six_component_sum",
+          "observed": 337.35038059962835,
+          "expected": 337.35038059962835,
+          "passed": true
+        },
+        {
+          "check": "Saturn:rupas",
+          "observed": 5.62250634332714,
+          "expected": 5.62250634332714,
+          "passed": true
+        },
+        {
+          "check": "Saturn:required_ratio",
+          "observed": 1.1245012686654279,
+          "expected": 1.1245012686654279,
+          "passed": true
+        },
+        {
+          "check": "Saturn:dig_range",
+          "observed": 32.789710414187255,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "Saturn:chesta_range",
+          "observed": 20.396233794347,
+          "expected_range": [
+            0,
+            60
+          ],
+          "passed": true
+        },
+        {
+          "check": "natural_strength_sum",
+          "observed": 240.0,
+          "expected": 240,
+          "passed": true
+        },
+        {
+          "check": "war_transfer_conservation",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        }
+      ],
+      "our_totals": {
+        "Sun": 383.77012694654826,
+        "Moon": 484.1528911574027,
+        "Mars": 552.9311371466885,
+        "Mercury": 486.6489518139385,
+        "Jupiter": 502.31507181804864,
+        "Venus": 388.5919754105581,
+        "Saturn": 337.35038059962835
+      },
+      "comparisons": [
+        {
+          "planet": "Sun",
+          "component": "sthana",
+          "ours": 183.36134690945826,
+          "external": 183.36,
+          "difference": 0.0013469094582490015,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "sthana",
+          "ours": 212.8266005206841,
+          "external": 212.83,
+          "difference": -0.003399479315902454,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "sthana",
+          "ours": 213.51309945433957,
+          "external": 213.51,
+          "difference": 0.0030994543395763685,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "sthana",
+          "ours": 198.67906486771082,
+          "external": 198.68,
+          "difference": -0.0009351322891859581,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "sthana",
+          "ours": 256.725405961049,
+          "external": 256.73,
+          "difference": -0.004594038951040602,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "sthana",
+          "ours": 273.27563081165056,
+          "external": 273.28,
+          "difference": -0.004369188349414799,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "sthana",
+          "ours": 172.78173130403462,
+          "external": 172.78,
+          "difference": 0.0017313040346209618,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "kala",
+          "ours": 119.87566952055059,
+          "external": 179.87,
+          "difference": -59.99433047944942,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Moon",
+          "component": "kala",
+          "ours": 171.78192032655454,
+          "external": 89.45,
+          "difference": 82.33192032655454,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mars",
+          "component": "kala",
+          "ours": 297.83096357357266,
+          "external": 219.05,
+          "difference": 78.78096357357265,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "kala",
+          "ours": 169.99502057468314,
+          "external": 170.08,
+          "difference": -0.08497942531687386,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "kala",
+          "ours": 162.83837233192736,
+          "external": 163.58,
+          "difference": -0.7416276680726526,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Venus",
+          "component": "kala",
+          "ours": 39.04122190274627,
+          "external": 38.93,
+          "difference": 0.11122190274627286,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Saturn",
+          "component": "kala",
+          "ours": 103.43301951082258,
+          "external": 102.73,
+          "difference": 0.7030195108225712,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "dig",
+          "ours": 20.533110516539427,
+          "external": 99.47,
+          "difference": -78.93688948346058,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Moon",
+          "component": "dig",
+          "ours": 46.598809761353095,
+          "external": 46.6,
+          "difference": -0.0011902386469060389,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "dig",
+          "ours": 10.15755688033723,
+          "external": 109.85,
+          "difference": -99.69244311966277,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "dig",
+          "ours": 49.77428981615564,
+          "external": 70.23,
+          "difference": -20.455710183844367,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "dig",
+          "ours": 30.203152320729185,
+          "external": 30.2,
+          "difference": 0.003152320729185476,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "dig",
+          "ours": 31.297840052319525,
+          "external": 31.3,
+          "difference": -0.002159947680475227,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "dig",
+          "ours": 32.789710414187255,
+          "external": 87.21,
+          "difference": -54.42028958581274,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "chesta",
+          "ours": 0,
+          "external": 0.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "chesta",
+          "ours": 0,
+          "external": 0.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "chesta",
+          "ours": 12.910503588918155,
+          "external": 47.39,
+          "difference": -34.47949641108185,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "chesta",
+          "ours": 54.697790927481755,
+          "external": 54.41,
+          "difference": 0.2877909274817583,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "chesta",
+          "ours": 17.43204426171148,
+          "external": 102.77,
+          "difference": -85.33795573828851,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Venus",
+          "component": "chesta",
+          "ours": 14.492463312292594,
+          "external": 14.2,
+          "difference": 0.29246331229259503,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Saturn",
+          "component": "chesta",
+          "ours": 20.396233794347,
+          "external": 99.82,
+          "difference": -79.423766205653,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "naisargika",
+          "ours": 60.0,
+          "external": 60.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "naisargika",
+          "ours": 51.42857142857143,
+          "external": 51.43,
+          "difference": -0.0014285714285691142,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "naisargika",
+          "ours": 17.142857142857142,
+          "external": 17.14,
+          "difference": 0.002857142857141781,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "naisargika",
+          "ours": 25.714285714285715,
+          "external": 25.71,
+          "difference": 0.004285714285714448,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "naisargika",
+          "ours": 34.285714285714285,
+          "external": 34.29,
+          "difference": -0.004285714285714448,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "naisargika",
+          "ours": 42.857142857142854,
+          "external": 42.86,
+          "difference": -0.002857142857145334,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "naisargika",
+          "ours": 8.571428571428571,
+          "external": 8.57,
+          "difference": 0.0014285714285708906,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Sun",
+          "component": "drik",
+          "ours": 0.0,
+          "external": 0.0,
+          "difference": 0.0,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "component": "drik",
+          "ours": 1.5169891202394865,
+          "external": 1.52,
+          "difference": -0.0030108797605135074,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "component": "drik",
+          "ours": 1.376156506663662,
+          "external": 1.38,
+          "difference": -0.003843493336337822,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "component": "drik",
+          "ours": -12.211500086378585,
+          "external": -12.21,
+          "difference": -0.0015000863785843421,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "component": "drik",
+          "ours": 0.8303826569173793,
+          "external": 0.83,
+          "difference": 0.0003826569173793759,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "component": "drik",
+          "ours": -12.372323525593664,
+          "external": -12.37,
+          "difference": -0.00232352559366511,
+          "within_0_05_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "component": "drik",
+          "ours": -0.6217429951916884,
+          "external": 0.36,
+          "difference": -0.9817429951916884,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Sun",
+          "component": "total_virupas",
+          "ours": 383.77012694654826,
+          "external": 522.7,
+          "difference": -138.9298730534518,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Moon",
+          "component": "total_virupas",
+          "ours": 484.1528911574027,
+          "external": 401.83,
+          "difference": 82.3228911574027,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mars",
+          "component": "total_virupas",
+          "ours": 552.9311371466885,
+          "external": 608.32,
+          "difference": -55.38886285331159,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Mercury",
+          "component": "total_virupas",
+          "ours": 486.6489518139385,
+          "external": 506.9,
+          "difference": -20.251048186061496,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Jupiter",
+          "component": "total_virupas",
+          "ours": 502.31507181804864,
+          "external": 588.4,
+          "difference": -86.08492818195134,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Venus",
+          "component": "total_virupas",
+          "ours": 388.5919754105581,
+          "external": 388.2,
+          "difference": 0.3919754105581319,
+          "within_0_05_virupa": false
+        },
+        {
+          "planet": "Saturn",
+          "component": "total_virupas",
+          "ours": 337.35038059962835,
+          "external": 471.47,
+          "difference": -134.11961940037168,
+          "within_0_05_virupa": false
+        }
+      ],
+      "external_dig_outside_formula_range": [
+        "Sun",
+        "Mars",
+        "Mercury",
+        "Saturn"
+      ],
+      "external_chesta_outside_formula_range": [
+        "Jupiter",
+        "Saturn"
+      ],
+      "alternative_circular_dig_comparisons": [
+        {
+          "planet": "Sun",
+          "ours": 20.533110516539427,
+          "external_alternative": 20.53,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Moon",
+          "ours": 46.598809761353095,
+          "external_alternative": 46.6,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Mars",
+          "ours": 10.15755688033723,
+          "external_alternative": 10.15,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Mercury",
+          "ours": 49.77428981615564,
+          "external_alternative": 49.77,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Jupiter",
+          "ours": 30.203152320729185,
+          "external_alternative": 30.2,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Venus",
+          "ours": 31.297840052319525,
+          "external_alternative": 31.3,
+          "within_0_01_virupa": true
+        },
+        {
+          "planet": "Saturn",
+          "ours": 32.789710414187255,
+          "external_alternative": 32.79,
+          "within_0_01_virupa": true
+        }
+      ],
+      "external_alternative_circular_dig": {
+        "Sun": 20.53,
+        "Moon": 46.6,
+        "Mars": 10.15,
+        "Mercury": 49.77,
+        "Jupiter": 30.2,
+        "Venus": 31.3,
+        "Saturn": 32.79
+      }
+    }
+  ],
+  "conclusion": "Arithmetic and source audit completed. Full independent numerical equivalence is not established.",
+  "comparison_limits": [
+    "The 0.05-virupa threshold is a diagnostic display threshold, not an adjusted acceptance criterion.",
+    "PyJHora native Dig uses an unwrapped longitude difference; its alternative circular routine is reported separately, never substituted into its totals.",
+    "Native Cheshta also uses a linear longitude average and unwrapped difference; its out-of-range results are retained as failures of that reference formula.",
+    "Hora, declination/Ayana, historical motional formulae, epoch and planetary-war policies can differ.",
+    "Source errors and convention differences cannot be resolved by forcing one total to match another.",
+    "These scores do not measure physical forces or demonstrate predictive accuracy."
+  ]
+}

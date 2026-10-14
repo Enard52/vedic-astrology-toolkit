@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Vedic Astrology Toolkit"
+version: 0.4.0
+date-released: 2026-10-14
+license: AGPL-3.0-or-later
+repository-code: "https://github.com/chethandvg/vedic-astrology-toolkit"
+authors:
+  - given-names: Chethan
+keywords:
+  - vedic astrology
+  - jyotish
+  - swiss ephemeris
+references:
+  - type: book
+    title: "Vedic Astrology: An Integrated Approach"
+    authors:
+      - family-names: Rao
+        given-names: "P. V. R. Narasimha"

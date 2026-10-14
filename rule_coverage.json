@@ -1,0 +1,902 @@
+{
+  "version": "0.4.0",
+  "scope": "Natal D1 rule inventory with specified divisional dependencies, deterministic execution coverage and conditional feasibility checks; not independent validation of every rule or predictive evidence",
+  "count": 170,
+  "rules": [
+    {
+      "name": "Vesi",
+      "pdf_page": 107,
+      "category": "luminary"
+    },
+    {
+      "name": "Vosi",
+      "pdf_page": 107,
+      "category": "luminary"
+    },
+    {
+      "name": "Ubhayachara",
+      "pdf_page": 107,
+      "category": "luminary"
+    },
+    {
+      "name": "Sunaphaa",
+      "pdf_page": 108,
+      "category": "luminary"
+    },
+    {
+      "name": "Anaphaa",
+      "pdf_page": 108,
+      "category": "luminary"
+    },
+    {
+      "name": "Duradhara",
+      "pdf_page": 108,
+      "category": "luminary"
+    },
+    {
+      "name": "Budha-Aaditya",
+      "pdf_page": 107,
+      "category": "popular"
+    },
+    {
+      "name": "Kemadruma",
+      "pdf_page": 109,
+      "category": "lunar"
+    },
+    {
+      "name": "Chandra-Mangala",
+      "pdf_page": 109,
+      "category": "popular"
+    },
+    {
+      "name": "Adhi",
+      "pdf_page": 109,
+      "category": "popular"
+    },
+    {
+      "name": "Ruchaka",
+      "pdf_page": 110,
+      "category": "mahapurusha"
+    },
+    {
+      "name": "Bhadra",
+      "pdf_page": 110,
+      "category": "mahapurusha"
+    },
+    {
+      "name": "Sasa",
+      "pdf_page": 110,
+      "category": "mahapurusha"
+    },
+    {
+      "name": "Maalavya",
+      "pdf_page": 111,
+      "category": "mahapurusha"
+    },
+    {
+      "name": "Hamsa",
+      "pdf_page": 111,
+      "category": "mahapurusha"
+    },
+    {
+      "name": "Rajju",
+      "pdf_page": 112,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Musala",
+      "pdf_page": 112,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Nala",
+      "pdf_page": 112,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Maalaa",
+      "pdf_page": 112,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Sarpa",
+      "pdf_page": 112,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Gadaa",
+      "pdf_page": 112,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Sakata",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Vihanga",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Sringaataka",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Hala",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Vajra",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Yava",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Kamala",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Vaapi",
+      "pdf_page": 113,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Yoopa",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Sara",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Sakti",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Danda",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Naukaa",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Koota",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Chatra",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Chaapa",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Ardha Chandra",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Chakra",
+      "pdf_page": 114,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Samudra",
+      "pdf_page": 115,
+      "category": "nabhasa"
+    },
+    {
+      "name": "Gola",
+      "pdf_page": 115,
+      "category": "sankhya"
+    },
+    {
+      "name": "Yuga",
+      "pdf_page": 115,
+      "category": "sankhya"
+    },
+    {
+      "name": "Soola",
+      "pdf_page": 115,
+      "category": "sankhya"
+    },
+    {
+      "name": "Kedaara",
+      "pdf_page": 115,
+      "category": "sankhya"
+    },
+    {
+      "name": "Paasa",
+      "pdf_page": 115,
+      "category": "sankhya"
+    },
+    {
+      "name": "Daama",
+      "pdf_page": 115,
+      "category": "sankhya"
+    },
+    {
+      "name": "Veenaa",
+      "pdf_page": 115,
+      "category": "sankhya"
+    },
+    {
+      "name": "Subha",
+      "pdf_page": 116,
+      "category": "popular"
+    },
+    {
+      "name": "Asubha",
+      "pdf_page": 116,
+      "category": "popular"
+    },
+    {
+      "name": "Gaja-Kesari",
+      "pdf_page": 116,
+      "category": "popular"
+    },
+    {
+      "name": "Guru-Mangala",
+      "pdf_page": 116,
+      "category": "popular"
+    },
+    {
+      "name": "Amala",
+      "pdf_page": 117,
+      "category": "popular"
+    },
+    {
+      "name": "Parvata",
+      "pdf_page": 117,
+      "category": "popular"
+    },
+    {
+      "name": "Kaahala",
+      "pdf_page": 117,
+      "category": "popular"
+    },
+    {
+      "name": "Chaamara",
+      "pdf_page": 117,
+      "category": "popular"
+    },
+    {
+      "name": "Sankha",
+      "pdf_page": 117,
+      "category": "popular"
+    },
+    {
+      "name": "Bheri",
+      "pdf_page": 117,
+      "category": "popular"
+    },
+    {
+      "name": "Mridanga",
+      "pdf_page": 117,
+      "category": "popular"
+    },
+    {
+      "name": "Sreenaatha",
+      "pdf_page": 118,
+      "category": "popular"
+    },
+    {
+      "name": "Matsya",
+      "pdf_page": 118,
+      "category": "popular"
+    },
+    {
+      "name": "Koorma",
+      "pdf_page": 118,
+      "category": "popular"
+    },
+    {
+      "name": "Khadga",
+      "pdf_page": 118,
+      "category": "popular"
+    },
+    {
+      "name": "Kusuma",
+      "pdf_page": 118,
+      "category": "popular"
+    },
+    {
+      "name": "Kalaanidhi",
+      "pdf_page": 118,
+      "category": "popular"
+    },
+    {
+      "name": "Kalpadruma",
+      "pdf_page": 118,
+      "category": "popular"
+    },
+    {
+      "name": "Lagnaadhi",
+      "pdf_page": 120,
+      "category": "popular"
+    },
+    {
+      "name": "Hari",
+      "pdf_page": 120,
+      "category": "popular"
+    },
+    {
+      "name": "Hara",
+      "pdf_page": 120,
+      "category": "popular"
+    },
+    {
+      "name": "Brahma",
+      "pdf_page": 120,
+      "category": "popular"
+    },
+    {
+      "name": "Brahma_alternative",
+      "pdf_page": 120,
+      "category": "popular"
+    },
+    {
+      "name": "Vishnu",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Siva",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Trilochana",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Gouri",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Chandikaa",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Lakshmi",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Saarada",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Bhaarathi",
+      "pdf_page": 121,
+      "category": "popular"
+    },
+    {
+      "name": "Saraswathi",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Amsaavatara",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Devendra",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Indra",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Ravi",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Bhaaskara",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Kulavardhana",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Vasumati",
+      "pdf_page": 122,
+      "category": "popular"
+    },
+    {
+      "name": "Gandharva",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Go",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Vidyut",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Chapa",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Pushkala",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Makuta",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Jaya",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Harsha",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Sarala",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Vimala",
+      "pdf_page": 123,
+      "category": "popular"
+    },
+    {
+      "name": "Basic_Raaja",
+      "pdf_page": 124,
+      "category": "raaja"
+    },
+    {
+      "name": "Dharma_Karmadhipati",
+      "pdf_page": 124,
+      "category": "raaja"
+    },
+    {
+      "name": "Vipareeta_Raaja_base",
+      "pdf_page": 124,
+      "category": "raaja"
+    },
+    {
+      "name": "Vipareeta_Raaja_ideal",
+      "pdf_page": 124,
+      "category": "raaja"
+    },
+    {
+      "name": "Dhana_Ar_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Ar_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Ta_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Ta_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Ge_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Ge_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Cn_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Cn_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Le_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Le_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Vi_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Vi_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Li_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Li_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Sc_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Sc_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Sg_5_11",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Sg_asc",
+      "pdf_page": 130,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Cp_5_11",
+      "pdf_page": 131,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Cp_asc",
+      "pdf_page": 131,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Aq_5_11",
+      "pdf_page": 131,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Aq_asc",
+      "pdf_page": 131,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Pi_5_11",
+      "pdf_page": 131,
+      "category": "dhana"
+    },
+    {
+      "name": "Dhana_Pi_asc",
+      "pdf_page": 131,
+      "category": "dhana"
+    },
+    {
+      "name": "advanced_raaja_01",
+      "pdf_page": 127,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_02",
+      "pdf_page": 127,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_03",
+      "pdf_page": 127,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_04",
+      "pdf_page": 127,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_05",
+      "pdf_page": 127,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_06",
+      "pdf_page": 127,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_07",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_08",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_09",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_10",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_11",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_12",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_13",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_14",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_15",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_16",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_17",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "advanced_raaja_18",
+      "pdf_page": 128,
+      "category": "advanced_raaja"
+    },
+    {
+      "name": "raaja_sambandha_01",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_02",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_03",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_04",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_05",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_06",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_07",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_08",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_09",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_10",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_11",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_12",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_13",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_14",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "raaja_sambandha_15",
+      "pdf_page": 129,
+      "category": "raaja_sambandha"
+    },
+    {
+      "name": "daridra_01",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_02",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_03",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_04",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_05",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_06",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_07",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_08",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_09",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_10",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_11",
+      "pdf_page": 131,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_12",
+      "pdf_page": 132,
+      "category": "daridra"
+    },
+    {
+      "name": "daridra_13",
+      "pdf_page": 132,
+      "category": "daridra"
+    }
+  ],
+  "qualifications": {
+    "interaction_names": [
+      "Kemadruma_angular_exception",
+      "Sankhya_subordination",
+      "Gaja_Kesari_alternative",
+      "Vasumati_full_results",
+      "Daridra_11_trinal_relief",
+      "Daridra_12_reversal",
+      "Daridra_13_alternative"
+    ],
+    "raaja_factors": [
+      "association_closeness",
+      "functional_malefic_influences",
+      "combustion",
+      "debilitation",
+      "inimical_sign",
+      "avasthas",
+      "dasavarga_counts"
+    ],
+    "limits": "Selected participant qualifications, not independently validated every-branch synthesis; D1 only."
+  },
+  "execution_audit": {
+    "file": "yoga_audit_results.json",
+    "cases": 590,
+    "rule_evaluations": 100300,
+    "both_met_and_not_met": 165,
+    "profile_incompatible": 5,
+    "source_placement_checks_passed": 8,
+    "reported_condition_fields": 316,
+    "fields_with_true_and_false": 313,
+    "not_exhaustive_python_branch_coverage": true,
+    "case_physical_feasibility_not_required": true
+  },
+  "profile_conflicts": {
+    "file": "profile_conflicts.json",
+    "entries": [
+      "Gola",
+      "advanced_raaja_07",
+      "advanced_raaja_13",
+      "advanced_raaja_17",
+      "Kulavardhana"
+    ],
+    "textual_adjudication_complete": false
+  },
+  "catalog_review": "Every entry gets an interpretation review row; complete participant qualification is not implied"
+}

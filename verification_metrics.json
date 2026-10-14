@@ -1,0 +1,21 @@
+{
+  "book118_return_local": "2000-03-08T04:41:11.969815+05:30",
+  "book118_return_reference": "2000-03-08T04:41:21+05:30",
+  "book118_return_delta_seconds": -9.030166268348694,
+  "book118_natal_sun_delta_arcseconds": -22.453383007677985,
+  "solar_return_equation_residual_degrees": 1.432454155292362e-09,
+  "independent_sun_checks": [
+    {
+      "jd_ut1": 2446895.5,
+      "difference_arcseconds": 12.502546642804191
+    },
+    {
+      "jd_ut1": 2451545.0,
+      "difference_arcseconds": -13.08673247817751
+    },
+    {
+      "jd_ut1": 2460000.5,
+      "difference_arcseconds": -16.48374555970804
+    }
+  ]
+}

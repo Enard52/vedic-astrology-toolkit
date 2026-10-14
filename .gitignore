@@ -1,0 +1,80 @@
+# Copyrighted source material: never commit the book, its extracted text or page renders
+*.pdf
+book_index/
+extracted_book/
+book_text.txt
+book_index.json
+page_[0-9][0-9][0-9].png
+
+# Personal chart data: keep your own birth details out of git
+/private/
+/local/
+*.local.json
+/birth*.json
+/my_*.json
+/evidence*.json
+/forecasts*.json
+/task_time*.json
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.ipynb_checkpoints/
+build/
+dist/
+*.log
+*.tmp
+
+# Ephemeris kernels and data files (download separately)
+*.bsp
+*.se1
+
+# Command outputs generated from the README examples
+/chart.json
+/strengths.json
+/yogas.json
+/vimsottari.json
+/d10_narayana.json
+/kalachakra.json
+/moola.json
+/kendradi.json
+/election_review.json
+/election_samples.json
+/annual_2000.json
+/transits.json
+/sensitivity.json
+/candidates.json
+/evaluation.json
+/decision.json
+/cohort.json
+/experimental_moola.json
+
+# Future web app
+node_modules/
+.vite/
+.astro/
+.cache/
+
+# Editors, OS, local tool settings
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+.claude/settings.local.json

@@ -1,0 +1,302 @@
+{
+  ".gitattributes": {
+    "bytes": 177,
+    "sha256": "dc32ec9e4eff77e91fc9e810e469fdbc5e35506dd0623355ab0c080daf82b1b8"
+  },
+  ".github/workflows/tests.yml": {
+    "bytes": 869,
+    "sha256": "7d793751bef72ef26e17afc92c71c9a05871e36aea616448fbc2236aa6543413"
+  },
+  ".gitignore": {
+    "bytes": 1157,
+    "sha256": "97a3599deafa4195a619ab020df0457b01e317e68ee954d149af5cac32f2b59c"
+  },
+  "BOOK_LANDSCAPE.md": {
+    "bytes": 4030,
+    "sha256": "c54fdae5dd3f45de687024d98b8e19efd9dbb70ca65bdb9607887d28e5738471"
+  },
+  "CALCULATION_PROFILE.md": {
+    "bytes": 17273,
+    "sha256": "119a3d5ae8a8bc84f5058f6ba7cbc241fb80758afcfbb5153158770a356838a5"
+  },
+  "CITATION.cff": {
+    "bytes": 512,
+    "sha256": "9772609044e2b9c40dbd54d4f380c812b1cb03e0df14f9ef2a39d4b4eee16dca"
+  },
+  "COMPLETION_REPORT.md": {
+    "bytes": 8599,
+    "sha256": "80fe770a303f27d42da7bbf744eea8b624165355758cbafc7ffbc1cec063abe9"
+  },
+  "INPUT_FORMATS.md": {
+    "bytes": 7800,
+    "sha256": "38cbc1d6052aa7f492b7c4ce72e3d35b6e1f206a6bd99eafc351e13399270c17"
+  },
+  "LICENSE.txt": {
+    "bytes": 34523,
+    "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+  },
+  "PREDICTION_STUDY_PROTOCOL.md": {
+    "bytes": 7169,
+    "sha256": "82b69773aa0987eda974dc9d6e5157c6936258c9a9ef9555cfd750f442916c44"
+  },
+  "PREDICTION_WORKFLOW.md": {
+    "bytes": 8153,
+    "sha256": "7b834043e1af8c1e08a3f0b3f8c8dd44279279b4d34f7517a70782e1cdafcb09"
+  },
+  "README.md": {
+    "bytes": 12921,
+    "sha256": "ffdce1a6a05ef92166b194e2802528bc145beb3529e3e4ffda67904d59d1df27"
+  },
+  "RESEARCH_CLOSEOUT.md": {
+    "bytes": 12838,
+    "sha256": "adeab05ba2b952af30b0aa846616169ef9b1fc6f9b70e6a8d9e1a841d1fc5821"
+  },
+  "RESEARCH_SOURCES.json": {
+    "bytes": 5190,
+    "sha256": "6e97da2df8e01ac10e1bb5a7b1b11355fc974434bce2e10bc9611dd9ed14f8a0"
+  },
+  "RESOLUTION_LEDGER.md": {
+    "bytes": 18602,
+    "sha256": "550413607665869d75814a427cca57ace1b4f603276744400699440062d2e942"
+  },
+  "VERIFICATION_HISTORY_v0_3.md": {
+    "bytes": 29869,
+    "sha256": "5ee5c61cd9550d71e99fc9b932f01ca7d96e4cf3a321b5b5d09e6d57dd8a9a44"
+  },
+  "Vedic_Calculation_Verification.md": {
+    "bytes": 47175,
+    "sha256": "4a0dcc363111ec187093bfc09be5939f5b03f00005b3330cf2e39d9cfb109dac"
+  },
+  "audit_profile_conflicts.py": {
+    "bytes": 3562,
+    "sha256": "6da6219938e4f3067c93107ec289c99a833005c24531a4725ab2e1f94f785200"
+  },
+  "audit_strengths.py": {
+    "bytes": 9563,
+    "sha256": "3c97609adc5fa1ffb63895ceb048f51dba7833846b75577d8a77626cecfe13d8"
+  },
+  "audit_yogas.py": {
+    "bytes": 11173,
+    "sha256": "ace5189c14e5a6fd1e753264f8ad25ecb36b5429ee99870ad76834a50f201728"
+  },
+  "benchmark_astronomy.py": {
+    "bytes": 5954,
+    "sha256": "4a649e03c1c4cb6bafbb06920b5c047eed2de69b732c4270d50d9d7e717e280e"
+  },
+  "examples/book_example_118.json": {
+    "bytes": 279,
+    "sha256": "d443c7124ed4ac89419748d6e2167fb7debd8733f398086799fdb18fac74d679"
+  },
+  "examples/book_example_118_annual_2000.json": {
+    "bytes": 419452,
+    "sha256": "5695c19427f9a520086d7bb145f64252030c6f0b0de884fac217f8832a5b92be"
+  },
+  "examples/book_example_118_chart.json": {
+    "bytes": 246847,
+    "sha256": "e8e0346a314f8ac9a7e320600c5f84fd313af27b313620d5a0fa70bb045a1fbf"
+  },
+  "examples/book_example_118_moola.json": {
+    "bytes": 9663,
+    "sha256": "2f6d99d8c131e352929b2ea9df4d99ae6f7dc969f33f1d609e3a03d3fb523faa"
+  },
+  "examples/book_example_118_moola_experimental_input.json": {
+    "bytes": 378,
+    "sha256": "ff7675f3c7a862e9fac68b4aa1ea56e04e238225e9690d2e8b2153b7590db162"
+  },
+  "examples/election_review_demo.json": {
+    "bytes": 31715,
+    "sha256": "4ca834918300df3b1c3907b82de360876adbd110946415810a8f24ff51a5f712"
+  },
+  "examples/interpretation_conflict_demo.json": {
+    "bytes": 354,
+    "sha256": "26ee8e66130ea22e15428b1a0560ed84c5b8b3a5c0a5146ba80fb11b28f8c8f3"
+  },
+  "examples/interpretation_conflict_result.json": {
+    "bytes": 974,
+    "sha256": "ed2ace194adaab0d58d3db943fdfc225d6de22d159306bd107f1f598c7b7bca0"
+  },
+  "examples/moola_experimental_subperiods.json": {
+    "bytes": 37021,
+    "sha256": "44e1d3afdfd41eaec4d5efbfc35180d6ffda76b579bc1992d49f711e94dbdc1d"
+  },
+  "examples/moola_rath_1999_fixture.json": {
+    "bytes": 7785,
+    "sha256": "ad24f89f75ec25127bd35dc89926773654c679d601b957beb3edbf37379ed234"
+  },
+  "examples/synthetic_cohort_demo.json": {
+    "bytes": 554,
+    "sha256": "02624e5fbd2d6d9d00b24885decc25622a1ad82b1b3aeab6d09f498dafa25ebc"
+  },
+  "examples/synthetic_cohort_result.json": {
+    "bytes": 1393,
+    "sha256": "b951741955a7257439d6b58b6fe85cad9e534f04b7c60526aa8c72f07561cc96"
+  },
+  "extension_metrics.json": {
+    "bytes": 1722,
+    "sha256": "e46bf76a8e00f00ec0a669df21c9b586daadd7cbcc60f49f4a3d8eb5278494ca"
+  },
+  "generate_examples.py": {
+    "bytes": 3113,
+    "sha256": "7024e92ffd80fb97a4988e9cbff272faaee4bc8f65258043a51d46dacb4cbc0e"
+  },
+  "independent_astronomy_results.json": {
+    "bytes": 20534,
+    "sha256": "6dd100a2a93ee79233bc15d58b8242347fa080ae31fea121016b28b496881c54"
+  },
+  "index_book.py": {
+    "bytes": 1901,
+    "sha256": "652adc67309aa8a593525d9029b2f056fd734d4e07c2f55ecf068f622d8aaf6b"
+  },
+  "profile_conflicts.json": {
+    "bytes": 2053,
+    "sha256": "4f7ffe0a46f2665691677c35583be523b676c5ffe9d0c29b9104d8e5b6df4fe9"
+  },
+  "pyproject.toml": {
+    "bytes": 1127,
+    "sha256": "20d0f7474a4132cd86934db3b5ec4d469cbea189040145be941bb738f7e829c9"
+  },
+  "reconcile_strengths.py": {
+    "bytes": 8663,
+    "sha256": "def848a2d72037a16e812c47fcb082ae426e8b8d8675c474c1934a465dd4b0ac"
+  },
+  "requirements-audit.txt": {
+    "bytes": 226,
+    "sha256": "869c1f5a6488051524526616711258e4cc11ef8dc071726e15393c75b648af15"
+  },
+  "requirements.txt": {
+    "bytes": 152,
+    "sha256": "3ef0d6cc8d6e53f2c73405f71eb382eb23be181e0c34929596a209d46ab43133"
+  },
+  "rule_coverage.json": {
+    "bytes": 17535,
+    "sha256": "d05a6777a2c496ae0fed748839117eee0b96b6500a17bb1a75e323263c664857"
+  },
+  "source_manifest.json": {
+    "bytes": 31474,
+    "sha256": "52f6ffde50e124668d09a417ae6de9e1a9e8aac7ff2ea58273b94b98462e64e3"
+  },
+  "strength_audit_results.json": {
+    "bytes": 73201,
+    "sha256": "cf2679e674fcf4f8e424ab3a53a0ccf292b5cdbfe8eccf351cd2d272606e4c4a"
+  },
+  "strength_reconciliation.json": {
+    "bytes": 85902,
+    "sha256": "c69bba7a44e8684fb7800ace56fd065a89ad7cf911edbf4ef30b71b7d58d88a7"
+  },
+  "tests/__init__.py": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "tests/test_calculations.py": {
+    "bytes": 20166,
+    "sha256": "8ea39824d98081df14df8c3e318586edbe0bdbe2334fd725c6a06e94ddc789e7"
+  },
+  "tests/test_completion.py": {
+    "bytes": 16672,
+    "sha256": "c75f96516f199aacebd2d3b7cdb96ca40d03283bbcab551d73af51f7eac7a357"
+  },
+  "tests/test_extensions.py": {
+    "bytes": 15194,
+    "sha256": "1058b752b3102630b47de2f06ac9052b3fd84ee359aab2fedf4020e67ab5c1ce"
+  },
+  "tests/test_integration.py": {
+    "bytes": 4719,
+    "sha256": "c977cedbe1df1f7cf0c7cd494b87ec240d6670a315315c7108282845a71407f1"
+  },
+  "tests/test_research.py": {
+    "bytes": 10383,
+    "sha256": "9ddb9d8afddca893e924acc30a80f28521c22434e9835ff79db642b4c234c4e6"
+  },
+  "vedic_toolkit/__init__.py": {
+    "bytes": 103,
+    "sha256": "5cdaeb045737c10f530b90ceda5f0998ed1f45500a92681d2d01acb3e7abfa4c"
+  },
+  "vedic_toolkit/__main__.py": {
+    "bytes": 7640,
+    "sha256": "39d6482c4e14f1e7c374c7275ef896a21d3eaf1f5b2817c7338195516e269ade"
+  },
+  "vedic_toolkit/analysis.py": {
+    "bytes": 14483,
+    "sha256": "8d3418c92464cee924993b70c608765212f25c1a01b0b7c045bec588a3d17996"
+  },
+  "vedic_toolkit/ashtakavarga.py": {
+    "bytes": 4866,
+    "sha256": "4b2fc41f4871c516e28bee697d292d8265ff36fa60015ff003e2ba2ce3b889bd"
+  },
+  "vedic_toolkit/astronomy.py": {
+    "bytes": 11197,
+    "sha256": "e8ae780fac031acc930dc5e959fd3651eb89b5bb9bf2b7501a4e0f97dcba7393"
+  },
+  "vedic_toolkit/calendar.py": {
+    "bytes": 1903,
+    "sha256": "7a9497e672245ced817361710406bc289ce1334928a452a9cc2492348e17db6e"
+  },
+  "vedic_toolkit/cohort_validation.py": {
+    "bytes": 5254,
+    "sha256": "5384b83fae43f60087d12756136b6bcb95427e67dfd8cee6059ca7c5e8f54820"
+  },
+  "vedic_toolkit/core.py": {
+    "bytes": 15161,
+    "sha256": "e05bcfe7b894f8371c156e2ff4124b904010ba6e829382b642a9ae110fe264c8"
+  },
+  "vedic_toolkit/dashas.py": {
+    "bytes": 12320,
+    "sha256": "1fed82cecdf4301a1619a30cdfd9456f460b0c4b89f48a167c4ddc8384ab87c9"
+  },
+  "vedic_toolkit/decision_rules.py": {
+    "bytes": 4515,
+    "sha256": "9132ab2c1780c0a2b6d88362a023522a9eb9cfb5a43140aa5333f94b027c98b3"
+  },
+  "vedic_toolkit/electional.py": {
+    "bytes": 16180,
+    "sha256": "508e14881151dcfbbbd7a8e571eeaa8a7f46bc81b4554ef5666f8e02eba3d6af"
+  },
+  "vedic_toolkit/interpretation.py": {
+    "bytes": 10980,
+    "sha256": "0b643c3e6e8cba4e013f9aaa892d731db9cf20320b2fc4fd21c79a9e019faece"
+  },
+  "vedic_toolkit/moola.py": {
+    "bytes": 8481,
+    "sha256": "d9ab4c319e9760337120d7a425913607e9c224755d61e0e2f58df4fc95fb42bc"
+  },
+  "vedic_toolkit/strength_context.py": {
+    "bytes": 5026,
+    "sha256": "149c9baa58e720425f263db265ca7da7efc88f35a803a092aef63008a39f48f7"
+  },
+  "vedic_toolkit/strengths.py": {
+    "bytes": 15636,
+    "sha256": "207ff386832d4fd57fab76fa0ba4f41b4a8808704157c9d7a30f7200d230db69"
+  },
+  "vedic_toolkit/tajaka.py": {
+    "bytes": 17745,
+    "sha256": "fb37190936c1dbcbfbf6e6373bddfefcfa69c794f71a84926e9540b2f97a223b"
+  },
+  "vedic_toolkit/tajaka_yogas.py": {
+    "bytes": 10329,
+    "sha256": "693206aa69ddb6871fae3972871c9990537071611b8687be2950f7a7ad56a0fe"
+  },
+  "vedic_toolkit/validation.py": {
+    "bytes": 5811,
+    "sha256": "f09e86fb38c17b246b93de823da4329656f14bd92ecdc0df37485c0bc2832287"
+  },
+  "vedic_toolkit/yogas.py": {
+    "bytes": 27152,
+    "sha256": "e2781dc7147ecae7cff7c460d99fcfa06c4af864f4cd9974a85686cf29b2b31a"
+  },
+  "verification_metrics.json": {
+    "bytes": 610,
+    "sha256": "3cdb0ca8c980d218aa4c2da6c4f71eaac09595f64aedb52f54c6aeb2772641e5"
+  },
+  "verification_results.json": {
+    "bytes": 28845,
+    "sha256": "47999deccd89ac65c212897b8b6c1017e79195651bcf19b603bbb35beba21b26"
+  },
+  "verify.py": {
+    "bytes": 1925,
+    "sha256": "2ad781b6db32faae0f809ae9d35fd5c84337612461e272a19096098a03b5eb36"
+  },
+  "yoga_audit_results.json": {
+    "bytes": 495012,
+    "sha256": "8e780ad3442f1ceaf8381c034fcc256ce7376dbedf86c9f1ab08dc140c3370d0"
+  }
+}

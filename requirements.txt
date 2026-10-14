@@ -1,0 +1,4 @@
+pyswisseph==2.10.3.2
+tzdata>=2024.1
+# Optional, only for index_book.py: PyMuPDF
+# Optional independent benchmark: skyfield==1.55, jplephem==2.24, numpy

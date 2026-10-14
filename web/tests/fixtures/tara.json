@@ -2,6 +2,7 @@
  "meta": {
   "toolkit_version": "0.4.0",
   "swisseph": "2.10.03",
+  "tzdata": "2026e",
   "generator": "web/scripts/gen_fixtures.py",
   "count": 64
  },

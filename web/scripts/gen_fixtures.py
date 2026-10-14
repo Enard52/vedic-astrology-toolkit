@@ -11,7 +11,15 @@ from __future__ import annotations
 import json
 import random
 import sys
+import zoneinfo
 from pathlib import Path
+
+import tzdata
+
+# Use the tzdata package on every platform. Linux system zone files include
+# 'backzone' history (e.g. Norway 1959 summer time) that the package and
+# browsers' ICU data leave out, which would change pre-1970 fixtures.
+zoneinfo.reset_tzpath(to=[])
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -146,10 +154,10 @@ def main() -> None:
     for case in BOOK + EDGE[:2]:
         for v in VARIANTS:
             charts.append(chart_fixture(case, v, 0))
-    meta = {'toolkit_version': '0.4.0', 'swisseph': swe.version, 'generator': 'web/scripts/gen_fixtures.py', 'count': len(charts)}
-    (OUT / 'charts.json').write_text(json.dumps({'meta': meta, 'charts': charts}, default=str, separators=(',', ':')) + '\n', encoding='utf-8')
-    (OUT / 'time.json').write_text(json.dumps({'meta': meta, 'cases': time_fixtures(cases)}, indent=1, default=str) + '\n', encoding='utf-8')
-    (OUT / 'tara.json').write_text(json.dumps({'meta': meta, 'cases': tara_fixtures()}, indent=1, default=str) + '\n', encoding='utf-8')
+    meta = {'toolkit_version': '0.4.0', 'swisseph': swe.version, 'tzdata': tzdata.IANA_VERSION, 'generator': 'web/scripts/gen_fixtures.py', 'count': len(charts)}
+    (OUT / 'charts.json').write_text(json.dumps({'meta': meta, 'charts': charts}, default=str, separators=(',', ':')) + '\n', encoding='utf-8', newline='\n')
+    (OUT / 'time.json').write_text(json.dumps({'meta': meta, 'cases': time_fixtures(cases)}, indent=1, default=str) + '\n', encoding='utf-8', newline='\n')
+    (OUT / 'tara.json').write_text(json.dumps({'meta': meta, 'cases': tara_fixtures()}, indent=1, default=str) + '\n', encoding='utf-8', newline='\n')
     print(f'wrote {len(charts)} chart fixtures to {OUT}')
 
 

@@ -18,12 +18,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gen_fixtures  # noqa: E402
 
 TOLERANCE = 1e-9
+# Swiss Ephemeris computes speeds numerically; builds differ by ~1e-8 deg/day.
+SPEED_TOLERANCE = 1e-7
 
 
 def diff(a, b, path='$'):
     if isinstance(a, float) or isinstance(b, float):
         if isinstance(a, (int, float)) and isinstance(b, (int, float)) and not isinstance(a, bool) and not isinstance(b, bool):
-            if math.isclose(a, b, rel_tol=TOLERANCE, abs_tol=TOLERANCE):
+            tol = SPEED_TOLERANCE if path.endswith('.speed') else TOLERANCE
+            if math.isclose(a, b, rel_tol=tol, abs_tol=tol):
                 return
         yield f'{path}: {a!r} != {b!r}'
     elif isinstance(a, dict) and isinstance(b, dict):
@@ -53,7 +56,7 @@ def main() -> int:
                 problems.append(f'{fresh.name}: not committed')
                 continue
             problems += [f'{fresh.name} {p}' for p in diff(json.loads(old.read_text(encoding='utf-8')), json.loads(fresh.read_text(encoding='utf-8')))]
-    for p in problems[:50]:
+    for p in problems[:200]:
         print(p)
     print('fixtures match' if not problems else f'{len(problems)} differences')
     return 1 if problems else 0

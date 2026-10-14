@@ -1,10 +1,10 @@
 // Chart data shaped for drawing: occupants per house for a varga, the fitted label
 // layout and a plain-language summary for screen readers.
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { formatDegree, houseFrom, SIGN_NAMES } from '@/engine/core'
+import { formatDegree, houseFrom } from '@/engine/core'
 import { PLANETS, type Body, type Chart, type Planet, type SignIndex } from '@/engine/types'
 import { fitLabels, labelWidthEm, type LabelFit, type Region } from './layout'
-import { BODY_ABBR, BODY_NAME } from './planets'
+import { names, t } from '@/i18n'
 import { vargaLabel } from './vargas'
 
 export interface Occupant {
@@ -49,7 +49,7 @@ export function houseModels(chart: Chart, varga = 1, highlight: readonly Planet[
     const isNode = body === 'Rahu' || body === 'Ketu'
     houses[houseFrom(lagna, signs[body]) - 1].occupants.push({
       body,
-      abbr: BODY_ABBR[body],
+      abbr: names().bodyShort[body],
       retro: p.retrograde && !isNode,
       degree: varga === 1 ? formatDegree(p.longitude) : null,
       wholeDegree: varga === 1 ? `${Math.floor(p.degree)}°` : null,
@@ -130,17 +130,18 @@ export const degreeText = (o: Occupant, style: DegreeStyle): string | null =>
 
 /** "Mercury retrograde 15°27′" for screen readers. */
 export function describeOccupant(o: Occupant): string {
-  return [BODY_NAME[o.body], o.retro ? 'retrograde' : '', o.degree ?? ''].filter(Boolean).join(' ')
+  return [names().body[o.body], o.retro ? t('chart.retrograde').toLowerCase() : '', o.degree ?? ''].filter(Boolean).join(' ')
 }
 
 /** One-paragraph description of the chart for the SVG's aria-label. */
-export function chartSummary(houses: readonly HouseModel[], varga: number, style: 'North Indian' | 'South Indian'): string {
+export function chartSummary(houses: readonly HouseModel[], varga: number, style: 'north' | 'south'): string {
   const lagna = houses[0]
   const asc = lagna.occupants.find((o) => o.body === 'Asc')
-  const parts = [`${style} chart, ${vargaLabel(varga)}.`, `Lagna in ${SIGN_NAMES[lagna.sign]}${asc?.degree ? ` at ${asc.degree}` : ''}.`]
+  const sign = (s: SignIndex) => names().sign[s]
+  const parts = [t('chart.summary', { style: t(style === 'north' ? 'chart.northIndian' : 'chart.southIndian'), varga: vargaLabel(varga) }), t(asc?.degree ? 'chart.lagnaAt' : 'chart.lagnaIn', { sign: sign(lagna.sign), degree: asc?.degree ?? '' })]
   for (const h of houses) {
     const planets = h.occupants.filter((o) => o.body !== 'Asc')
-    if (planets.length) parts.push(`House ${h.house}, ${SIGN_NAMES[h.sign]}: ${planets.map(describeOccupant).join(', ')}.`)
+    if (planets.length) parts.push(t('chart.house', { n: h.house, sign: sign(h.sign), planets: planets.map(describeOccupant).join(', ') }))
   }
   return parts.join(' ')
 }

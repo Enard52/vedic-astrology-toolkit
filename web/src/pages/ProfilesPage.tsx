@@ -1,6 +1,7 @@
 import { ArrowRight, Download, MapPin, Pencil, Trash, Upload, UserPlus, Users } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Link } from 'wouter'
+import { useT } from '@/i18n'
 import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { birthFileName, parseToolkitBirth, toToolkitBirth } from '@/state/birthJson'
 import { createProfile, deleteProfile, profileName, useProfiles, type Profile } from '@/state/profiles'
@@ -13,15 +14,11 @@ import { EmptyState } from '@/ui/components/EmptyState'
 import { SectionHeader } from '@/ui/components/SectionHeader'
 import { Tooltip } from '@/ui/components/Tooltip'
 import { Avatar } from '@/ui/layout/ProfileSwitcher'
+import { civilDate } from '@/ui/forecast/dates'
 import { Page } from '@/ui/layout/Page'
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
 /** "28 Apr 1990, 05:50" from the stored civil date and time. */
-function formatBirth(p: Profile): string {
-  const [y, m, d] = p.birth.date.split('-').map(Number)
-  return `${d} ${MONTHS[m - 1]} ${y}, ${p.birth.time}`
-}
+const formatBirth = (p: Profile): string => `${civilDate(p.birth.date)}, ${p.birth.time}`
 
 function saveFile(name: string, text: string) {
   const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }))
@@ -33,7 +30,8 @@ function saveFile(name: string, text: string) {
 type Message = { tone: 'info' | 'error'; text: string }
 
 export default function ProfilesPage() {
-  useDocumentTitle(pageTitle('Profiles'))
+  const { t } = useT()
+  useDocumentTitle(pageTitle(t('menu.profiles')))
   const profiles = useProfiles()
   const settings = useSettings()
   const fileInput = useRef<HTMLInputElement>(null)
@@ -46,12 +44,12 @@ export default function ProfilesPage() {
       try {
         json = JSON.parse(await file.text())
       } catch {
-        throw new Error('the file is not valid JSON')
+        throw new Error(t('profiles.notJson'))
       }
       const profile = createProfile(parseToolkitBirth(json))
-      setMessage({ tone: 'info', text: `Imported ${profileName(profile)}.` })
+      setMessage({ tone: 'info', text: t('profiles.imported', { name: profileName(profile) }) })
     } catch (e) {
-      setMessage({ tone: 'error', text: `Could not import ${file.name}: ${e instanceof Error ? e.message : 'unreadable file'}.` })
+      setMessage({ tone: 'error', text: t('profiles.importFailed', { file: file.name, reason: e instanceof Error ? e.message : t('profiles.unreadable') }) })
     }
   }
 
@@ -61,7 +59,7 @@ export default function ProfilesPage() {
 
   const importButton = (
     <Button variant="secondary" onClick={() => fileInput.current?.click()}>
-      <Upload aria-hidden /> Import
+      <Upload aria-hidden /> {t('profiles.import')}
     </Button>
   )
 
@@ -69,15 +67,15 @@ export default function ProfilesPage() {
     <Page>
       <SectionHeader
         level={1}
-        eyebrow="Profiles"
-        title="Saved charts"
-        description="Profiles live only in this browser. Export one to keep a copy or open it in the Python toolkit."
+        eyebrow={t('menu.profiles')}
+        title={t('profiles.title')}
+        description={t('profiles.description')}
         action={
           profiles.length > 0 && (
             <>
               {importButton}
               <Button asChild>
-                <Link href="/new"><UserPlus aria-hidden /> New profile</Link>
+                <Link href="/new"><UserPlus aria-hidden /> {t('profiles.new')}</Link>
               </Button>
             </>
           )
@@ -105,11 +103,11 @@ export default function ProfilesPage() {
         <EmptyState
           className="mt-8"
           icon={Users}
-          title="No profiles yet"
-          description="Add your birth details to see your chart and daily guidance, or import a birth file from the Python toolkit."
+          title={t('profiles.empty')}
+          description={t('profiles.emptyText')}
           action={
             <>
-              <Button asChild><Link href="/new"><UserPlus aria-hidden /> Add a profile</Link></Button>
+              <Button asChild><Link href="/new"><UserPlus aria-hidden /> {t('menu.add')}</Link></Button>
               {importButton}
             </>
           }
@@ -132,20 +130,20 @@ export default function ProfilesPage() {
                 </p>
                 <div className="mt-auto flex items-center gap-1 border-t border-[var(--divider)] pt-4">
                   <Button asChild size="sm" className="mr-auto h-11 sm:h-9">
-                    <Link href={`/p/${p.id}/today`}>Open <ArrowRight aria-hidden /></Link>
+                    <Link href={`/p/${p.id}/today`}>{t('profiles.open')} <ArrowRight aria-hidden /></Link>
                   </Button>
-                  <Tooltip content="Edit">
-                    <Button asChild variant="ghost" size="icon" aria-label={`Edit ${profileName(p)}`}>
+                  <Tooltip content={t('common.edit')}>
+                    <Button asChild variant="ghost" size="icon" aria-label={t('profiles.editAria', { name: profileName(p) })}>
                       <Link href={`/p/${p.id}/edit`}><Pencil /></Link>
                     </Button>
                   </Tooltip>
-                  <Tooltip content="Export birth JSON">
-                    <Button variant="ghost" size="icon" aria-label={`Export ${profileName(p)} as JSON`} onClick={() => exportProfile(p)}>
+                  <Tooltip content={t('profiles.export')}>
+                    <Button variant="ghost" size="icon" aria-label={t('profiles.exportAria', { name: profileName(p) })} onClick={() => exportProfile(p)}>
                       <Download />
                     </Button>
                   </Tooltip>
-                  <Tooltip content="Delete">
-                    <Button variant="ghost" size="icon" aria-label={`Delete ${profileName(p)}`} className="hover:text-[var(--bad-fg)]" onClick={() => setPendingDelete(p)}>
+                  <Tooltip content={t('common.delete')}>
+                    <Button variant="ghost" size="icon" aria-label={t('profiles.deleteAria', { name: profileName(p) })} className="hover:text-[var(--bad-fg)]" onClick={() => setPendingDelete(p)}>
                       <Trash />
                     </Button>
                   </Tooltip>
@@ -157,19 +155,18 @@ export default function ProfilesPage() {
       )}
 
       <p className="mt-6 text-[0.8rem] leading-relaxed text-[var(--text-muted)]">
-        Exports use the toolkit’s birth format (label, datetime, timezone, latitude, longitude and settings), so astrologers can run
-        any toolkit command on them.
+        {t('profiles.exportNote')}
       </p>
 
       <Dialog open={pendingDelete !== null} onOpenChange={(open) => !open && setPendingDelete(null)}>
         <DialogContent>
-          <DialogTitle>Delete {pendingDelete ? profileName(pendingDelete) : ''}?</DialogTitle>
+          <DialogTitle>{t('profiles.deleteTitle', { name: pendingDelete ? profileName(pendingDelete) : '' })}</DialogTitle>
           <DialogDescription>
-            This removes the birth details from this browser. There is no other copy, so export it first if you may want it again.
+            {t('profiles.deleteText')}
           </DialogDescription>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="ghost">Keep it</Button>
+              <Button variant="ghost">{t('profiles.keep')}</Button>
             </DialogClose>
             <Button
               variant="danger"
@@ -178,7 +175,7 @@ export default function ProfilesPage() {
                 setPendingDelete(null)
               }}
             >
-              <Trash aria-hidden /> Delete profile
+              <Trash aria-hidden /> {t('profiles.delete')}
             </Button>
           </DialogFooter>
         </DialogContent>

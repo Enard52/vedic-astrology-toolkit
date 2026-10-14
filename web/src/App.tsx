@@ -3,6 +3,7 @@ import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { Component, lazy, Suspense, useEffect, useState, type ComponentType, type ReactNode } from 'react'
 import { Route, Router, Switch, useLocation, type RouteComponentProps } from 'wouter'
 import { useHashLocation } from 'wouter/use-hash-location'
+import { activateLanguage, resolveLanguage, useT } from '@/i18n'
 import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import LandingPage from '@/pages/LandingPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
@@ -57,13 +58,15 @@ const ReportPage = lazy(() => import('@/pages/ReportPage'))
 const DevChartPage = import.meta.env.DEV ? lazy(() => import('@/pages/DevChartPage')) : null
 
 function NotFound() {
-  return <PlaceholderPage title="Page not found" description="That address does not match any page here." icon={CircleHelp} />
+  const { t } = useT()
+  return <PlaceholderPage title={t('app.notFound')} description={t('app.notFoundText')} icon={CircleHelp} />
 }
 
 function PageFallback() {
+  const { t } = useT()
   return (
     <Page>
-      <div className="space-y-4" role="status" aria-label="Loading">
+      <div className="space-y-4" role="status" aria-label={t('common.loading')}>
         <Skeleton className="h-4 w-28" />
         <Skeleton className="h-10 w-3/4 max-w-lg" />
         <Skeleton className="h-48 w-full rounded-[var(--radius-card)]" />
@@ -74,20 +77,21 @@ function PageFallback() {
 
 /** Shown in place of a page (or the whole shell) that failed to load or threw while rendering. */
 function ErrorScreen() {
-  useDocumentTitle(pageTitle('Something went wrong'))
+  const { t } = useT()
+  useDocumentTitle(pageTitle(t('app.error')))
   return (
     <Page width="narrow">
-      <Callout tone="error" title="Something went wrong">
-        <p>This screen could not be shown. Reloading the page usually fixes it, for example after the app has been updated.</p>
+      <Callout tone="error" title={t('app.error')}>
+        <p>{t('app.errorText')}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Button size="sm" onClick={() => window.location.reload()}>
             <RotateCw aria-hidden />
-            Reload the page
+            {t('common.reload')}
           </Button>
           <Button size="sm" variant="secondary" asChild>
             <a href="#/">
               <House aria-hidden />
-              Go home
+              {t('app.goHome')}
             </a>
           </Button>
         </div>
@@ -172,11 +176,15 @@ function Shell() {
 }
 
 export default function App() {
-  const { theme } = useSettings()
+  const { theme, language } = useSettings()
   useEffect(() => {
     applyTheme(theme)
     return watchSystemTheme(theme)
   }, [theme])
+  useEffect(() => {
+    // Follow a change made in Settings or the header menu (the first language loads in main.tsx).
+    activateLanguage(resolveLanguage(language)).catch(() => {})
+  }, [language])
   useEffect(() => {
     // Fetch every screen's code as soon as the browser is idle, so no tab switch waits for it and
     // a tab left open across a deploy never asks for a chunk the new build has replaced.

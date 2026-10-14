@@ -4,22 +4,21 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { MoonStar } from 'lucide-react'
 import type { ReactNode } from 'react'
-import { ordinal } from '@/content/format'
-import { SIGN_NAMES, SIGN_SANSKRIT } from '@/engine/core'
 import type { MoonDay } from '@/engine/moon'
-import { formatJd, weekdayOf } from '@/engine/time'
+import { formatJd, jdToLocal, weekdayOf } from '@/engine/time'
 import type { TimedEvent, TimeWindow } from '@/engine/types'
+import { useT } from '@/i18n'
 import { Badge } from '@/ui/components/Badge'
 import { Callout } from '@/ui/components/Callout'
 import { bodyColor } from '@/ui/chart/planets'
 // Planet colour variables used by bodyColor().
 import '@/ui/chart/chart.css'
-import { WEEKDAYS } from './dates'
+import { shortDate, weekdayShort } from './dates'
 import { moonMoves } from './moonMoves'
 import { Panel } from './Section'
 
 const TARA_TONE = { good: 'good', mixed: 'mixed', adverse: 'bad' } as const
-const TARA_WORD = { good: 'Supportive', mixed: 'Mixed', adverse: 'Tender' } as const
+const TARA_WORD = { good: 'moon.taraGood', mixed: 'moon.taraMixed', adverse: 'moon.taraTender' } as const
 
 export function MoonCard({ moon, chandrashtama, events, date, timeZone, className }: {
   moon: MoonDay
@@ -31,27 +30,28 @@ export function MoonCard({ moon, chandrashtama, events, date, timeZone, classNam
   timeZone: string
   className?: string
 }) {
+  const { t, n } = useT()
   const { nakshatra: nak, tara, chandraBala: bala } = moon
   const moves = moonMoves(events, timeZone)
-  const when = (jd: number) => `${formatJd(jd, timeZone, 'weekday-date')}, ${formatJd(jd, timeZone, 'time')}`
+  const when = (jd: number) => `${shortDate(jdToLocal(jd, timeZone, 'minute').date)}, ${formatJd(jd, timeZone, 'time')}`
   return (
-    <Panel title="Moon today" description="Around midday, counted from your birth Moon" icon={<MoonStar />} className={className}>
+    <Panel title={t('moon.title')} description={t('moon.description')} icon={<MoonStar />} className={className}>
       <dl className="grid grid-cols-2 gap-x-4 gap-y-4">
-        <Fact term="Sign" note={SIGN_SANSKRIT[moon.sign]}>{SIGN_NAMES[moon.sign]}</Fact>
-        <Fact term="Nakshatra" note={<>Pada {nak.pada} · lord <span style={{ color: bodyColor(nak.lord) }}>{nak.lord}</span></>}>{nak.name}</Fact>
-        <Fact term="Tara bala" note={`${ordinal(tara.number)} of 9 from your birth star`}>
-          <span className="flex flex-wrap items-center gap-1.5">{tara.name}<Badge tone={TARA_TONE[tara.classification]}>{TARA_WORD[tara.classification]}</Badge></span>
+        <Fact term={t('moon.sign')} note={n.signAlt[moon.sign]}>{n.sign[moon.sign]}</Fact>
+        <Fact term={t('moon.nakshatra')} note={<>{t('chart.pada', { n: nak.pada })} · {t('chart.lord')} <span style={{ color: bodyColor(nak.lord) }}>{n.body[nak.lord]}</span></>}>{n.nakshatra[nak.index - 1]}</Fact>
+        <Fact term={t('moon.tara')} note={t('moon.taraNote', { nth: n.ordinal(tara.number) })}>
+          <span className="flex flex-wrap items-center gap-1.5">{n.tara[tara.name]}<Badge tone={TARA_TONE[tara.classification]}>{t(TARA_WORD[tara.classification])}</Badge></span>
         </Fact>
-        <Fact term="Chandra bala" note={`${ordinal(bala.house)} from your birth Moon`}>
+        <Fact term={t('moon.chandraBala')} note={t('moon.balaNote', { nth: n.ordinal(bala.house) })}>
           <span className="flex flex-wrap items-center gap-1.5">
-            {moon.chandrashtama ? 'Chandrashtama' : bala.good ? 'Strong' : 'Weak'}
-            <Badge tone={moon.chandrashtama ? 'bad' : bala.good ? 'good' : 'mixed'}>{ordinal(bala.house)}</Badge>
+            {moon.chandrashtama ? n.window.Chandrashtama : bala.good ? t('moon.strong') : t('moon.weak')}
+            <Badge tone={moon.chandrashtama ? 'bad' : bala.good ? 'good' : 'mixed'}>{n.ordinal(bala.house)}</Badge>
           </span>
         </Fact>
       </dl>
       {chandrashtama && (
-        <Callout tone="warning" title="Chandrashtama" className="mt-4">
-          From {when(chandrashtama.startJd)} until {when(chandrashtama.endJd)}. Traditionally a time to go gently and keep big decisions for later.
+        <Callout tone="warning" title={n.window.Chandrashtama} className="mt-4">
+          {t('moon.chandrashtama', { from: when(chandrashtama.startJd), to: when(chandrashtama.endJd) })}
         </Callout>
       )}
       {moves.length > 0 && (
@@ -61,10 +61,10 @@ export function MoonCard({ moon, chandrashtama, events, date, timeZone, classNam
               <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1 text-[var(--text-muted)]">
                 {m.label}
                 {m.chandrashtama && (
-                  <Badge tone={m.chandrashtama === 'begins' ? 'bad' : 'neutral'}>Chandrashtama {m.chandrashtama}</Badge>
+                  <Badge tone={m.chandrashtama === 'begins' ? 'bad' : 'neutral'}>{t(m.chandrashtama === 'begins' ? 'moon.cBegins' : 'moon.cEnds')}</Badge>
                 )}
               </span>
-              <span className="shrink-0 font-medium tabular-nums">{m.date !== date && `${WEEKDAYS[weekdayOf(m.date)]} `}{formatJd(m.jd, timeZone, 'time')}</span>
+              <span className="shrink-0 font-medium tabular-nums">{m.date !== date && `${weekdayShort(weekdayOf(m.date))} `}{formatJd(m.jd, timeZone, 'time')}</span>
             </li>
           ))}
         </ul>

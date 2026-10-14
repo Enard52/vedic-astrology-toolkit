@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { useId, useMemo } from 'react'
 import { clsx } from 'clsx'
+import { useT } from '@/i18n'
 import { chartSummary, houseModels, layoutChart } from './chartModel'
 import { CHART_UNITS, ChartTable, HouseLabels, LagnaGradient, svgId, useLabelScale, VIEWBOX, type ChartProps } from './ChartParts'
 import { northHouses } from './layout'
@@ -20,10 +21,12 @@ const NUMBER_MAX_SCALE = 1.15
 export function NorthIndianChart({ chart, varga = 1, caption, highlight, size, className }: ChartProps) {
   const highlightKey = highlight?.join() ?? ''
   // Keyed by content: callers often pass a fresh array literal on every render.
-  const houses = useMemo(() => houseModels(chart, varga, highlight), [chart, varga, highlightKey])
+  const { lang } = useT()
+  // The labels are in the current language, so a language change rebuilds them too.
+  const houses = useMemo(() => houseModels(chart, varga, highlight), [chart, varga, highlightKey, lang])
   const [figure, scale] = useLabelScale()
   const layouts = useMemo(() => layoutChart(REGIONS, houses, scale), [houses, scale])
-  const summary = chartSummary(houses, varga, 'North Indian')
+  const summary = chartSummary(houses, varga, 'north')
   const gradient = svgId(useId())
   const numberSize = NUMBER_SIZE * Math.min(scale, NUMBER_MAX_SCALE)
   return (

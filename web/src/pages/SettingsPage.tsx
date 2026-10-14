@@ -1,4 +1,5 @@
 import { BookOpen, Monitor, Moon, RotateCcw, SlidersHorizontal, Sparkles, Sun, Trash } from 'lucide-react'
+import { LANG_INFO, LANGS, useT, type LanguagePreference } from '@/i18n'
 import { RadioGroup } from 'radix-ui'
 import { useId, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
@@ -17,24 +18,33 @@ import { SegmentedControl } from '@/ui/components/SegmentedControl'
 import { Select } from '@/ui/components/Select'
 import { Page } from '@/ui/layout/Page'
 
-const PRESET_NOTES: Record<PresetName, string> = {
-  popular: 'Lahiri ayanamsa, mean nodes and solar-year dashas: matches most Vedic software and printed panchangs.',
-  book: 'Lahiri ayanamsa, mean nodes and 360-day dasha years, as in P. V. R. Narasimha Rao’s Vedic Astrology: An Integrated Approach.',
-  custom: 'Your own combination of the options below.',
-}
 
 export default function SettingsPage() {
-  useDocumentTitle(pageTitle('Settings'))
+  const { t, lang } = useT()
+  useDocumentTitle(pageTitle(t('menu.settings')))
   const s = useSettings()
   const profiles = useProfiles()
-  const ayanamsaNote = AYANAMSA_OPTIONS.find((o) => o.value === s.ayanamsa)?.note
+  const ayanamsaNote = t(`ayanamsa.${s.ayanamsa}.note`)
+  const nodeOptions = NODE_OPTIONS.map((o) => ({ value: o.value, label: t(`node.${o.value}`) }))
+  const yearOptions = YEAR_MODEL_OPTIONS.map((o) => ({ value: o.value, label: t(`yearModel.${o.value}`) }))
   return (
     <Page width="narrow">
-      <SectionHeader level={1} eyebrow="Settings" title="Preferences" description="Saved in this browser. Changes apply to every profile." />
+      <SectionHeader level={1} eyebrow={t('menu.settings')} title={t('settings.title')} description={t('settings.description')} />
 
       <div className="mt-8 space-y-6">
-        <SettingsCard title="Calculation" description="How positions and dasha dates are computed. When unsure, keep Popular.">
-          <Row label="Preset" note={PRESET_NOTES[s.preset]}>
+        <SettingsCard title={t('settings.language')} description={t('settings.languageText')}>
+          <Row label={t('lang.label')} htmlFor="language" note={t('settings.languageNote')} last>
+            {() => (
+              <Select id="language" value={s.language} onChange={(e) => updateSettings({ language: e.target.value as LanguagePreference })}>
+                <option value="auto">{t('lang.auto')} · {LANG_INFO[lang].native}</option>
+                {LANGS.map((l) => <option key={l} value={l} lang={LANG_INFO[l].tag}>{LANG_INFO[l].native}{l === 'en' ? '' : ` (${LANG_INFO[l].english})`}</option>)}
+              </Select>
+            )}
+          </Row>
+        </SettingsCard>
+
+        <SettingsCard title={t('settings.calculation')} description={t('settings.calculationText')}>
+          <Row label={t('settings.preset')} note={t(`preset.${s.preset}.note`)}>
             {(labelId) => (
               <SegmentedControl<PresetName>
                 aria-labelledby={labelId}
@@ -42,37 +52,37 @@ export default function SettingsPage() {
                 value={s.preset}
                 onValueChange={(preset) => updateSettings({ preset })}
                 options={[
-                  { value: 'popular', label: 'Popular', icon: <Sparkles aria-hidden /> },
-                  { value: 'book', label: <>Book<span className="max-sm:hidden"> (Rao)</span></>, icon: <BookOpen aria-hidden /> },
-                  { value: 'custom', label: 'Custom', icon: <SlidersHorizontal aria-hidden /> },
+                  { value: 'popular', label: t('preset.popular'), icon: <Sparkles aria-hidden /> },
+                  { value: 'book', label: <>{t('preset.book')}<span className="max-sm:hidden"> {t('preset.bookRao')}</span></>, icon: <BookOpen aria-hidden /> },
+                  { value: 'custom', label: t('preset.custom'), icon: <SlidersHorizontal aria-hidden /> },
                 ]}
               />
             )}
           </Row>
-          <Row label="Ayanamsa" note={ayanamsaNote} htmlFor="ayanamsa">
+          <Row label={t('settings.ayanamsa')} note={ayanamsaNote} htmlFor="ayanamsa">
             {() => (
               <Select id="ayanamsa" value={s.ayanamsa} onChange={(e) => updateSettings({ ayanamsa: e.target.value as typeof s.ayanamsa })}>
-                {AYANAMSA_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                {AYANAMSA_OPTIONS.map((o) => <option key={o.value} value={o.value}>{t(`ayanamsa.${o.value}`)}</option>)}
               </Select>
             )}
           </Row>
-          <Row label="Rahu and Ketu" note={NODE_OPTIONS.find((o) => o.value === s.node)?.note}>
+          <Row label={t('settings.nodes')} note={t(`node.${s.node}.note`)}>
             {(labelId) => (
-              <SegmentedControl aria-labelledby={labelId} fullWidth value={s.node} onValueChange={(node) => updateSettings({ node })} options={NODE_OPTIONS} />
+              <SegmentedControl aria-labelledby={labelId} fullWidth value={s.node} onValueChange={(node) => updateSettings({ node })} options={nodeOptions} />
             )}
           </Row>
-          <Row label="Dasha year" note={YEAR_MODEL_OPTIONS.find((o) => o.value === s.yearModel)?.note} last>
+          <Row label={t('settings.dashaYear')} note={t(`yearModel.${s.yearModel}.note`)} last>
             {(labelId) => (
-              <SegmentedControl aria-labelledby={labelId} fullWidth value={s.yearModel} onValueChange={(yearModel) => updateSettings({ yearModel })} options={YEAR_MODEL_OPTIONS} />
+              <SegmentedControl aria-labelledby={labelId} fullWidth value={s.yearModel} onValueChange={(yearModel) => updateSettings({ yearModel })} options={yearOptions} />
             )}
           </Row>
         </SettingsCard>
 
-        <SettingsCard title="Appearance">
-          <Row label="Chart style" note="North Indian charts fix the houses and move the signs; South Indian charts fix the signs.">
+        <SettingsCard title={t('settings.appearance')}>
+          <Row label={t('chart.style')} note={t('settings.chartStyleNote')}>
             {(labelId) => <ChartStylePicker labelId={labelId} value={s.chartStyle} />}
           </Row>
-          <Row label="Theme" note="System follows your device’s light or dark setting." last>
+          <Row label={t('settings.theme')} note={t('settings.themeNote')} last>
             {(labelId) => (
               <SegmentedControl
                 aria-labelledby={labelId}
@@ -80,32 +90,32 @@ export default function SettingsPage() {
                 value={s.theme}
                 onValueChange={(theme) => updateSettings({ theme })}
                 options={[
-                  { value: 'dark', label: 'Dark', icon: <Moon aria-hidden /> },
-                  { value: 'light', label: 'Light', icon: <Sun aria-hidden /> },
-                  { value: 'system', label: 'System', icon: <Monitor aria-hidden /> },
+                  { value: 'dark', label: t('settings.dark'), icon: <Moon aria-hidden /> },
+                  { value: 'light', label: t('settings.light'), icon: <Sun aria-hidden /> },
+                  { value: 'system', label: t('settings.system'), icon: <Monitor aria-hidden /> },
                 ]}
               />
             )}
           </Row>
         </SettingsCard>
 
-        <SettingsCard title="Your data" description="Profiles and settings are stored in this browser’s local storage and never uploaded. Clearing site data removes them.">
+        <SettingsCard title={t('settings.data')} description={t('settings.dataText')}>
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" onClick={resetSettings}>
-              <RotateCcw aria-hidden /> Reset settings
+              <RotateCcw aria-hidden /> {t('settings.reset')}
             </Button>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="danger" disabled={profiles.length === 0}>
-                  <Trash aria-hidden /> Delete all profiles
+                  <Trash aria-hidden /> {t('settings.deleteAll')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <DialogTitle>Delete all {profiles.length} profiles?</DialogTitle>
-                <DialogDescription>Every saved birth chart is removed from this browser. This cannot be undone.</DialogDescription>
+                <DialogTitle>{t('settings.deleteAllTitle', { n: profiles.length })}</DialogTitle>
+                <DialogDescription>{t('settings.deleteAllText')}</DialogDescription>
                 <DialogFooter>
-                  <DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose>
-                  <DialogClose asChild><Button variant="danger" onClick={deleteAllProfiles}>Delete all</Button></DialogClose>
+                  <DialogClose asChild><Button variant="ghost">{t('common.cancel')}</Button></DialogClose>
+                  <DialogClose asChild><Button variant="danger" onClick={deleteAllProfiles}>{t('settings.deleteAllConfirm')}</Button></DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -139,6 +149,7 @@ function Row({ label, note, htmlFor, last, children }: { label: string; note?: s
 }
 
 function ChartStylePicker({ labelId, value }: { labelId: string; value: ChartStyle }) {
+  const { t } = useT()
   return (
     <RadioGroup.Root aria-labelledby={labelId} value={value} onValueChange={(v) => updateSettings({ chartStyle: v as ChartStyle })} className="grid grid-cols-2 gap-3">
       {(['north', 'south'] as const).map((style) => (
@@ -152,7 +163,7 @@ function ChartStylePicker({ labelId, value }: { labelId: string; value: ChartSty
           )}
         >
           <ChartGlyph style={style} />
-          {style === 'north' ? 'North Indian' : 'South Indian'}
+          {t(style === 'north' ? 'chart.northIndian' : 'chart.southIndian')}
         </RadioGroup.Item>
       ))}
     </RadioGroup.Root>

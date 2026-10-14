@@ -3,18 +3,18 @@
 // the same facts in words.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import type { CSSProperties, ReactNode } from 'react'
-import { ordinal } from '@/content/format'
-import { SATURN_PHASE_TITLE } from '@/content/saturn'
-import { SIGN_NAMES, SIGN_SHORT } from '@/engine/core'
+import { T } from '@/content/active'
 import type { SaturnPeriod } from '@/engine/saturn'
-import { formatJd, localToJd } from '@/engine/time'
+import { jdToLocal, localToJd } from '@/engine/time'
 import type { DashaPeriod, Planet } from '@/engine/types'
+import { names, t, useT } from '@/i18n'
+import { fullDate } from '@/i18n/format'
 import { cn } from '@/lib/cn'
-import { BODY_ABBR, BODY_GLYPH, bodyColor, GLYPH_FONT } from '@/ui/chart/planets'
+import { BODY_GLYPH, bodyColor, GLYPH_FONT } from '@/ui/chart/planets'
 // Planet colour variables used by bodyColor().
 import '@/ui/chart/chart.css'
 import type { TransitTrack } from './data'
-import { MONTHS } from './dates'
+import { dayMonth, monthShort } from './dates'
 import { TONE_VARS } from './meta'
 
 export interface YearRange {
@@ -39,7 +39,7 @@ interface BandSegment {
 
 /** The month starts as fractions of the year, for gridlines and the axis. */
 function monthMarks({ year, startJd, endJd, timeZone }: YearRange) {
-  return MONTHS.map((m, i) => ({ m, x: (localToJd(`${year}-${String(i + 1).padStart(2, '0')}-01`, timeZone) - startJd) / (endJd - startJd) }))
+  return Array.from({ length: 12 }, (_, i) => ({ m: monthShort(i + 1), x: (localToJd(`${year}-${String(i + 1).padStart(2, '0')}-01`, timeZone) - startJd) / (endJd - startJd) }))
 }
 
 function MonthAxis({ range, className }: { range: YearRange; className?: string }) {
@@ -47,7 +47,7 @@ function MonthAxis({ range, className }: { range: YearRange; className?: string 
     <div aria-hidden className={cn('relative h-4 text-[0.62rem] font-medium uppercase tracking-wide text-[var(--text-muted)]', className)}>
       {monthMarks(range).map(({ m, x }) => (
         <span key={m} className="absolute" style={{ left: `${x * 100}%`, width: `${100 / 12}%` }}>
-          <span className="pl-1 sm:hidden">{m[0]}</span>
+          <span className="pl-1 sm:hidden">{[...m][0]}</span>
           <span className="hidden pl-1 sm:inline">{m}</span>
         </span>
       ))}
@@ -97,26 +97,29 @@ function Row({ label, children, facts }: { label: ReactNode; children: ReactNode
   )
 }
 
-const dateIn = (jd: number, range: YearRange) => formatJd(jd, range.timeZone, 'date').replace(` ${range.year}`, '')
+/** A date within the year shown, without the year ("2 Jun"). */
+const dateIn = (jd: number, range: YearRange) => dayMonth(jdToLocal(jd, range.timeZone).date)
 
 function stayFacts(stays: TransitTrack['stays'], range: YearRange): string {
   return stays.map((s, i) => {
-    const where = `${SIGN_NAMES[s.sign]} (${ordinal(s.house)} from Moon)`
-    if (stays.length === 1) return `${where} all year`
-    if (i === 0) return `${where} until ${dateIn(s.endJd, range)}`
-    return `${where} from ${dateIn(s.startJd, range)}`
+    const where = t('bands.where', { sign: names().sign[s.sign], nth: names().ordinal(s.house) })
+    if (stays.length === 1) return t('bands.allYear', { where })
+    if (i === 0) return t('bands.until', { where, date: dateIn(s.endJd, range) })
+    return t('bands.from', { where, date: dateIn(s.startJd, range) })
   }).join(' · ')
 }
 
 function PlanetLabel({ planet }: { planet: Planet }) {
+  const { n } = useT()
   return (
     <span className="flex items-center gap-1.5" style={{ color: bodyColor(planet) }}>
-      <span aria-hidden style={{ fontFamily: GLYPH_FONT }}>{BODY_GLYPH[planet]}</span>{planet}
+      <span aria-hidden style={{ fontFamily: GLYPH_FONT }}>{BODY_GLYPH[planet]}</span>{n.body[planet]}
     </span>
   )
 }
 
 export function TransitBands({ tracks, saturn, range }: { tracks: readonly TransitTrack[]; saturn?: readonly SaturnPeriod[]; range: YearRange }) {
+  const { t, n } = useT()
   const phases = (saturn ?? []).filter((p) => p.endJd > range.startJd && p.startJd < range.endJd)
   return (
     <div className="space-y-4">
@@ -131,17 +134,17 @@ export function TransitBands({ tracks, saturn, range }: { tracks: readonly Trans
             segments={t.stays.map((s, i) => ({
               key: `${s.startJd}`,
               startJd: s.startJd, endJd: s.endJd,
-              label: `${SIGN_NAMES[s.sign]} · ${ordinal(s.house)}`, short: `${SIGN_SHORT[s.sign]} ${s.house}`,
+              label: `${n.sign[s.sign]} · ${n.ordinal(s.house)}`, short: `${n.signShort[s.sign]} ${s.house}`,
               style: { background: tint(bodyColor(t.planet), i % 2 ? 40 : 26), color: 'var(--text)', boxShadow: `inset 0 0 0 1px ${tint(bodyColor(t.planet), 55)}` },
             }))}
           />
         </Row>
       ))}
       <Row
-        label={<span className="text-[var(--text-muted)]">Saturn phase</span>}
+        label={<span className="text-[var(--text-muted)]">{t('bands.saturn')}</span>}
         facts={phases.length
-          ? phases.map((p) => `${SATURN_PHASE_TITLE[p.phase]}: ${formatJd(p.startJd, range.timeZone, 'date')} – ${formatJd(p.endJd, range.timeZone, 'date')}`).join(' · ')
-          : 'No Sade Sati, Ashtama or Ardhashtama Shani this year.'}
+          ? phases.map((p) => `${T.SATURN_PHASE_TITLE[p.phase]}: ${fullDate(p.startJd, range.timeZone)} – ${fullDate(p.endJd, range.timeZone)}`).join(' · ')
+          : t('bands.noPhase')}
       >
         {phases.length > 0 && (
           <Band
@@ -149,7 +152,7 @@ export function TransitBands({ tracks, saturn, range }: { tracks: readonly Trans
             segments={phases.map((p) => {
               const tone = TONE_VARS[p.phase === 'sade_sati_peak' || p.phase === 'ashtama' ? 'bad' : 'mixed']
               return {
-                key: `${p.startJd}`, startJd: p.startJd, endJd: p.endJd, label: SATURN_PHASE_TITLE[p.phase], short: p.phase.startsWith('sade') ? 'Sade Sati' : 'Shani',
+                key: `${p.startJd}`, startJd: p.startJd, endJd: p.endJd, label: T.SATURN_PHASE_TITLE[p.phase], short: t(p.phase.startsWith('sade') ? 'bands.sadeSati' : 'bands.shani'),
                 style: { background: tone.bg, color: tone.fg, boxShadow: `inset 0 0 0 1px ${tone.border}` },
               }
             })}
@@ -162,28 +165,29 @@ export function TransitBands({ tracks, saturn, range }: { tracks: readonly Trans
 
 /** Antardashas and pratyantardashas running during the year. */
 export function DashaBands({ dashas, range }: { dashas: readonly DashaPeriod[]; range: YearRange }) {
+  const { t, n } = useT()
   const overlap = (p: DashaPeriod) => p.endJd > range.startJd && p.startJd < range.endJd
   const mds = dashas.filter(overlap)
   const ads = mds.flatMap((md) => (md.children ?? []).filter(overlap))
   const pds = ads.flatMap((ad) => (ad.children ?? []).filter(overlap))
   const seg = (p: DashaPeriod, i: number): BandSegment => ({
-    key: `${p.level}-${p.startJd}`, startJd: p.startJd, endJd: p.endJd, label: p.lord, short: BODY_ABBR[p.lord],
+    key: `${p.level}-${p.startJd}`, startJd: p.startJd, endJd: p.endJd, label: n.body[p.lord], short: n.bodyShort[p.lord],
     style: { background: tint(bodyColor(p.lord), i % 2 ? 40 : 26), color: 'var(--text)', boxShadow: `inset 0 0 0 1px ${tint(bodyColor(p.lord), 50)}` },
   })
-  const changes = (list: DashaPeriod[]) => list.filter((p) => p.startJd >= range.startJd).map((p) => `${p.lord} from ${dateIn(p.startJd, range)}`)
+  const changes = (list: DashaPeriod[]) => list.filter((p) => p.startJd >= range.startJd).map((p) => t('bands.lordFrom', { lord: n.body[p.lord], date: dateIn(p.startJd, range) }))
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-x-3 sm:grid-cols-[6.5rem_minmax(0,1fr)]">
         <span />
         <MonthAxis range={range} />
       </div>
-      <Row label="Maha" facts={mds.map((p) => `${p.lord} mahadasha until ${formatJd(p.endJd, range.timeZone, 'date')}`).join(' · ')}>
+      <Row label={n.dashaLevelShort[0]} facts={mds.map((p) => t('bands.mahaUntil', { lord: n.body[p.lord], level: n.dashaLevel[0], date: fullDate(p.endJd, range.timeZone) })).join(' · ')}>
         <Band range={range} segments={mds.map(seg)} />
       </Row>
-      <Row label="Antar" facts={changes(ads).length ? `Changes: ${changes(ads).join(' · ')}` : `${ads[0]?.lord ?? ''} all year`}>
+      <Row label={n.dashaLevelShort[1]} facts={changes(ads).length ? t('bands.changes', { list: changes(ads).join(' · ') }) : t('bands.allYear', { where: ads[0] ? n.body[ads[0].lord] : '' })}>
         <Band range={range} segments={ads.map(seg)} />
       </Row>
-      <Row label="Pratyantar" facts={`${pds.length} sub-periods this year`}>
+      <Row label={n.dashaLevelShort[2]} facts={t('bands.subPeriods', { n: pds.length })}>
         <Band range={range} segments={pds.map(seg)} />
       </Row>
     </div>

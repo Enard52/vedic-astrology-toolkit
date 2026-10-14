@@ -113,3 +113,44 @@ describe('engineApi.dayTimings', () => {
     expect(engineApi.dayTimings('2026-12-21', 78.2232, 15.6267, 'Arctic/Longyearbyen')).toBeNull()
   })
 })
+
+describe('engineApi natal analysis, annual chart and matching', () => {
+  it('returns strengths, yogas and the natal promise from one memoised cast', () => {
+    const strengths = engineApi.strengths(BIRTH, PRESETS.popular)
+    expect(strengths.shadbala.status).toBe('complete')
+    expect(Object.keys(strengths.vimsopaka)).toEqual(['shad', 'sapta', 'dasa', 'shodasa'])
+    const { yogas, promise } = engineApi.yogas(BIRTH, PRESETS.popular)
+    expect(yogas).toHaveLength(170)
+    expect(yogas.some((y) => y.status === 'conditions_met')).toBe(true)
+    expect(Object.keys(promise)).toHaveLength(9)
+    // Display fields and UI preferences do not split the cache; the chart call shares the cast.
+    const app = { ...PRESETS.popular, theme: 'dark' } as typeof PRESETS.popular
+    expect(engineApi.strengths({ ...BIRTH }, app)).toBe(strengths)
+    expect(engineApi.chart(BIRTH, PRESETS.popular).chart).toBe(engineApi.chart(BIRTH, app).chart)
+    for (const v of [strengths, yogas, promise]) expect(structuredClone(v)).toEqual(v)
+  })
+
+  it('casts the annual chart for a completed-years count', () => {
+    const year = engineApi.annualChart(BIRTH, PRESETS.popular, 36)
+    expect(year.completedYears).toBe(36)
+    expect(year.returnJd).toBeGreaterThan(localToJd('2026-05-01', BENGALURU.timeZone))
+    expect(year.nextReturnJd - year.returnJd).toBeCloseTo(365.26, 1)
+    // The Muntha agrees with the forecast's own (predict.ts munthaForYear).
+    const { extras } = engineApi.forecast(BIRTH, PRESETS.popular, BENGALURU, 'year', '2026-01-01')
+    expect(year.munthaSign).toBe(extras.muntha!.sign)
+    expect(Math.abs(year.returnJd - extras.muntha!.returnJd)).toBeLessThan(1 / 1440)
+    expect(structuredClone(year)).toEqual(year)
+    expect(() => engineApi.annualChart(BIRTH, PRESETS.popular, 1.5)).toThrow(/whole number/)
+  })
+
+  it('matches two births in the worker', () => {
+    const partner: BirthInput = { date: '1988-11-03', time: '14:20', timeZone: 'Asia/Kolkata', latitude: 13.0827, longitude: 80.2707 }
+    const { result, groom, bride } = engineApi.match(BIRTH, partner, PRESETS.popular)
+    expect(groom.jd).toBe(engineApi.chart(BIRTH, PRESETS.popular).chart.jd)
+    expect(bride.input.date).toBe('1988-11-03')
+    expect(result.ashtakoota.total).toBeGreaterThanOrEqual(0)
+    expect(result.ashtakoota.total).toBeLessThanOrEqual(36)
+    expect(result.porutham).toBeTruthy()
+    expect(structuredClone(result)).toEqual(result)
+  })
+})

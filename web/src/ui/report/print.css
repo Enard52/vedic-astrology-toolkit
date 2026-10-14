@@ -1,0 +1,258 @@
+/* Kundli report: a light "paper" document on screen (sheets with a shadow, one per printed
+   page start) that prints to A4 through the browser. The paper always uses the light theme's
+   values, whatever the app theme: the tokens below repeat the light values of src/index.css,
+   src/ui/layout/shell.css and src/ui/chart/chart.css (keep them in step), tuned for white paper.
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+
+.report-paper {
+  --bg: #ffffff;
+  --bg-elevated: #fbfaf6;
+  --surface-border: rgb(15 23 42 / 0.12);
+  --text: #141a2e;
+  --text-muted: #56607a;
+  --accent: var(--color-saffron-600);
+  --accent-contrast: #2a1a04;
+  --accent-text: #8a4f06;
+  --accent-soft: rgb(212 134 26 / 0.12);
+  --selected-bg: rgb(212 134 26 / 0.11);
+  --chip-bg: linear-gradient(135deg, rgb(240 165 48 / 0.18), rgb(139 124 246 / 0.12));
+  --surface-2: rgb(15 23 42 / 0.03);
+  --surface-3: rgb(15 23 42 / 0.06);
+  --hover: rgb(15 23 42 / 0.055);
+  --divider: rgb(15 23 42 / 0.1);
+  --card-shadow: none;
+  --good-fg: #047857;
+  --good-bg: rgb(16 185 129 / 0.12);
+  --good-border: rgb(4 120 87 / 0.28);
+  --mixed-fg: #92400e;
+  --mixed-bg: rgb(245 158 11 / 0.15);
+  --mixed-border: rgb(146 64 14 / 0.28);
+  --bad-fg: #be123c;
+  --bad-bg: rgb(244 63 94 / 0.1);
+  --bad-border: rgb(190 18 60 / 0.28);
+  --heading-gradient: linear-gradient(100deg, #9a5a07 0%, #8a4f06 45%, #5b3fc4 100%);
+
+  --planet-sun: #c2410c;
+  --planet-moon: #475569;
+  --planet-mars: #b91c1c;
+  --planet-mercury: #047857;
+  --planet-jupiter: #a16207;
+  --planet-venus: #be185d;
+  --planet-saturn: #1d4ed8;
+  --planet-rahu: #6d28d9;
+  --planet-ketu: #78716c;
+  --planet-asc: #b45309;
+  --chart-fill: #fffdf8;
+  --chart-line: rgb(20 26 46 / 0.22);
+  --chart-frame: rgb(212 134 26 / 0.75);
+  --chart-lagna-from: rgb(240 165 48 / 0.22);
+  --chart-lagna-to: rgb(240 165 48 / 0.04);
+  --chart-sign: #756b59;
+  --chart-degree: #4b5470;
+  --chart-retro: #e11d48;
+  --chart-highlight: rgb(240 165 48 / 0.16);
+  --chart-highlight-line: rgb(212 134 26 / 0.6);
+  --badge-good: #047857;
+  --badge-own: #b45309;
+  --badge-bad: #be123c;
+  --badge-retro: #6d28d9;
+
+  color-scheme: light;
+  color: var(--text);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* One sheet per printed page start: 210 mm wide with 15 mm sides, so the screen preview lays
+   out exactly as the A4 print (180 mm of content either way). */
+.report-sheet {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 210mm;
+  margin-inline: auto;
+  padding: 20px;
+  background: var(--bg);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.12), 0 18px 48px -24px rgb(3 5 12 / 0.55);
+}
+
+@media (min-width: 640px) {
+  .report-sheet {
+    padding: 14mm 15mm 16mm;
+  }
+}
+
+.report-sheet + .report-sheet {
+  margin-top: 24px;
+}
+
+/* The cover fills its page: a whole A4 sheet on screen, the page box (less the margins) in print. */
+.report-cover {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .report-cover {
+    min-height: 297mm;
+  }
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.report-table th,
+.report-table td {
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--divider);
+}
+
+.report-table-compact {
+  font-size: 0.75rem;
+}
+
+.report-table-compact th,
+.report-table-compact td {
+  padding: 0.35rem 0.4rem;
+}
+
+.report-scroll {
+  /* Positioned, so screen-reader-only text inside (absolutely positioned) is clipped with the table. */
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.report-table th:first-child,
+.report-table td:first-child {
+  padding-left: 0;
+}
+
+.report-table th:last-child,
+.report-table td:last-child {
+  padding-right: 0;
+}
+
+.report-table thead th {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom-color: var(--surface-border);
+}
+
+.report-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.report-table tr[aria-current] > * {
+  background: var(--selected-bg);
+}
+
+.report-table tr,
+.report-avoid-break {
+  break-inside: avoid;
+}
+
+.report-heading {
+  break-after: avoid;
+}
+
+/* The shared panchanga card, a little tighter so the dasha tables share its page. */
+.report-paper .report-panchanga {
+  padding: 1rem 1.25rem;
+}
+
+/* Named page so these rules never reach other screens printed later in the same visit. */
+@page kundli {
+  size: A4;
+  margin: 14mm 15mm 18mm;
+
+  @bottom-left {
+    content: 'Jyotish Daily · Traditional indications from classical rules, not validated predictions and not medical, legal or financial advice · https://chethandvg.github.io/vedic-astrology-toolkit/';
+    font-family: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    font-size: 7pt;
+    line-height: 1.35;
+    color: #56607a;
+    vertical-align: top;
+    padding-top: 5mm;
+    padding-right: 6mm;
+  }
+
+  @bottom-right {
+    content: counter(page) ' / ' counter(pages);
+    font-family: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    font-size: 7pt;
+    color: #56607a;
+    vertical-align: top;
+    padding-top: 5mm;
+    width: 14mm;
+  }
+}
+
+@media print {
+  html:has(.report-doc),
+  html:has(.report-doc) body {
+    background: #fff !important;
+    min-height: 0 !important;
+  }
+
+  /* Only the report: no header, navigation, footer, sky or skip link. */
+  html:has(.report-doc) #root > div {
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  html:has(.report-doc) #root > div > :not(main) {
+    display: none !important;
+  }
+
+  html:has(.report-doc) main > div {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .report-doc {
+    page: kundli;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .report-screen-only {
+    display: none !important;
+  }
+
+  .report-scroll {
+    overflow: visible;
+  }
+
+  .report-sheet {
+    max-width: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .report-sheet + .report-sheet {
+    margin-top: 0;
+    break-before: page;
+  }
+
+  .report-cover {
+    min-height: 258mm;
+  }
+
+  /* Backdrop filters and shadows render poorly (or as grey boxes) in print. */
+  .report-paper * {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+}

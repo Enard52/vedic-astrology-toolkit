@@ -3,8 +3,9 @@ import {
   binduNote, CAUTION_PHRASE, chandrashtamaCaution, chandrashtamaHeadline, DAY_HEADLINE_VARIANTS, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText, DASHA_THEMES,
   dayHeadline, GOCHARA_TEXT, HOUSE_THEMES, joinList, MOON_CHANGE_TEXT, MUNTHA_TEXT, NO_SADE_SATI_TEXT, ordinal, PANCHANGA_TEXT,
   PERIOD_TEXT, periodHeadline, PLANET_THEMES, SATURN_PHASE_TEXT, SATURN_PHASE_TITLE, SOURCES, STATION_TEXT, SUPPORT_PHRASE, TARA_TEXT,
-  vedhaNote, vipareetaNote, yearHeadline,
+  vedhaNote, vipareetaNote, yearHeadline, dashaChainText, dashaChangePromiseText, dashaPromiseTitle, functionalNote, HOUSE_AREAS, lordBrief, lordOutlook,
 } from '@/content'
+import type { LordPromise } from '@/engine/promise'
 import { TARA_NAMES } from '@/engine/moon'
 import type { SaturnPhase } from '@/engine/saturn'
 import { PLANETS, type Effect, type Rating } from '@/engine/types'
@@ -39,6 +40,26 @@ function allTexts(): string[] {
     for (const q of PLANETS) out.push(dashaCombination(p, q, 'Sun'), dashaCombination(p, q), dashaChangeText([p, q]))
   }
   for (let b = 0; b <= 8; b++) out.push(binduNote(b, true), binduNote(b, false))
+  // Chart-specific dasha texts over sample lords: one per planet, cycling through the variants.
+  const lords = PLANETS.map((planet, i): LordPromise => {
+    const node = planet === 'Rahu' || planet === 'Ketu'
+    return {
+      planet, role: node ? 'unclassified' : (['benefic', 'neutral', 'malefic'] as const)[i % 3], yogakaraka: i === 4, rules: node ? [] : i % 2 ? [6, 9] : [1 + (i % 12)],
+      house: 1 + ((i * 5) % 12), ...(node ? { dispositor: 'Saturn' as const } : {}),
+      dignity: (['exalted', 'own', 'debilitated', 'friend', 'great_enemy', 'moolatrikona', 'neutral'] as const)[i % 7],
+      strengthRatio: node ? null : [0.8, 1, 1.3][i % 3], combust: i === 3, vipareeta: i === 1,
+      supportiveYogas: i === 2 ? ['Gaja-Kesari'] : [], challengingYogas: i === 5 ? ['Kemadruma'] : [], score: 0, effect: EFFECTS[i % 3],
+    }
+  })
+  for (const [i, l] of lords.entries()) {
+    for (const e of EFFECTS) {
+      const variant = { ...l, effect: e }
+      out.push(lordOutlook(variant, 'sub-period'), lordOutlook(variant, 'period'), lordBrief(variant, 'phase'), dashaPromiseTitle(l.planet, e))
+      out.push(dashaChainText(variant, lords[(i + 1) % 9], lords[(i + 2) % 9], [null, 5, 8, 3][i % 4]), dashaChangePromiseText([l.planet, lords[(i + 1) % 9].planet], variant))
+      out.push(functionalNote('benefic', false, e), functionalNote('malefic', false, e), functionalNote('neutral', true, e))
+    }
+  }
+  out.push(...HOUSE_AREAS)
   return out
 }
 

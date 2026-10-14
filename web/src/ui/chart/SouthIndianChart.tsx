@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { useId, useMemo } from 'react'
 import { clsx } from 'clsx'
-import { SIGN_NAMES } from '@/engine/core'
+import { useT } from '@/i18n'
 import { chartSummary, houseModels, layoutChart } from './chartModel'
 import { CHART_UNITS, ChartTable, HouseLabels, LagnaGradient, svgId, useLabelScale, VIEWBOX, type ChartCaption, type ChartProps } from './ChartParts'
 import { SOUTH_LAGNA_CUT, SOUTH_NAME_BAND, southCells, textWidthEm, wrapText } from './layout'
@@ -22,7 +22,9 @@ const TEXT_MAX_SCALE = 1.2
 export function SouthIndianChart({ chart, varga = 1, caption, highlight, size, className }: ChartProps) {
   const highlightKey = highlight?.join() ?? ''
   // Keyed by content: callers often pass a fresh array literal on every render.
-  const houses = useMemo(() => houseModels(chart, varga, highlight), [chart, varga, highlightKey])
+  const { lang, n } = useT()
+  // The labels are in the current language, so a language change rebuilds them too.
+  const houses = useMemo(() => houseModels(chart, varga, highlight), [chart, varga, highlightKey, lang])
   const lagna = houses[0].sign
   const cells = useMemo(() => southCells(S, lagna), [lagna])
   const [figure, scale] = useLabelScale()
@@ -34,7 +36,7 @@ export function SouthIndianChart({ chart, varga = 1, caption, highlight, size, c
   const nameSize = 8 * textScale
   return (
     <figure ref={figure} className={clsx('relative m-0', className)} style={size ? { width: size, maxWidth: '100%' } : undefined}>
-      <svg viewBox={VIEWBOX} role="img" aria-label={chartSummary(houses, varga, 'South Indian')} className="block h-auto w-full select-none font-sans">
+      <svg viewBox={VIEWBOX} role="img" aria-label={chartSummary(houses, varga, 'south')} className="block h-auto w-full select-none font-sans">
         <defs><LagnaGradient id={gradient} x2={1} y2={1} /></defs>
         <rect width={S} height={S} rx={2} fill="var(--chart-fill)" />
         <rect x={lagnaCell.x} y={lagnaCell.y} width={C} height={C} fill={`url(#${gradient})`} />
@@ -47,10 +49,10 @@ export function SouthIndianChart({ chart, varga = 1, caption, highlight, size, c
         {cells.map((cell) => (
           <text
             key={cell.sign} x={cell.x + C - 6} y={cell.y + C - (SOUTH_NAME_BAND * C) / 2 + nameSize * 0.33} textAnchor="end" fontSize={nameSize}
-            letterSpacing={0.9} fontWeight={cell.sign === lagna ? 650 : 500}
+            letterSpacing={lang === 'en' ? 0.9 : 0} fontWeight={cell.sign === lagna ? 650 : 500}
             style={{ fill: cell.sign === lagna ? 'var(--planet-asc)' : 'var(--chart-sign)' }}
           >
-            {SIGN_NAMES[cell.sign].toUpperCase()}
+            {n.sign[cell.sign].toUpperCase()}
           </text>
         ))}
         {houses.map((h, i) => <HouseLabels key={h.house} house={h} layout={layouts[i]} />)}

@@ -9,7 +9,8 @@ import { clsx } from 'clsx'
 import type { ChartProps } from './ChartParts'
 import { NorthIndianChart } from './NorthIndianChart'
 import { SouthIndianChart } from './SouthIndianChart'
-import { VARGA_INFO, vargaInfo } from './vargas'
+import { useT } from '@/i18n'
+import { vargaInfo, vargaList } from './vargas'
 
 export type ChartStyle = 'north' | 'south'
 
@@ -36,6 +37,7 @@ const group = 'inline-flex rounded-full border border-(--surface-border) bg-(--b
 export function ChartSwitcher({
   chartStyle, defaultChartStyle = 'north', onChartStyleChange, varga, defaultVarga = 1, onVargaChange, className, ...chartProps
 }: ChartSwitcherProps) {
+  const { t } = useT()
   const [ownStyle, setOwnStyle] = useState<ChartStyle>(defaultChartStyle)
   const [ownVarga, setOwnVarga] = useState(defaultVarga)
   const style = chartStyle ?? ownStyle
@@ -58,21 +60,21 @@ export function ChartSwitcher({
   return (
     <div className={className}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <ToggleGroup.Root type="single" value={style} onValueChange={setStyle} aria-label="Chart style" className={group}>
-          <ToggleGroup.Item value="north" className={segment}>North</ToggleGroup.Item>
-          <ToggleGroup.Item value="south" className={segment}>South</ToggleGroup.Item>
+        <ToggleGroup.Root type="single" value={style} onValueChange={setStyle} aria-label={t('chart.style')} className={group}>
+          <ToggleGroup.Item value="north" className={segment}>{t('chart.north')}</ToggleGroup.Item>
+          <ToggleGroup.Item value="south" className={segment}>{t('chart.south')}</ToggleGroup.Item>
         </ToggleGroup.Root>
         {/* min-w-0 lets this group shrink on narrow phones; the menu then gives up width first. */}
         <div className="flex min-w-0 items-center gap-2">
           <ToggleGroup.Root
             type="single" value={isQuick ? String(division) : ''} onValueChange={(v) => setVarga(Number(v))}
-            aria-label="Divisional chart" className={clsx(group, 'shrink-0')}
+            aria-label={t('chart.divisional')} className={clsx(group, 'shrink-0')}
           >
             {QUICK.map((n) => (
               <ToggleGroup.Item key={n} value={String(n)} className={segment} title={vargaInfo(n).name}>D{n}</ToggleGroup.Item>
             ))}
           </ToggleGroup.Root>
-          <label htmlFor={selectId} className="sr-only">All divisional charts</label>
+          <label htmlFor={selectId} className="sr-only">{t('chart.allDivisional')}</label>
           <span className="relative w-[8.5rem] min-w-[5.5rem] shrink">
             <select
               id={selectId} value={isQuick ? '' : String(division)} onChange={(e) => setVarga(Number(e.target.value))}
@@ -82,8 +84,8 @@ export function ChartSwitcher({
                 isQuick ? 'text-(--text-muted)' : 'text-(--text)',
               )}
             >
-              <option value="" disabled>More</option>
-              {VARGA_INFO.map((v) => <option key={v.n} value={v.n}>D{v.n} {v.name}</option>)}
+              <option value="" disabled>{t('chart.more')}</option>
+              {vargaList().map((v) => <option key={v.n} value={v.n}>D{v.n} {v.name}</option>)}
             </select>
             <ChevronDown aria-hidden className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-(--text-muted)" />
           </span>

@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { House, MapPin } from 'lucide-react'
 import { useState } from 'react'
+import { rich, useT } from '@/i18n'
 import { cityLabel } from '@/lib/cities'
 import { useActiveProfile, type Profile } from '@/state/profiles'
 import { Button } from '@/ui/components/Button'
@@ -13,6 +14,7 @@ import { birthPlace, shortPlaceName, useTimingsPlace } from './data'
 
 /** `profile` is the one on screen: its birthplace is the default and the way back. */
 export function PlaceChip({ profile, className }: { profile?: Profile; className?: string }) {
+  const { t } = useT()
   const { place, isDefault, setPlace } = useTimingsPlace(profile)
   const active = useActiveProfile()
   const shown = profile ?? active
@@ -20,22 +22,22 @@ export function PlaceChip({ profile, className }: { profile?: Profile; className
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="sm" className={className} aria-label={`Timings for ${place.name}. Change place`}>
+        <Button variant="secondary" size="sm" className={className} aria-label={t('place.chipAria', { name: place.name })}>
           <MapPin aria-hidden className="text-[var(--accent-text)]" />
           <span className="max-w-[9rem] truncate">{shortPlaceName(place)}</span>
         </Button>
       </DialogTrigger>
       {/* Tall enough for the suggestion list, which opens over the lines below the field. */}
       <DialogContent variant="sheet" className="min-h-[75dvh] sm:min-h-[30rem]">
-        <DialogTitle>Where are you today?</DialogTitle>
+        <DialogTitle>{t('place.whereTitle')}</DialogTitle>
         <DialogDescription>
-          Sunrise, Rahu Kalam, choghadiya and horas follow local sunrise. Pick the town you are in; the choice stays on this device.
+          {t('place.whereText')}
         </DialogDescription>
         <div className="mt-4 space-y-1.5">
-          <Label htmlFor="timings-place">Town or city</Label>
+          <Label htmlFor="timings-place">{t('place.town')}</Label>
           <PlaceSearch
             id="timings-place"
-            placeholder="Start typing, e.g. Chennai"
+            placeholder={t('place.placeholderNow')}
             onSelect={(city) => {
               setPlace({ name: cityLabel(city), latitude: city.latitude, longitude: city.longitude, timeZone: city.timeZone })
               setOpen(false)
@@ -44,7 +46,7 @@ export function PlaceChip({ profile, className }: { profile?: Profile; className
         </div>
         <p className="mt-4 flex items-start gap-2 rounded-xl bg-[var(--surface-2)] p-3 text-sm ring-1 ring-inset ring-[var(--surface-border)]">
           <MapPin aria-hidden className="mt-0.5 size-4 shrink-0 text-[var(--accent-text)]" />
-          <span><span className="text-[var(--text-muted)]">Now showing </span><span className="font-medium">{place.name}</span><span className="text-[var(--text-muted)]"> · {place.timeZone}</span></span>
+          <span className="text-[var(--text-muted)]">{rich(t('place.showing'), { name: <span className="font-medium text-[var(--text)]">{place.name}</span> })} · {place.timeZone}</span>
         </p>
         {!isDefault && shown && (
           <Button
@@ -54,7 +56,7 @@ export function PlaceChip({ profile, className }: { profile?: Profile; className
               setOpen(false)
             }}
           >
-            <House aria-hidden /> Use the birthplace ({shortPlaceName(birthPlace(shown.birth))})
+            <House aria-hidden /> {t('place.useBirth', { name: shortPlaceName(birthPlace(shown.birth)) })}
           </Button>
         )}
       </DialogContent>

@@ -6,6 +6,7 @@ import { BookOpen, ChevronDown, ChevronsDown, ChevronsUp } from 'lucide-react'
 import { Collapsible } from 'radix-ui'
 import { useId, useState } from 'react'
 import type { Effect, Reason } from '@/engine/types'
+import { t, useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { Button } from '@/ui/components/Button'
 import { leadingReasons } from './balance'
@@ -14,13 +15,13 @@ import { SectionTitle } from './Section'
 
 const ORDER: readonly Effect[] = [1, 0, -1]
 
-/** "strong" / "moderate" / "light" relative to the heaviest reason in the list. */
+/** "Strong influence" / "Moderate influence" / "Light influence" relative to the heaviest reason in the list. */
 function influence(weight: number, max: number): string {
   const r = weight / max
-  return r > 0.75 ? 'Strong' : r > 0.4 ? 'Moderate' : 'Light'
+  return t(r > 0.75 ? 'reasons.strong' : r > 0.4 ? 'reasons.moderate' : 'reasons.light')
 }
 
-export function ReasonList({ reasons, title = 'Why', description, columns = false, initial, className }: {
+export function ReasonList({ reasons, title, description, columns = false, initial, className }: {
   reasons: readonly Reason[]
   title?: string
   description?: string
@@ -30,6 +31,7 @@ export function ReasonList({ reasons, title = 'Why', description, columns = fals
   initial?: number
   className?: string
 }) {
+  const { t } = useT()
   const headingId = useId()
   const listId = useId()
   const [all, setAll] = useState(false)
@@ -39,7 +41,7 @@ export function ReasonList({ reasons, title = 'Why', description, columns = fals
   const shown = collapsible && !all ? leadingReasons(reasons, initial) : null
   return (
     <section aria-labelledby={headingId} className={className}>
-      <SectionTitle id={headingId} description={description}>{title}</SectionTitle>
+      <SectionTitle id={headingId} description={description}>{title ?? t('reasons.why')}</SectionTitle>
       <div id={listId} className="space-y-6">
         {ORDER.map((effect) => {
           const group = reasons.filter((r) => r.effect === effect).sort((a, b) => b.weight - a.weight)
@@ -52,7 +54,7 @@ export function ReasonList({ reasons, title = 'Why', description, columns = fals
               <h3 className="mb-2.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: TONE_VARS[meta.tone].fg }}>
                 <Icon aria-hidden className="size-4" />
                 {meta.label}
-                <span className="font-medium text-[var(--text-muted)]">{visible.length < group.length ? `${visible.length} of ${group.length}` : group.length}</span>
+                <span className="font-medium text-[var(--text-muted)]">{visible.length < group.length ? t('reasons.countOf', { n: visible.length, total: group.length }) : group.length}</span>
               </h3>
               <ul className={cn('space-y-2', columns && 'lg:grid lg:grid-cols-2 lg:items-start lg:gap-2.5 lg:space-y-0')}>
                 {visible.map((r) => <li key={`${r.factor}-${r.title}`}><ReasonCard reason={r} max={max} /></li>)}
@@ -63,7 +65,7 @@ export function ReasonList({ reasons, title = 'Why', description, columns = fals
       </div>
       {collapsible && (
         <Button variant="secondary" size="sm" className="mt-4" aria-expanded={all} aria-controls={listId} onClick={() => setAll((v) => !v)}>
-          {all ? <><ChevronsUp aria-hidden />Show only the top {initial}</> : <><ChevronsDown aria-hidden />Show all {reasons.length} reasons</>}
+          {all ? <><ChevronsUp aria-hidden />{t('reasons.top', { n: initial })}</> : <><ChevronsDown aria-hidden />{t('reasons.all', { n: reasons.length })}</>}
         </Button>
       )}
     </section>
@@ -71,6 +73,7 @@ export function ReasonList({ reasons, title = 'Why', description, columns = fals
 }
 
 function ReasonCard({ reason, max }: { reason: Reason; max: number }) {
+  useT()
   const [open, setOpen] = useState(false)
   const meta = EFFECT_META[reason.effect]
   const tone = TONE_VARS[meta.tone]
@@ -89,7 +92,7 @@ function ReasonCard({ reason, max }: { reason: Reason; max: number }) {
             <span aria-hidden className="h-1 w-14 overflow-hidden rounded-full bg-[var(--surface-3)]">
               <span className="block h-full rounded-full" style={{ width: `${Math.max(12, (reason.weight / max) * 100)}%`, background: tone.solid }} />
             </span>
-            <span>{level} influence</span>
+            <span>{level}</span>
           </span>
         </span>
         <ChevronDown aria-hidden className="mt-1 size-4 shrink-0 text-[var(--text-muted)] transition-transform duration-200 group-data-[state=open]:rotate-180" />
@@ -100,7 +103,7 @@ function ReasonCard({ reason, max }: { reason: Reason; max: number }) {
       <Collapsible.Content className="px-3.5 pb-3.5 pl-[3.75rem] sm:px-4 sm:pb-4 sm:pl-[4rem]">
         <p className="-mt-1 flex items-start gap-1.5 text-xs leading-snug text-[var(--text-muted)]">
           <BookOpen aria-hidden className="mt-px size-3.5 shrink-0" />
-          <span><span className="sr-only">Source: </span>{reason.source}</span>
+          <span><span className="sr-only">{t('common.source')}</span>{reason.source}</span>
         </p>
       </Collapsible.Content>
     </Collapsible.Root>

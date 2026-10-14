@@ -5,6 +5,7 @@ import { CalendarClock, Milestone } from 'lucide-react'
 import type { RouteComponentProps } from 'wouter'
 import { addDays } from '@/engine/time'
 import type { DashaPeriod } from '@/engine/types'
+import { useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { useProfile } from '@/state/profiles'
 import { Callout } from '@/ui/components/Callout'
@@ -25,6 +26,7 @@ import { useForecastDate, useNowJd } from '@/ui/forecast/useForecastDate'
 import { Page } from '@/ui/layout/Page'
 
 export default function TodayPage({ params }: RouteComponentProps<{ id: string }>) {
+  const { t } = useT()
   const profile = useProfile(params.id)
   const nav = useForecastDate('day', profile)
   const { data: forecast, extras, error, loading, retry } = useForecast(params.id, 'day', nav.anchor)
@@ -48,24 +50,24 @@ export default function TodayPage({ params }: RouteComponentProps<{ id: string }
         // and events (the plain facts a beginner reads first), then the reasons. Wide screens put
         // the side cards beside the timings and the reasons below both.
         <div className={cn('grid grid-cols-1 gap-4 transition-opacity duration-200 lg:grid-cols-12 lg:gap-6', loading && 'opacity-60')}>
-          <RatingHero forecast={forecast} label={relative ? `${relative}’s outlook` : `Outlook for ${shortDate(nav.anchor)}`} className="lg:col-span-7" />
+          <RatingHero forecast={forecast} label={relative ? t('outlook.relative', { period: relative }) : t('outlook.date', { date: shortDate(nav.anchor) })} className="lg:col-span-7" />
           {showNow ? <RightNow timings={(beforeSunrise && night) || timings} nowJd={nowJd} className="lg:col-span-5" /> : dashaCard(forecast.dasha, 'max-lg:hidden lg:col-span-5')}
           {timings ? (
             <DayTimingsPanel timings={timings} nowJd={nav.isCurrent ? nowJd : -Infinity} placeAction={<PlaceChip profile={profile} />} className="self-start lg:col-span-7" />
           ) : (
-            <Panel title="Day timings" icon={<CalendarClock />} action={<PlaceChip profile={profile} />} className="self-start lg:col-span-7">
-              <Callout tone="warning">The Sun does not rise and set normally here on this date, so sunrise-based timings are not available.</Callout>
+            <Panel title={t('timings.title')} icon={<CalendarClock />} action={<PlaceChip profile={profile} />} className="self-start lg:col-span-7">
+              <Callout tone="warning">{t('timings.unavailable')}</Callout>
             </Panel>
           )}
           <div className="space-y-4 self-start lg:col-span-5 lg:col-start-8 lg:row-start-2 lg:space-y-6">
             {extras?.moon && <MoonCard moon={extras.moon} chandrashtama={extras.chandrashtama} events={forecast.events} date={nav.anchor} timeZone={zone} />}
             {dashaCard(forecast.dasha, showNow ? undefined : 'lg:hidden')}
-            <Panel title="Events" description={`Local times in ${shortPlaceName(place)}`} icon={<Milestone />}>
-              <EventsTimeline events={forecast.events} timeZone={zone} day={nav.anchor} empty="No sign or star changes today." />
+            <Panel title={t('events.title')} description={t('events.localTimes', { place: shortPlaceName(place) })} icon={<Milestone />}>
+              <EventsTimeline events={forecast.events} timeZone={zone} day={nav.anchor} empty={t('events.noneToday')} />
             </Panel>
           </div>
           <ReasonList
-            reasons={forecast.reasons} title="What shapes the day" description="Tap a reason for the detail and its classical source."
+            reasons={forecast.reasons} title={t('reasons.day')} description={t('reasons.tap')}
             columns initial={5} className="pt-4 lg:col-span-12 lg:row-start-3"
           />
         </div>

@@ -4,49 +4,50 @@ import type { ReactNode } from 'react'
 import { CalendarDays, Hourglass, MoonStar, Orbit, Sparkles, Sunrise, Sunset } from 'lucide-react'
 import { clsx } from 'clsx'
 import { formatJd } from '@/engine/time'
+import { useT } from '@/i18n'
+import { weekdayLong } from '@/ui/forecast/dates'
 import type { Chart } from '@/engine/types'
 import { bodyColor } from './planets'
 import './chart.css'
 
-/** Vara names, Sunday first (the weekday of a Vedic day is counted from sunrise). */
-const VARA = ['Ravivara', 'Somavara', 'Mangalavara', 'Budhavara', 'Guruvara', 'Shukravara', 'Shanivara'] as const
-const WEEKDAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const
 
 export function PanchangaCard({ chart, className }: { chart: Chart; className?: string }) {
+  const { t, n, lang } = useT()
   const p = chart.panchanga
   const sd = chart.solarDay
   const zone = chart.input.timeZone
   const nak = p.nakshatra
   const time = (jd: number) => formatJd(jd, zone, 'time')
   // "Shukla" is the spelling most panchang publishers use for the bright half.
-  const paksha = p.paksha === 'Sukla' ? 'Shukla' : 'Krishna'
+  const paksha = lang === 'en' ? (p.paksha === 'Sukla' ? 'Shukla' : 'Krishna') : n.paksha[p.paksha]
+  const tithiName = p.tithi === 15 ? n.purnima : p.tithi === 30 ? n.amavasya : n.tithi[p.tithiInPaksha - 1]
   return (
     <section
-      aria-label="Birth panchanga"
+      aria-label={t('panchanga.aria')}
       className={clsx('rounded-card border border-(--surface-border) bg-(--bg-elevated) p-5 backdrop-blur sm:p-6', className)}
     >
       <header className="mb-4 flex items-baseline justify-between gap-3">
-        <h3 className="font-display text-xl text-(--text)">Panchanga</h3>
-        {sd && <span className="text-xs text-(--text-muted)">{sd.isDay ? 'Day birth' : 'Night birth'}</span>}
+        <h3 className="font-display text-xl text-(--text)">{t('panchanga.title')}</h3>
+        {sd && <span className="text-xs text-(--text-muted)">{sd.isDay ? t('panchanga.dayBirth') : t('panchanga.nightBirth')}</span>}
       </header>
       <dl className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-        <Item icon={<CalendarDays />} term="Vara (weekday)" note={sd ? `${VARA[sd.weekday]} · counted from sunrise` : undefined}>
-          {sd ? WEEKDAY[sd.weekday] : 'Unavailable (no sunrise)'}
+        <Item icon={<CalendarDays />} term={t('panchanga.vara')} note={sd ? t('panchanga.varaNote', { vara: n.vara[sd.weekday] }) : undefined}>
+          {sd ? weekdayLong(sd.weekday) : t('panchanga.noSunrise')}
         </Item>
-        <Item icon={<MoonStar />} term="Tithi" note={`${p.tithi} of 30 · ${paksha} paksha`}>
-          {p.tithiInPaksha === 15 ? p.tithiName : `${paksha} ${p.tithiName}`}
+        <Item icon={<MoonStar />} term={t('panchanga.tithi')} note={t('panchanga.tithiNote', { n: p.tithi, paksha })}>
+          {p.tithiInPaksha === 15 ? tithiName : `${paksha} ${tithiName}`}
         </Item>
-        <Item icon={<Sparkles />} term="Nakshatra" note={<>Pada {nak.pada} · lord <span style={{ color: bodyColor(nak.lord) }}>{nak.lord}</span></>}>
-          {nak.name}
+        <Item icon={<Sparkles />} term={t('moon.nakshatra')} note={<>{t('chart.pada', { n: nak.pada })} · {t('chart.lord')} <span style={{ color: bodyColor(nak.lord) }}>{n.body[nak.lord]}</span></>}>
+          {n.nakshatra[nak.index - 1]}
         </Item>
-        <Item icon={<Orbit />} term="Yoga" note={`${p.yogaIndex} of 27`}>{p.yoga}</Item>
-        <Item icon={<Hourglass />} term="Karana" note="Half of a tithi">{p.karana}</Item>
-        <Item icon={<Sunrise />} term="Sunrise · Sunset" note={sd ? `Local time, ${zone}` : 'The Sun does not rise or set that day'}>
+        <Item icon={<Orbit />} term={t('panchanga.yoga')} note={t('panchanga.of27', { n: p.yogaIndex })}>{n.yoga[p.yogaIndex - 1] ?? p.yoga}</Item>
+        <Item icon={<Hourglass />} term={t('panchanga.karana')} note={t('panchanga.karanaNote')}>{n.karana[p.karana] ?? p.karana}</Item>
+        <Item icon={<Sunrise />} term={t('panchanga.sun')} note={sd ? t('panchanga.local', { zone }) : t('panchanga.noSun')}>
           {sd ? (
             <span className="inline-flex items-center gap-2 tabular-nums">
-              <span className="sr-only">Sunrise</span>{time(sd.sunriseJd)}
+              <span className="sr-only">{t('timings.sunrise')}</span>{time(sd.sunriseJd)}
               <Sunset aria-hidden className="size-4 text-(--text-muted)" />
-              <span className="sr-only">sunset</span>{time(sd.sunsetJd)}
+              <span className="sr-only">{t('timings.sunset')}</span>{time(sd.sunsetJd)}
             </span>
           ) : '—'}
         </Item>

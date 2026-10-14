@@ -6,6 +6,7 @@ import { Clock, Moon, Sunrise, Sunset } from 'lucide-react'
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { addDays, formatJd, localToJd } from '@/engine/time'
 import type { DayTimings, Hora, TimeWindow } from '@/engine/types'
+import { t, useT, type MessageKey } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { Badge } from '@/ui/components/Badge'
 import { SegmentedControl } from '@/ui/components/SegmentedControl'
@@ -15,17 +16,25 @@ import { BODY_GLYPH, bodyColor, GLYPH_FONT } from '@/ui/chart/planets'
 import '@/ui/chart/chart.css'
 import { HORA_USE, QUALITY_META, TONE_VARS } from './meta'
 import { Panel } from './Section'
-import { markedWindows, runningAt, spokenRange, timeRange } from './timing'
+import { markedWindows, runningAt, spokenRange, timeRange, windowName, windowNote } from './timing'
 
 /** Colour, short mark and fill for each kind of window on the bar; `halo` keeps the mark legible over the "now" line. */
-const WINDOW_LOOK: Record<string, { mark: string; short: string; fill: string; ink: string; halo: string }> = {
-  'Rahu Kalam': { mark: 'R', short: 'Rahu', fill: 'var(--color-bad)', ink: '#2a0a12', halo: 'var(--color-bad)' },
-  Yamaganda: { mark: 'Y', short: 'Yama', fill: 'color-mix(in oklab, var(--color-bad) 45%, var(--color-mixed))', ink: '#2a1305', halo: 'color-mix(in oklab, var(--color-bad) 45%, var(--color-mixed))' },
-  'Gulika Kalam': { mark: 'G', short: 'Gulika', fill: '#a78bfa', ink: '#1a1036', halo: '#a78bfa' },
-  Durmuhurta: { mark: 'D', short: 'Dur', fill: 'repeating-linear-gradient(135deg, var(--color-bad) 0 4px, color-mix(in oklab, var(--color-bad) 55%, transparent) 4px 8px)', ink: '#2a0a12', halo: 'var(--color-bad)' },
-  'Abhijit Muhurta': { mark: 'A', short: 'Abhijit', fill: 'var(--color-good)', ink: '#04251a', halo: 'var(--color-good)' },
+/** Messages for the one-letter mark and the short name of each window on the bar. */
+const WINDOW_KEYS: Record<string, [MessageKey, MessageKey]> = {
+  'Rahu Kalam': ['mark.rahu', 'short.rahu'], Yamaganda: ['mark.yama', 'short.yama'], 'Gulika Kalam': ['mark.gulika', 'short.gulika'],
+  Durmuhurta: ['mark.durmuhurta', 'short.durmuhurta'], 'Abhijit Muhurta': ['mark.abhijit', 'short.abhijit'],
 }
-const lookOf = (w: TimeWindow) => WINDOW_LOOK[w.name] ?? WINDOW_LOOK.Durmuhurta
+const WINDOW_LOOK: Record<string, { fill: string; ink: string; halo: string }> = {
+  'Rahu Kalam': { fill: 'var(--color-bad)', ink: '#2a0a12', halo: 'var(--color-bad)' },
+  Yamaganda: { fill: 'color-mix(in oklab, var(--color-bad) 45%, var(--color-mixed))', ink: '#2a1305', halo: 'color-mix(in oklab, var(--color-bad) 45%, var(--color-mixed))' },
+  'Gulika Kalam': { fill: '#a78bfa', ink: '#1a1036', halo: '#a78bfa' },
+  Durmuhurta: { fill: 'repeating-linear-gradient(135deg, var(--color-bad) 0 4px, color-mix(in oklab, var(--color-bad) 55%, transparent) 4px 8px)', ink: '#2a0a12', halo: 'var(--color-bad)' },
+  'Abhijit Muhurta': { fill: 'var(--color-good)', ink: '#04251a', halo: 'var(--color-good)' },
+}
+const lookOf = (w: TimeWindow) => {
+  const [mark, short] = WINDOW_KEYS[w.name] ?? WINDOW_KEYS.Durmuhurta
+  return { ...(WINDOW_LOOK[w.name] ?? WINDOW_LOOK.Durmuhurta), mark: t(mark), short: t(short) }
+}
 
 export interface DayTimingsPanelProps {
   timings: DayTimings
@@ -37,31 +46,32 @@ export interface DayTimingsPanelProps {
 }
 
 export function DayTimingsPanel({ timings, nowJd, placeAction, className }: DayTimingsPanelProps) {
+  const { t } = useT()
   const zone = timings.timeZone
   const sd = timings.solarDay
   const live = nowJd >= sd.sunriseJd && nowJd < sd.nextSunriseJd
   const windows = markedWindows(timings)
   return (
-    <Panel title="Day timings" description="Sunrise to next sunrise, local time" icon={<Clock />} action={placeAction} className={className}>
+    <Panel title={t('timings.title')} description={t('timings.description')} icon={<Clock />} action={placeAction} className={className}>
       <dl className="mb-5 grid grid-cols-3 gap-2 text-center">
-        <SunStat icon={<Sunrise />} label="Sunrise" value={formatJd(sd.sunriseJd, zone, 'time')} />
-        <SunStat icon={<Sunset />} label="Sunset" value={formatJd(sd.sunsetJd, zone, 'time')} />
-        <SunStat icon={<Moon />} label="Next sunrise" value={formatJd(sd.nextSunriseJd, zone, 'time')} />
+        <SunStat icon={<Sunrise />} label={t('timings.sunrise')} value={formatJd(sd.sunriseJd, zone, 'time')} />
+        <SunStat icon={<Sunset />} label={t('timings.sunset')} value={formatJd(sd.sunsetJd, zone, 'time')} />
+        <SunStat icon={<Moon />} label={t('timings.nextSunrise')} value={formatJd(sd.nextSunriseJd, zone, 'time')} />
       </dl>
       <DayBar timings={timings} windows={windows} nowJd={live ? nowJd : null} />
-      <ul className="mt-5 grid gap-x-6 gap-y-1 sm:grid-cols-2" aria-label="Windows of the day">
+      <ul className="mt-5 grid gap-x-6 gap-y-1 sm:grid-cols-2" aria-label={t('timings.windows')}>
         {windows.map((w) => <WindowRow key={`${w.name}-${w.startJd}`} window={w} zone={zone} active={live && w.startJd <= nowJd && nowJd < w.endJd} />)}
         {!timings.abhijit && (
           <li className="flex min-h-11 items-center gap-3 text-sm text-[var(--text-muted)]">
             <span aria-hidden className="size-3 shrink-0 rounded-full border border-dashed border-[var(--text-muted)]" />
-            No Abhijit muhurta on Wednesdays, by tradition.
+            {t('timings.noAbhijit')}
           </li>
         )}
       </ul>
       <Tabs defaultValue="choghadiya" className="mt-6">
-        <TabsList aria-label="Divisions of the day">
-          <TabsTrigger value="choghadiya">Choghadiya</TabsTrigger>
-          <TabsTrigger value="horas">Horas</TabsTrigger>
+        <TabsList aria-label={t('timings.divisions')}>
+          <TabsTrigger value="choghadiya">{t('timings.choghadiya')}</TabsTrigger>
+          <TabsTrigger value="horas">{t('timings.horas')}</TabsTrigger>
         </TabsList>
         <TabsContent value="choghadiya">
           <SplitList
@@ -101,9 +111,9 @@ function DayBar({ timings, windows, nowJd }: { timings: DayTimings; windows: Tim
     .filter((jd) => jd > start && jd < end)
   const noon = localToJd(timings.date, zone, '12:00')
   const midnight = localToJd(addDays(timings.date, 1), zone, '00:00')
-  const summary = `Day from sunrise at ${formatJd(start, zone, 'time')} to the next sunrise at ${formatJd(end, zone, 'time')}, sunset at ${formatJd(sunsetJd, zone, 'time')}. `
-    + windows.map((w) => `${w.name} ${spokenRange(w.startJd, w.endJd, zone)}`).join('; ')
-    + (nowJd !== null ? `. Now ${formatJd(nowJd, zone, 'time')}.` : '.')
+  const summary = `${t('timings.summary', { sunrise: formatJd(start, zone, 'time'), next: formatJd(end, zone, 'time'), sunset: formatJd(sunsetJd, zone, 'time') })} `
+    + windows.map((w) => `${windowName(w.name)} ${spokenRange(w.startJd, w.endJd, zone)}`).join('; ')
+    + (nowJd !== null ? `. ${t('common.now')} ${formatJd(nowJd, zone, 'time')}.` : '.')
   const laneClass = (w: TimeWindow) => (w.name === 'Durmuhurta' || w.name === 'Abhijit Muhurta' ? 'bottom-1.5' : 'top-1.5') + ' h-[calc(50%-0.4rem)]'
   const place = (w: TimeWindow): CSSProperties => ({ left: `${pct(w.startJd)}%`, width: `${pct(w.endJd) - pct(w.startJd)}%` })
   return (
@@ -115,7 +125,7 @@ function DayBar({ timings, windows, nowJd }: { timings: DayTimings; windows: Tim
             className="absolute top-0 z-10 -translate-x-1/2 rounded-full bg-[var(--text)] px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider text-[var(--bg)] shadow"
             style={{ left: `clamp(1.5rem, ${pct(nowJd)}%, calc(100% - 1.5rem))` }}
           >
-            Now {formatJd(nowJd, zone, 'time')}
+            {t('common.now')} {formatJd(nowJd, zone, 'time')}
           </span>
         )}
         <div role="img" aria-label={summary} className="relative h-16 overflow-hidden rounded-2xl ring-1 ring-inset ring-[var(--surface-border)]">
@@ -154,6 +164,7 @@ function DayBar({ timings, windows, nowJd }: { timings: DayTimings; windows: Tim
 }
 
 function WindowRow({ window: w, zone, active }: { window: TimeWindow; zone: string; active: boolean }) {
+  const { t } = useT()
   const look = lookOf(w)
   const tone = TONE_VARS[QUALITY_META[w.quality].tone]
   return (
@@ -161,35 +172,36 @@ function WindowRow({ window: w, zone, active }: { window: TimeWindow; zone: stri
       <span aria-hidden className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-md text-[0.6rem] font-bold" style={{ background: look.fill, color: look.ink }}>{look.mark}</span>
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-baseline justify-between gap-x-3">
-          <span className="font-medium text-[var(--text)]">{w.name}</span>
+          <span className="font-medium text-[var(--text)]">{windowName(w.name)}</span>
           <span className="text-sm tabular-nums text-[var(--text-muted)]">
             <span aria-hidden>{timeRange(w.startJd, w.endJd, zone)}</span>
             <span className="sr-only">{spokenRange(w.startJd, w.endJd, zone)}</span>
           </span>
         </span>
-        {w.note && <span className="mt-0.5 block text-xs leading-snug text-[var(--text-muted)]">{w.note}</span>}
+        {w.note && <span className="mt-0.5 block text-xs leading-snug text-[var(--text-muted)]">{windowNote(w)}</span>}
       </span>
-      {active && <Badge tone={QUALITY_META[w.quality].tone} className="mt-0.5 shrink-0">Now</Badge>}
+      {active && <Badge tone={QUALITY_META[w.quality].tone} className="mt-0.5 shrink-0">{t('common.now')}</Badge>}
     </li>
   )
 }
 
 type Half = 'day' | 'night'
 
-const HALVES = [{ value: 'day', label: 'Day', icon: <Sunrise aria-hidden /> }, { value: 'night', label: 'Night', icon: <Moon aria-hidden /> }] as const
 
 /**
  * Day and night halves side by side on wide screens. Phones show one half at a time (the one
  * running now, else the day) behind a Day / Night switch, which keeps the reasons within reach.
  */
 function SplitList<T extends { startJd: number; endJd: number }>({ day, night, nowJd, row }: { day: T[]; night: T[]; nowJd: number | null; row: (item: T, active: boolean) => ReactNode }) {
+  const { t } = useT()
+  const halves = [{ value: 'day' as const, label: t('timings.day'), icon: <Sunrise aria-hidden /> }, { value: 'night' as const, label: t('timings.night'), icon: <Moon aria-hidden /> }]
   const [half, setHalf] = useState<Half>(() => (nowJd !== null && night.length > 0 && nowJd >= night[0].startJd ? 'night' : 'day'))
   const active = (x: T) => nowJd !== null && x === runningAt([...day, ...night], nowJd)
   return (
     <div>
-      <SegmentedControl value={half} onValueChange={setHalf} options={HALVES} size="sm" aria-label="Part of the day" className="mb-3 w-full max-w-60 lg:hidden" />
+      <SegmentedControl value={half} onValueChange={setHalf} options={halves} size="sm" aria-label={t('timings.part')} className="mb-3 w-full max-w-60 lg:hidden" />
       <div className="grid gap-x-8 gap-y-5 lg:grid-cols-2">
-        {([['day', 'Day', day, Sunrise], ['night', 'Night', night, Moon]] as const).map(([key, label, items, Icon]) => (
+        {([['day', t('timings.day'), day, Sunrise], ['night', t('timings.night'), night, Moon]] as const).map(([key, label, items, Icon]) => (
           <div key={key} className={cn(key !== half && 'max-lg:hidden')}>
             <h3 className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)] max-lg:sr-only">
               <Icon aria-hidden className="size-3.5" />{label}
@@ -208,16 +220,17 @@ const rowClass = (active: boolean) => cn(
 )
 
 function ChoghadiyaRow({ item, zone, active }: { item: TimeWindow; zone: string; active: boolean }) {
+  const { t, n } = useT()
   const quality = QUALITY_META[item.quality]
   return (
     <li className={rowClass(active)} aria-current={active ? 'time' : undefined}>
       <span className="tabular-nums text-[var(--text-muted)]">{timeRange(item.startJd, item.endJd, zone)}</span>
-      <span className="min-w-0 font-medium text-[var(--text)]">{item.name}</span>
+      <span className="min-w-0 font-medium text-[var(--text)]">{n.choghadiya[item.name as keyof typeof n.choghadiya] ?? item.name}</span>
       <Badge tone={quality.tone}>{quality.label}</Badge>
       {/* "Now" opens its own line, so the name keeps its room on a 320 px phone. */}
       {active && (
         <span className="col-span-3 pb-1 text-xs leading-snug text-[var(--text-muted)]">
-          <Badge tone="accent" className="mr-1.5 align-middle">Now</Badge>{item.note}
+          <Badge tone="accent" className="mr-1.5 align-middle">{t('common.now')}</Badge>{windowNote(item)}
         </span>
       )}
     </li>
@@ -225,17 +238,18 @@ function ChoghadiyaRow({ item, zone, active }: { item: TimeWindow; zone: string;
 }
 
 function HoraRow({ hora, zone, active }: { hora: Hora; zone: string; active: boolean }) {
+  const { t, n } = useT()
   const use = HORA_USE[hora.lord as keyof typeof HORA_USE]
   return (
     <li className={rowClass(active)} aria-current={active ? 'time' : undefined}>
       <span className="tabular-nums text-[var(--text-muted)]">{timeRange(hora.startJd, hora.endJd, zone)}</span>
       <span className="min-w-0">
         <span className="flex items-center gap-1.5 font-medium" style={{ color: bodyColor(hora.lord) }}>
-          <span aria-hidden style={{ fontFamily: GLYPH_FONT }}>{BODY_GLYPH[hora.lord]}</span>{hora.lord}
+          <span aria-hidden style={{ fontFamily: GLYPH_FONT }}>{BODY_GLYPH[hora.lord]}</span>{n.body[hora.lord]}
         </span>
         {use && <span className="block truncate text-xs text-[var(--text-muted)]">{use}</span>}
       </span>
-      {active ? <Badge tone="accent">Now</Badge> : <span />}
+      {active ? <Badge tone="accent">{t('common.now')}</Badge> : <span />}
     </li>
   )
 }

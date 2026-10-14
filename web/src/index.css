@@ -79,3 +79,24 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/*
+ * Indian-language interfaces (html lang kn/hi/ta/te). Inter has no Indic glyphs, so the scripts
+ * come from the system fonts (Nirmala UI on Windows, Noto on Android and Linux, the Sangam and
+ * Devanagari families on Apple), with nothing extra downloaded. Letter-spacing splits conjuncts,
+ * and vowel signs need a little more room than a line height of 1 gives.
+ */
+:root:is(:lang(kn), :lang(hi), :lang(ta), :lang(te)) {
+  --font-sans: 'Inter Variable', 'Nirmala UI', 'Noto Sans Kannada', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Telugu',
+    'Kannada Sangam MN', 'Kohinoor Devanagari', 'Tamil Sangam MN', 'Telugu Sangam MN', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', 'Nirmala UI', 'Noto Serif Kannada', 'Noto Serif Devanagari', 'Noto Serif Tamil', 'Noto Serif Telugu',
+    'Kannada Sangam MN', 'Kohinoor Devanagari', 'Tamil Sangam MN', 'Telugu Sangam MN', ui-serif, Georgia, serif;
+}
+
+:root:is(:lang(kn), :lang(hi), :lang(ta), :lang(te)) [class*='tracking-'] {
+  letter-spacing: normal;
+}
+
+:root:is(:lang(kn), :lang(hi), :lang(ta), :lang(te)) :is(.leading-none, .leading-tight) {
+  line-height: 1.35;
+}

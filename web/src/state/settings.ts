@@ -1,8 +1,9 @@
 // App-wide preferences: calculation settings (with named presets), chart
-// style and colour theme, persisted in localStorage.
+// style, colour theme and interface language, persisted in localStorage.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { useSyncExternalStore } from 'react'
 import { PRESETS, type Ayanamsa, type NodeType, type Settings, type YearModel } from '@/engine/types'
+import { isLang, type LanguagePreference } from '@/i18n/langs'
 import { createPersistentStore } from './storage'
 
 export type PresetName = keyof typeof PRESETS | 'custom'
@@ -13,11 +14,13 @@ export interface AppSettings extends Settings {
   preset: PresetName
   chartStyle: ChartStyle
   theme: ThemePreference
+  /** Interface language; 'auto' follows the browser's preferred languages. */
+  language: LanguagePreference
 }
 
 export const SETTINGS_KEY = 'jyotish-daily:settings:v1'
 
-export const DEFAULT_APP_SETTINGS: AppSettings = { ...PRESETS.popular, preset: 'popular', chartStyle: 'north', theme: 'dark' }
+export const DEFAULT_APP_SETTINGS: AppSettings = { ...PRESETS.popular, preset: 'popular', chartStyle: 'north', theme: 'dark', language: 'auto' }
 
 /**
  * Options with one-line plain explanations, shared by the Settings page and
@@ -70,6 +73,7 @@ function parseSettings(raw: unknown): AppSettings {
     preset,
     chartStyle: oneOf(['north', 'south'], r.chartStyle, d.chartStyle),
     theme: oneOf(['dark', 'light', 'system'], r.theme, d.theme),
+    language: r.language === 'auto' || isLang(r.language) ? r.language : d.language,
   }
 }
 

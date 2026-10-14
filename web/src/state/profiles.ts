@@ -1,5 +1,6 @@
 // Birth profiles, kept only in this browser's localStorage.
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import { t } from '@/i18n'
 import { useSyncExternalStore } from 'react'
 import type { BirthInput } from '@/engine/types'
 import { createPersistentStore } from './storage'
@@ -124,4 +125,4 @@ export function profileInitials(profile: Profile): string {
   return (words.length ? words.slice(0, 2).map((w) => w[0]) : ['?']).join('').toUpperCase()
 }
 
-export const profileName = (profile: Profile): string => profile.birth.name?.trim() || 'Unnamed chart'
+export const profileName = (profile: Profile): string => profile.birth.name?.trim() || t('profiles.unnamed')

@@ -4,9 +4,10 @@
 import { useState, type CSSProperties } from 'react'
 import { useLocation } from 'wouter'
 import type { Forecast, Rating } from '@/engine/types'
+import { useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { CalendarGrid } from './CalendarGrid'
-import { dateParts, longDate, MONTHS_LONG, periodEnd } from './dates'
+import { dateParts, longDate, monthLong, periodEnd } from './dates'
 import { RATING_ICON, RATING_TONE, RATING_WORD, scorePercent, TONE_VARS } from './meta'
 import { forecastRoute } from './useForecastDate'
 
@@ -24,6 +25,7 @@ export interface MonthCalendarProps {
 const inside = (d: string | undefined, first: string, last: string): d is string => !!d && d >= first && d <= last
 
 export function MonthCalendar({ parts, month, profileId, today, selected, className }: MonthCalendarProps) {
+  const { t } = useT()
   const [, navigate] = useLocation()
   const last = periodEnd('month', month)
   const [focus, setFocus] = useState(() => (inside(selected, month, last) ? selected : inside(today, month, last) ? today : month))
@@ -36,7 +38,7 @@ export function MonthCalendar({ parts, month, profileId, today, selected, classN
         focusDate={inside(focus, month, last) ? focus : month}
         onFocusDateChange={setFocus}
         onSelect={(d) => navigate(forecastRoute(profileId, 'today', d))}
-        label={`${MONTHS_LONG[m - 1]} ${year}, rating of each day. Press Enter to open a day.`}
+        label={t('month.gridAria', { month: `${monthLong(m)} ${year}` })}
         selected={inside(selected, month, last) ? selected : undefined}
         today={today}
         cellClassName="p-[3px] sm:p-1"
@@ -47,7 +49,7 @@ export function MonthCalendar({ parts, month, profileId, today, selected, classN
           const Icon = RATING_ICON[p.rating]
           const isToday = d === today
           return {
-            label: `${longDate(d)}${isToday ? ', today' : ''}: ${RATING_WORD[p.rating]}, score ${scorePercent(p.score)}`,
+            label: t('month.dayAria', { date: `${longDate(d)}${isToday ? `, ${t('common.today')}` : ''}`, rating: RATING_WORD[p.rating], pct: scorePercent(p.score) }),
             className: cn(
               'aspect-square flex-col gap-0.5 font-semibold ring-1 ring-inset hover:brightness-110',
               d === selected && 'shadow-[0_0_0_2px_var(--accent)]',
@@ -68,8 +70,9 @@ export function MonthCalendar({ parts, month, profileId, today, selected, classN
 }
 
 function RatingLegend({ className }: { className?: string }) {
+  const { t } = useT()
   return (
-    <ul className={cn('flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-[var(--text-muted)]', className)} aria-label="Legend">
+    <ul className={cn('flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-[var(--text-muted)]', className)} aria-label={t('month.legend')}>
       {(['favourable', 'mixed', 'challenging'] as Rating[]).map((r) => {
         const tone = TONE_VARS[RATING_TONE[r]]
         const Icon = RATING_ICON[r]

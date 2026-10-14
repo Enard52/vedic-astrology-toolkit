@@ -8,18 +8,20 @@ import { Popover } from 'radix-ui'
 import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { addMonths } from '@/engine/time'
 import type { Horizon } from '@/engine/types'
+import { t, useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { Button } from '@/ui/components/Button'
 import { CalendarGrid } from './CalendarGrid'
-import { dateParts, isoDate, MONTHS, MONTHS_LONG, periodEnd, periodShortLabel, periodStart, shiftDate } from './dates'
+import { dateParts, isoDate, monthLong, monthShort, periodEnd, periodShortLabel, periodStart, shiftDate } from './dates'
 import type { ForecastDate } from './useForecastDate'
 
-const UNIT: Record<Horizon, string> = { day: 'day', week: 'week', month: 'month', year: 'year' }
-const BACK: Record<Horizon, string> = { day: 'Today', week: 'This week', month: 'This month', year: 'This year' }
+const UNIT = { day: 'unit.day', week: 'unit.week', month: 'unit.month', year: 'unit.year' } as const
+const BACK = { day: 'rel.today', week: 'rel.thisWeek', month: 'rel.thisMonth', year: 'rel.thisYear' } as const
 
 const iconButton = 'grid size-10 shrink-0 place-items-center rounded-full text-[var(--text-muted)] transition-colors hover:bg-[var(--hover)] hover:text-[var(--text)] focus-visible:outline-offset-0 [&_svg]:size-5'
 
 export function DateNavigator({ horizon, nav, className }: { horizon: Horizon; nav: ForecastDate; className?: string }) {
+  useT()
   const [open, setOpen] = useState(false)
   const trigger = useRef<HTMLButtonElement>(null)
   const step = (n: number) => nav.setDate(shiftDate(horizon, nav.date, n))
@@ -31,16 +33,16 @@ export function DateNavigator({ horizon, nav, className }: { horizon: Horizon; n
   }
   return (
     // On the narrowest phones the back-to-now button wraps under the stepper rather than squeezing its label.
-    <div role="group" aria-label={`Choose the ${UNIT[horizon]}`} className={cn('flex flex-wrap items-center gap-2', className)} onKeyDown={onKeyDown}>
+    <div role="group" aria-label={t('nav.choose', { unit: t(UNIT[horizon]) })} className={cn('flex flex-wrap items-center gap-2', className)} onKeyDown={onKeyDown}>
       <div className="flex min-w-[13rem] flex-1 items-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-2)] p-0.5 sm:flex-none">
-        <button type="button" className={iconButton} aria-label={`Previous ${UNIT[horizon]}`} aria-keyshortcuts="ArrowLeft" onClick={() => step(-1)}>
+        <button type="button" className={iconButton} aria-label={t('nav.previous', { unit: t(UNIT[horizon]) })} aria-keyshortcuts="ArrowLeft" onClick={() => step(-1)}>
           <ChevronLeft aria-hidden />
         </button>
         <Popover.Root open={open} onOpenChange={setOpen}>
           <Popover.Trigger
             ref={trigger}
             className="flex h-10 min-w-0 flex-1 items-center justify-center gap-2 rounded-full px-3 text-sm font-semibold text-[var(--text)] transition-colors hover:bg-[var(--hover)] focus-visible:outline-offset-0 data-[state=open]:bg-[var(--hover)] sm:min-w-[9.5rem]"
-            aria-label={`${periodShortLabel(horizon, nav.anchor)}. Pick a ${UNIT[horizon]}`}
+            aria-label={t('nav.pick', { label: periodShortLabel(horizon, nav.anchor), unit: t(UNIT[horizon]) })}
           >
             <CalendarDays aria-hidden className="size-4 shrink-0 text-[var(--accent-text)]" />
             <span className="truncate tabular-nums">{periodShortLabel(horizon, nav.anchor)}</span>
@@ -65,7 +67,7 @@ export function DateNavigator({ horizon, nav, className }: { horizon: Horizon; n
             </Popover.Content>
           </Popover.Portal>
         </Popover.Root>
-        <button type="button" className={iconButton} aria-label={`Next ${UNIT[horizon]}`} aria-keyshortcuts="ArrowRight" onClick={() => step(1)}>
+        <button type="button" className={iconButton} aria-label={t('nav.next', { unit: t(UNIT[horizon]) })} aria-keyshortcuts="ArrowRight" onClick={() => step(1)}>
           <ChevronRight aria-hidden />
         </button>
       </div>
@@ -80,7 +82,7 @@ export function DateNavigator({ horizon, nav, className }: { horizon: Horizon; n
                 trigger.current?.focus()
               }}
             >
-              {BACK[horizon]}
+              {t(BACK[horizon])}
             </Button>
           </motion.div>
         )}
@@ -117,7 +119,7 @@ function Picker({ horizon, nav, onPick }: { horizon: Horizon; nav: ForecastDate;
     return (
       <div>
         <PickerHeader
-          title={`${first} – ${first + 11}`} prevLabel="Earlier years" nextLabel="Later years"
+          title={`${first} – ${first + 11}`} prevLabel={t('nav.earlierYears')} nextLabel={t('nav.laterYears')}
           onPrev={() => setView(shiftDate('year', view, -12))} onNext={() => setView(shiftDate('year', view, 12))}
         />
         <div className="grid grid-cols-3 gap-1.5">
@@ -138,15 +140,15 @@ function Picker({ horizon, nav, onPick }: { horizon: Horizon; nav: ForecastDate;
     return (
       <div>
         <PickerHeader
-          title={year} prevLabel="Previous year" nextLabel="Next year"
+          title={year} prevLabel={t('nav.previous', { unit: t('unit.year') })} nextLabel={t('nav.next', { unit: t('unit.year') })}
           onPrev={() => setView(shiftDate('year', view, -1))} onNext={() => setView(shiftDate('year', view, 1))}
         />
         <div className="grid grid-cols-3 gap-1.5">
-          {MONTHS.map((m, i) => {
+          {Array.from({ length: 12 }, (_, i) => monthShort(i + 1)).map((m, i) => {
             const isSel = year === selected.year && i + 1 === selected.month
             return (
               <button
-                key={m} type="button" aria-label={`${MONTHS_LONG[i]} ${year}`} aria-pressed={isSel} autoFocus={isSel}
+                key={m} type="button" aria-label={`${monthLong(i + 1)} ${year}`} aria-pressed={isSel} autoFocus={isSel}
                 className={choice(isSel, year === todayParts.year && i + 1 === todayParts.month)}
                 onClick={() => onPick(isoDate(year, i + 1, 1))}
               >
@@ -164,7 +166,7 @@ function Picker({ horizon, nav, onPick }: { horizon: Horizon; nav: ForecastDate;
   return (
     <div>
       <PickerHeader
-        title={`${MONTHS_LONG[dateParts(view).month - 1]} ${year}`} prevLabel="Previous month" nextLabel="Next month"
+        title={`${monthLong(dateParts(view).month)} ${year}`} prevLabel={t('nav.previous', { unit: t('unit.month') })} nextLabel={t('nav.next', { unit: t('unit.month') })}
         onPrev={() => setView(addMonths(view, -1))} onNext={() => setView(addMonths(view, 1))}
       />
       <CalendarGrid
@@ -175,7 +177,7 @@ function Picker({ horizon, nav, onPick }: { horizon: Horizon; nav: ForecastDate;
           setView(d)
         }}
         onSelect={onPick}
-        label={`${MONTHS_LONG[dateParts(view).month - 1]} ${year}`}
+        label={`${monthLong(dateParts(view).month)} ${year}`}
         selected={nav.date}
         today={nav.today}
         edge="follow"

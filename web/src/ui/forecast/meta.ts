@@ -6,6 +6,10 @@ import {
   Sparkles, Star, Sun, TriangleAlert, Undo2, type LucideIcon,
 } from 'lucide-react'
 import type { Effect, EventKind, Planet, Rating, WindowQuality } from '@/engine/types'
+import { t } from '@/i18n'
+
+// Words are getters that read the current language when used; components call useT() so they
+// re-render on a language change.
 
 export type Tone = 'good' | 'mixed' | 'bad'
 
@@ -17,19 +21,23 @@ export const TONE_VARS: Record<Tone, { fg: string; bg: string; border: string; s
 }
 
 export const RATING_TONE: Record<Rating, Tone> = { favourable: 'good', mixed: 'mixed', challenging: 'bad' }
-export const RATING_WORD: Record<Rating, string> = { favourable: 'Favourable', mixed: 'Mixed', challenging: 'Challenging' }
+export const RATING_WORD: Readonly<Record<Rating, string>> = {
+  get favourable() { return t('rating.favourable') },
+  get mixed() { return t('rating.mixed') },
+  get challenging() { return t('rating.challenging') },
+}
 export const RATING_ICON: Record<Rating, LucideIcon> = { favourable: CircleCheck, mixed: CircleMinus, challenging: CircleAlert }
 
 export const EFFECT_META: Record<Effect, { label: string; tone: Tone; icon: LucideIcon }> = {
-  1: { label: 'Supportive', tone: 'good', icon: CircleCheck },
-  0: { label: 'Neutral', tone: 'mixed', icon: CircleMinus },
-  [-1]: { label: 'Challenging', tone: 'bad', icon: CircleAlert },
+  1: { get label() { return t('effect.supportive') }, tone: 'good', icon: CircleCheck },
+  0: { get label() { return t('effect.neutral') }, tone: 'mixed', icon: CircleMinus },
+  [-1]: { get label() { return t('effect.challenging') }, tone: 'bad', icon: CircleAlert },
 }
 
 export const QUALITY_META: Record<WindowQuality, { label: string; tone: Tone }> = {
-  good: { label: 'Good', tone: 'good' },
-  neutral: { label: 'Neutral', tone: 'mixed' },
-  avoid: { label: 'Avoid', tone: 'bad' },
+  good: { get label() { return t('quality.good') }, tone: 'good' },
+  neutral: { get label() { return t('quality.neutral') }, tone: 'mixed' },
+  avoid: { get label() { return t('quality.avoid') }, tone: 'bad' },
 }
 
 /** Score in [-1, 1] as a 0..100 figure for people. */
@@ -61,12 +69,12 @@ export function factorIcon(factor: string): LucideIcon {
  * Shubh Panchang and Dekho Panchang (they agree on the broad uses; Mars and Saturn horas are
  * read as unsuitable for auspicious beginnings by both).
  */
-export const HORA_USE: Record<Exclude<Planet, 'Rahu' | 'Ketu'>, string> = {
-  Sun: 'Authority, official work and health routines',
-  Moon: 'Travel, meeting people, home and caring work',
-  Mars: 'Physical effort, property and settling disputes',
-  Mercury: 'Study, writing, trade and negotiation',
-  Jupiter: 'Learning, advice, money matters and ceremonies',
-  Venus: 'Arts, friendship, romance and pleasant purchases',
-  Saturn: 'Steady, routine work; not for new beginnings',
+export const HORA_USE: Readonly<Record<Exclude<Planet, 'Rahu' | 'Ketu'>, string>> = {
+  get Sun() { return t('hora.Sun') },
+  get Moon() { return t('hora.Moon') },
+  get Mars() { return t('hora.Mars') },
+  get Mercury() { return t('hora.Mercury') },
+  get Jupiter() { return t('hora.Jupiter') },
+  get Venus() { return t('hora.Venus') },
+  get Saturn() { return t('hora.Saturn') },
 }

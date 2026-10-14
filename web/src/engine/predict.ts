@@ -1,20 +1,18 @@
 // Explainable forecasts for a day, week, month and year. A day is the sunrise-to-sunrise Vedic day
 // at the user's current place; it is scored from weighted, classical factors (Tara bala, Chandra
 // bala, Chandrashtama, gochara with vedha and ashtakavarga, the running dasha and panchanga
-// cautions), each returned as a Reason with original text and its source. Longer periods average
+// cautions), each returned as a Reason with original text and its source. The dasha and the
+// transits are read against the birth chart's natal promise (promise.ts): the running lords by
+// their lordship, placement and strength from the lagna, and each transit tilted a little by the
+// planet's functional nature for the lagna. Longer periods average
 // their days and add highlights. Every period is computed from one context that casts the chart
 // once and caches sunrise days, transit events and daily results, so week, month and year views
 // reuse the days they share.
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import {
-  binduNote, CAUTION_PHRASE, chandrashtamaCaution, chandrashtamaHeadline, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText,
-  dayHeadline, GOCHARA_TEXT, joinList, MOON_CHANGE_TEXT, MUNTHA_TEXT, NO_SADE_SATI_TEXT, ordinal, PANCHANGA_TEXT,
-  PERIOD_TEXT, periodHeadline, PLANET_THEMES, SATURN_PHASE_TEXT, SATURN_PHASE_TITLE, SOURCES, STATION_TEXT,
-  SUPPORT_PHRASE, TARA_TEXT, vedhaNote, vipareetaNote, yearHeadline,
-} from '../content'
+import { T } from '../content/active'
 import { ashtakavarga, type Ashtakavarga } from './ashtakavarga'
 import { castChart } from './chart'
-import { advanceSign, houseFrom, NAKSHATRA_NAMES, norm, SIGN_NAMES, signOf, TITHI_NAMES } from './core'
+import { advanceSign, houseFrom, norm, signOf } from './core'
 import { dashaChainAt, dashaChanges, vimsottari } from './dasha'
 import { ascendant, moonLongitude, planetLongitude, planetPositions, sunLongitude } from './ephem'
 import { eventsBetween } from './events'
@@ -23,8 +21,9 @@ import { chandraBala, chandrashtamaWindows, taraBala } from './moon'
 import { timingsForSolarDay } from './muhurta'
 import { sadeSatiSummary, saturnPhases, type SaturnPeriod } from './saturn'
 import { bisectInstant } from './search'
+import { analyseNatal, chainPromise, type LordPromise } from './promise'
 import { nextSolarEvent, solarDayForDate } from './sunrise'
-import { addDays, daysInMonth, formatJd, isValidTimeZone, jdToLocal, localToJd, weekdayOf } from './time'
+import { addDays, daysInMonth, isValidTimeZone, jdToLocal, localToJd } from './time'
 import type {
   BirthInput, Chart, DashaPeriod, Effect, Forecast, PeriodHighlights, Planet, Rating, Reason, Settings, SignIndex, SolarDay, TimedEvent, TimeWindow,
 } from './types'
@@ -58,6 +57,13 @@ export const DAY_WEIGHTS = {
    * running dasha (Rao ch. 25), but at weight 1 the repeat outweighed a node's own gochara (0.5).
    */
   dashaTransit: 0.5,
+  /**
+   * The running dasha chain read from the birth chart (natal promise, promise.ts). It holds for
+   * weeks to years, so like the slow planets it sets a level rather than picking out days: at most
+   * 1.5 when clearly supportive or hard, 0.5 when mixed (a heavy neutral vote would flatten every
+   * day towards "mixed").
+   */
+  dashaPromise: 1,
   tithi: 0.5,
   vishti: 0.5,
   /** Informational reasons; they are shown but never scored. */
@@ -79,6 +85,13 @@ export const GOCHARA_WEIGHTS: Readonly<Record<Planet, number>> = {
  * other cyclic factors: 6·w = 5·1.5 + 3, so w = 1.75.
  */
 export const CHANDRA_BALA_GOOD = (5 * DAY_WEIGHTS.chandraBala + DAY_WEIGHTS.chandrashtama) / 6
+
+/**
+ * How much a transit's weight leans on the planet's functional nature for the lagna (Rao Table 30):
+ * a functional benefic's good transit counts 15% more and its hard one 15% less, the reverse for a
+ * functional malefic. Kept small: gochara is judged from the Moon, lordship from the lagna.
+ */
+export const FUNCTIONAL_TILT = 0.15
 
 /** Weight multiplier from the ashtakavarga strength of a transit (see gochara.ts). */
 export const STRENGTH_FACTOR: Readonly<Record<GocharaStrength, number>> = { strong: 1.25, normal: 1, weak: 0.75 }
@@ -210,6 +223,8 @@ export interface PredictContext {
   /** Vimsottari to pratyantardashas, two 120-year cycles. */
   readonly dashas: DashaPeriod[]
   readonly ashtakavarga: Ashtakavarga
+  /** What each planet promises in this chart (lordship, placement, strength, yogas). */
+  readonly promise: Readonly<Record<Planet, LordPromise>>
   /** Internal caches, filled lazily. */
   readonly cache: {
     spans: Map<string, DaySpan>
@@ -235,6 +250,7 @@ export function createContext(birth: BirthInput, settings: Settings, place: Plac
     natal: { moonSign: moon.sign, moonNakshatra: moon.nakshatra.index, ascSign: chart.positions.Asc.sign },
     dashas: vimsottari(moon.longitude, chart.jd, settings.yearModel, 2, 2),
     ashtakavarga: ashtakavarga(chart.vargas[1]),
+    promise: analyseNatal(chart).promise,
     cache: { spans: new Map(), days: new Map(), saturn: new Map(), coverage: null },
   }
 }
@@ -276,6 +292,11 @@ export function contextFor(birth: BirthInput, settings: Settings, place: Place):
   CONTEXTS.set(key, ctx)
   if (CONTEXTS.size > MAX_CONTEXTS) CONTEXTS.delete(CONTEXTS.keys().next().value!)
   return ctx
+}
+
+/** Forget every memoised context: their cached days and events hold text in the language they were made in. */
+export function resetForecastCaches(): void {
+  CONTEXTS.clear()
 }
 
 /** The Sun's rising on civil `date`, if it rises that day (it can rise without setting near polar day). */
@@ -389,33 +410,14 @@ export function saturnYear(ctx: PredictContext, year: number): SaturnPeriod[] {
 // ---------------------------------------------------------------------------------------------
 // Text helpers
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+// Every user-facing word comes from the active interpretation pack (content/active.ts), so a
+// forecast reads in the language the worker was set to; dates go through the pack's formats.
 
 /** "Tue 20 Oct" (or "20 Oct"). */
-function dateLabel(date: string, weekday = true): string {
-  const [, m, d] = date.split('-').map(Number)
-  return `${weekday ? `${WEEKDAYS[weekdayOf(date)]} ` : ''}${d} ${MONTHS[m - 1]}`
-}
-
-/** A run of consecutive dates: "Sat 24 – Sun 25 Oct", "7–8 Oct", "30 Oct – 1 Nov". */
-function runLabel(first: string, last: string, weekday: boolean): string {
-  if (first === last) return dateLabel(first, weekday)
-  if (first.slice(0, 7) !== last.slice(0, 7)) return `${dateLabel(first, weekday)} – ${dateLabel(last, weekday)}`
-  const day = Number(first.slice(8))
-  return weekday ? `${WEEKDAYS[weekdayOf(first)]} ${day} – ${dateLabel(last)}` : `${day}–${dateLabel(last, false)}`
-}
+const dateLabel = (date: string, weekday = true): string => T.E.dateLabel(date, weekday)
 
 /** Dates grouped into consecutive runs: "Tue 20 Oct and Sat 24 – Sun 25 Oct". */
-function dateList(dates: readonly string[], weekday = true): string {
-  const runs: string[][] = []
-  for (const d of dates) {
-    const run = runs.at(-1)
-    if (run && addDays(run.at(-1)!, 1) === d) run.push(d)
-    else runs.push([d])
-  }
-  return joinList(runs.map((r) => runLabel(r[0], r.at(-1)!, weekday)))
-}
+const dateList = (dates: readonly string[], weekday = true): string => T.E.dateList(dates, weekday)
 
 /**
  * Local clock time of `jd`, followed by the date when it falls outside the civil `date`
@@ -424,22 +426,23 @@ function dateList(dates: readonly string[], weekday = true): string {
  */
 function clock(ctx: PredictContext, jd: number, date: string): string {
   const p = jdToLocal(jd, ctx.place.timeZone, 'minute')
-  return p.date === date ? p.time : `${p.time} on ${WEEKDAYS[p.weekday]} ${p.day} ${MONTHS[p.month - 1]}`
+  return p.date === date ? p.time : T.E.clockOn(p)
 }
 
-const fullDate = (ctx: PredictContext, jd: number) => formatJd(jd, ctx.place.timeZone, 'date')
+/** "2 Jun 2027" in the place's zone. */
+const fullDate = (ctx: PredictContext, jd: number) => T.E.fullDate(jdToLocal(jd, ctx.place.timeZone))
 
 /** "until 2 Jun 2027", "from 2 Jun 2027", "2 Jun – 9 Oct 2027" or "all year" relative to [a, b). */
 function spanLabel(ctx: PredictContext, startJd: number, endJd: number, a: number, b: number, whole: string): string {
   if (startJd <= a && endJd >= b) return whole
-  if (startJd <= a) return `until ${fullDate(ctx, endJd)}`
-  if (endJd >= b) return `from ${fullDate(ctx, startJd)}`
-  return `${fullDate(ctx, startJd)} – ${fullDate(ctx, endJd)}`
+  if (startJd <= a) return T.E.until(fullDate(ctx, endJd))
+  if (endJd >= b) return T.E.from(fullDate(ctx, startJd))
+  return T.E.range(fullDate(ctx, startJd), fullDate(ctx, endJd))
 }
 
 const effectOfClass = (c: 'good' | 'mixed' | 'adverse'): Effect => (c === 'good' ? 1 : c === 'mixed' ? 0 : -1)
 
-/** Adds a plain-language detail and an effect to transit events, judged from the natal Moon. */
+/** Adds a plain-language title, detail and effect to transit events, judged from the natal Moon. */
 function annotate(ctx: PredictContext, e: TimedEvent): TimedEvent {
   const body = e.body
   if (!body) return e
@@ -447,19 +450,21 @@ function annotate(ctx: PredictContext, e: TimedEvent): TimedEvent {
     case 'ingress':
     case 'sankranti': {
       const h = houseFrom(ctx.natal.moonSign, e.sign!)
-      return { ...e, detail: `Your ${ordinal(h)} from the Moon: ${GOCHARA_TEXT[body][h - 1]}`, effect: GOCHARA_RULES[body].favourable.includes(h) ? 1 : -1 }
+      // events.ts titles a retrograde step back into the previous sign "moves back".
+      const title = T.E.ingressTitle(body, e.sign!, e.title.includes('moves back'))
+      return { ...e, title, detail: T.E.fromMoonDetail(h, T.GOCHARA_TEXT[body][h - 1]), effect: GOCHARA_RULES[body].favourable.includes(h) ? 1 : -1 }
     }
     case 'moon_sign': {
       const cb = chandraBala(ctx.natal.moonSign, e.sign!)
-      return { ...e, detail: `Your ${ordinal(cb.house)} from the Moon: ${cb.good ? CHANDRA_BALA_TEXT.good : CHANDRA_BALA_TEXT.bad}`, effect: cb.good ? 1 : -1 }
+      return { ...e, title: T.E.ingressTitle('Moon', e.sign!, false), detail: T.E.fromMoonDetail(cb.house, cb.good ? T.CHANDRA_BALA_TEXT.good : T.CHANDRA_BALA_TEXT.bad), effect: cb.good ? 1 : -1 }
     }
     case 'moon_nakshatra': {
       const tara = taraBala(ctx.natal.moonNakshatra, e.nakshatra!)
-      return { ...e, detail: `${tara.name} tara: ${TARA_TEXT[tara.name]}`, effect: effectOfClass(tara.classification) }
+      return { ...e, title: T.E.nakshatraTitle(e.nakshatra!), detail: T.E.taraDetail(T.names.tara[tara.name], T.TARA_TEXT[tara.name]), effect: effectOfClass(tara.classification) }
     }
     case 'retrograde':
     case 'direct':
-      return { ...e, detail: STATION_TEXT[e.kind](body, PLANET_THEMES[body].short), effect: 0 }
+      return { ...e, title: T.E.stationTitle(body, e.kind, e.sign!), detail: T.STATION_TEXT[e.kind](body, T.PLANET_THEMES[body].short), effect: 0 }
     default:
       return e
   }
@@ -472,15 +477,26 @@ function chandrashtamaEvents(ctx: PredictContext, cov: Coverage, a: number, b: n
   for (const w of cov.chandrashtama) {
     if (w.startJd >= a && w.startJd < b) {
       out.push({
-        jd: w.startJd, kind: 'chandrashtama', body: 'Moon', sign, title: 'Chandrashtama begins',
-        detail: `The Moon enters ${SIGN_NAMES[sign]}, the 8th sign from your birth Moon, until ${formatJd(w.endJd, ctx.place.timeZone)}.`, effect: -1,
+        jd: w.startJd, kind: 'chandrashtama', body: 'Moon', sign, title: T.E.chandrashtamaBegins,
+        detail: T.E.chandrashtamaEnterDetail(sign, T.E.dateTime(jdToLocal(w.endJd, ctx.place.timeZone, 'minute'))), effect: -1,
       })
     }
     if (w.endJd >= a && w.endJd < b) {
-      out.push({ jd: w.endJd, kind: 'chandrashtama', body: 'Moon', title: 'Chandrashtama ends', detail: 'The Moon leaves the 8th sign from your birth Moon.', effect: 0 })
+      out.push({ jd: w.endJd, kind: 'chandrashtama', body: 'Moon', title: T.E.chandrashtamaEnds, detail: T.E.chandrashtamaLeaveDetail, effect: 0 })
     }
   }
   return out
+}
+
+/** Dasha changes in [a, b) down to `level`, titled in the pack's words for the level that changes. */
+function dashaEvents(ctx: PredictContext, a: number, b: number, level: 0 | 1 | 2): TimedEvent[] {
+  return dashaChanges(ctx.dashas, a, b, level).map((e) => {
+    const chain = dashaChainAt(ctx.dashas, e.jd)
+    // The event is named after the highest level that starts at its instant.
+    const at = Math.max(0, chain.findIndex((p) => p.startJd === e.jd))
+    const p = chain[at]
+    return p ? { ...e, ...T.E.dashaEvent(at, p.lord, chain.slice(0, at + 1).map((x) => x.lord), p.endJd - p.startJd) } : e
+  })
 }
 
 /** Events in [a, b): transit events passing `keep`, dasha changes and optionally Chandrashtama boundaries. */
@@ -490,7 +506,7 @@ function periodEvents(
   const cov = cover(ctx, a, b)
   const out = eventsIn(cov, a, b).filter(keep)
   if (withChandrashtama) out.push(...chandrashtamaEvents(ctx, cov, a, b))
-  out.push(...dashaChanges(ctx.dashas, a, b, dashaLevel))
+  out.push(...dashaEvents(ctx, a, b, dashaLevel))
   return out.sort((x, y) => x.jd - y.jd)
 }
 
@@ -498,25 +514,45 @@ function periodEvents(
 const chainAt = (ctx: PredictContext, jd: number): DashaPeriod[] =>
   dashaChainAt(ctx.dashas, jd).map(({ lord, level, startJd, endJd }) => ({ lord, level, startJd, endJd }))
 
-function gocharaReason(row: GocharaRow, baseWeight: number, factor: string, title: string): Reason {
-  const h = row.houseFromMoon
-  const text = [GOCHARA_TEXT[row.planet][h - 1]]
-  const sources: string[] = [SOURCES.gochara]
-  if (row.vedhaBy) {
-    text.push(vedhaNote(row.planet, row.vedhaBy, GOCHARA_RULES[row.planet].vedha[h]))
-    sources.push(SOURCES.vedha)
-  } else if (row.vipareetaVedhaBy) {
-    text.push(vipareetaNote(row.vipareetaVedhaBy, VIPAREETA_VEDHA[row.planet][h]))
-    sources.push(SOURCES.vedha)
-  } else if (row.bindus !== undefined && row.strength !== 'normal') {
-    text.push(binduNote(row.bindus, row.favourable))
-    sources.push(SOURCES.ashtakavarga)
-  }
-  const weight = round(baseWeight * gocharaBalance(row.planet, row.effect) * STRENGTH_FACTOR[row.strength], 2)
-  return { factor, effect: row.effect, weight, title, text: text.join(' '), source: sources.join('. ') }
+/** Multiplier of a transit's weight from the planet's functional nature for the lagna (FUNCTIONAL_TILT). */
+export function functionalTilt(promise: LordPromise, effect: Effect): number {
+  const friendly = promise.yogakaraka || promise.role === 'benefic'
+  if (effect === 0 || (!friendly && promise.role !== 'malefic')) return 1
+  return 1 + FUNCTIONAL_TILT * (friendly ? effect : -effect)
 }
 
-const gocharaTitle = (row: GocharaRow, suffix = '') => `${row.planet} in your ${ordinal(row.houseFromMoon)} from the Moon${suffix}`
+/**
+ * A gochara outcome's weight: nominal x balance x ashtakavarga strength x functional tilt, never
+ * above the untilted maximum, so no transit outweighs Chandra bala in a bad sign.
+ */
+function gocharaWeight(ctx: PredictContext, row: GocharaRow, baseWeight: number): number {
+  const raw = baseWeight * gocharaBalance(row.planet, row.effect) * STRENGTH_FACTOR[row.strength] * functionalTilt(ctx.promise[row.planet], row.effect)
+  return round(Math.min(raw, baseWeight * GOCHARA_MAX_BALANCE * STRENGTH_FACTOR.strong), 2)
+}
+
+function gocharaReason(ctx: PredictContext, row: GocharaRow, baseWeight: number, factor: string, title: string): Reason {
+  const h = row.houseFromMoon
+  const text = [T.GOCHARA_TEXT[row.planet][h - 1]]
+  const sources: string[] = [T.SOURCES.gochara]
+  if (row.vedhaBy) {
+    text.push(T.vedhaNote(row.planet, row.vedhaBy, GOCHARA_RULES[row.planet].vedha[h]))
+    sources.push(T.SOURCES.vedha)
+  } else if (row.vipareetaVedhaBy) {
+    text.push(T.vipareetaNote(row.vipareetaVedhaBy, VIPAREETA_VEDHA[row.planet][h]))
+    sources.push(T.SOURCES.vedha)
+  } else if (row.bindus !== undefined && row.strength !== 'normal') {
+    text.push(T.binduNote(row.bindus, row.favourable))
+    sources.push(T.SOURCES.ashtakavarga)
+  }
+  const promise = ctx.promise[row.planet]
+  if (functionalTilt(promise, row.effect) !== 1 && text.length < 3) {
+    text.push(T.functionalNote(promise.role, promise.yogakaraka, row.effect))
+    sources.push(T.SOURCES.functional)
+  }
+  return { factor, effect: row.effect, weight: gocharaWeight(ctx, row, baseWeight), title, text: text.join(' '), source: sources.join('. ') }
+}
+
+const gocharaTitle = (row: GocharaRow, suffix = '') => T.E.gocharaTitle(row.planet, row.houseFromMoon, suffix)
 
 /** Scored reasons first, heaviest first; informational ones last. */
 function sortReasons(reasons: Reason[]): Reason[] {
@@ -545,7 +581,7 @@ const DAILY_FACTORS: readonly string[] = ['tara_bala', 'chandra_bala', 'chandras
  * and the slow planets, which colour months and years alike, come last.
  */
 const dayPriority = (r: Reason) =>
-  DAILY_FACTORS.includes(r.factor) ? 1.5 : SLOW_PLANETS.some((p) => r.factor === `gochara_${p}`) ? 0.5 : 1
+  DAILY_FACTORS.includes(r.factor) ? 1.5 : r.factor === 'dasha_promise' || SLOW_PLANETS.some((p) => r.factor === `gochara_${p}`) ? 0.5 : 1
 
 // ---------------------------------------------------------------------------------------------
 // Day
@@ -579,8 +615,8 @@ function tithiSpans(settings: Settings, a: number, b: number): { tithi: number; 
 }
 
 /** Name of tithi 1..30 within its fortnight ("Navami"), and its full label ("Sukla Navami", "Amavasya"). */
-const tithiName = (tithi: number) => (tithi === 15 ? 'Purnima' : tithi === 30 ? 'Amavasya' : TITHI_NAMES[(tithi - 1) % 15])
-const tithiLabel = (tithi: number) => (tithi % 15 === 0 ? tithiName(tithi) : `${tithi <= 15 ? 'Sukla' : 'Krishna'} ${tithiName(tithi)}`)
+const tithiName = (tithi: number) => T.E.tithiName(tithi)
+const tithiLabel = (tithi: number) => T.E.tithiLabel(tithi)
 
 const isVishti = (jd: number, settings: Settings) => {
   const half = Math.floor(norm(moonLongitude(jd, settings) - sunLongitude(jd, settings)) / 6)
@@ -625,14 +661,14 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
     // Sign and star boundaries coincide every 30 degrees: "Leo and Magha nakshatra at 22:18".
     const moves: { names: string[]; time: string }[] = []
     for (const e of moonChanges) {
-      const name = e.kind === 'moon_sign' ? SIGN_NAMES[e.sign!] : `${NAKSHATRA_NAMES[e.nakshatra! - 1]} nakshatra`
+      const name = e.kind === 'moon_sign' ? T.E.moonSign(e.sign!) : T.E.moonStar(e.nakshatra!)
       const time = at(e.jd)
       if (moves.at(-1)?.time === time) moves.at(-1)!.names.push(name)
       else moves.push({ names: [name], time })
     }
     reasons.push({
-      factor: 'moon_change', effect: 0, weight: DAY_WEIGHTS.info, title: 'The Moon changes sign or star today',
-      text: `The Moon moves into ${joinList(moves.map((m) => `${m.names.join(' and ')} at ${m.time}`))}. ${MOON_CHANGE_TEXT}`, source: SOURCES.moonChange,
+      factor: 'moon_change', effect: 0, weight: DAY_WEIGHTS.info, title: T.E.moonChangeTitle,
+      text: `${T.E.moonMoves(moves)} ${T.MOON_CHANGE_TEXT}`, source: T.SOURCES.moonChange,
     })
   }
 
@@ -640,7 +676,7 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
   const taraEffect = effectOfClass(tara.classification)
   reasons.push({
     factor: 'tara_bala', effect: taraEffect, weight: round(DAY_WEIGHTS.tara * TARA_BALANCE(taraEffect), 2),
-    title: `${tara.name} tara: Moon in ${NAKSHATRA_NAMES[moonStar - 1]}`, text: TARA_TEXT[tara.name], source: SOURCES.tara,
+    title: T.E.taraTitle(T.names.tara[tara.name], moonStar), text: T.TARA_TEXT[tara.name], source: T.SOURCES.tara,
   })
 
   const eighth = advanceSign(natal.moonSign, 8)
@@ -650,14 +686,17 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
   let stayCaution: string | undefined
   if (stay) {
     // A stay that begins after midnight begins "tomorrow" for the headline, which keeps it short.
-    const short = (jd: number) => at(jd).replace(/ on .*/, ' tomorrow')
-    stayCaution = ruled ? undefined : stay.startJd <= span.start ? chandrashtamaCaution({ until: short(stay.endJd) }) : chandrashtamaCaution({ from: short(stay.startJd) })
+    const short = (jd: number) => {
+      const p = jdToLocal(jd, ctx.place.timeZone, 'minute')
+      return p.date === date ? p.time : T.E.timeTomorrow(p.time)
+    }
+    stayCaution = ruled ? undefined : stay.startJd <= span.start ? T.chandrashtamaCaution({ until: short(stay.endJd) }) : T.chandrashtamaCaution({ from: short(stay.startJd) })
     const weight = ruled ? DAY_WEIGHTS.chandrashtama
       : stay.startJd < span.sunset && stay.endJd > span.start ? DAY_WEIGHTS.chandrashtamaPartial : DAY_WEIGHTS.chandrashtamaNight
-    const when = stay.startJd <= span.start ? `until ${at(stay.endJd)}` : `from ${at(stay.startJd)}${stay.endJd < span.end ? ` to ${at(stay.endJd)}` : ''}`
+    const when = stay.startJd <= span.start ? T.E.until(at(stay.endJd)) : stay.endJd < span.end ? T.E.fromTo(at(stay.startJd), at(stay.endJd)) : T.E.from(at(stay.startJd))
     reasons.push({
-      factor: 'chandrashtama', effect: -1, weight, title: `Chandrashtama ${when}`,
-      text: CHANDRASHTAMA_TEXT, source: SOURCES.chandrashtama,
+      factor: 'chandrashtama', effect: -1, weight, title: T.E.chandrashtamaTitle(when),
+      text: T.CHANDRASHTAMA_TEXT, source: T.SOURCES.chandrashtama,
     })
   }
   // Chandrashtama already counts the 8th-house Moon; Chandra bala would count it twice.
@@ -665,33 +704,32 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
     const cb = chandraBala(natal.moonSign, moonSign)
     reasons.push({
       factor: 'chandra_bala', effect: cb.good ? 1 : -1, weight: cb.good ? CHANDRA_BALA_GOOD : DAY_WEIGHTS.chandraBala,
-      title: `Moon in your ${ordinal(cb.house)} from your birth Moon`, text: GOCHARA_TEXT.Moon[cb.house - 1], source: SOURCES.chandraBala,
+      title: T.E.chandraBalaTitle(cb.house), text: T.GOCHARA_TEXT.Moon[cb.house - 1], source: T.SOURCES.chandraBala,
     })
   }
 
   // The Moon obstructs (and is obstructed) from the sign it holds for most of the daytime.
   const rows = gochara(natal.moonSign, { ...pos, Moon: { ...pos.Moon, sign: moonSign } }, { bav: ctx.ashtakavarga.bav, natalAscSign: natal.ascSign })
   for (const row of rows) {
-    if (GOCHARA_WEIGHTS[row.planet] > 0) reasons.push(gocharaReason(row, GOCHARA_WEIGHTS[row.planet], `gochara_${row.planet}`, gocharaTitle(row)))
+    if (GOCHARA_WEIGHTS[row.planet] > 0) reasons.push(gocharaReason(ctx, row, GOCHARA_WEIGHTS[row.planet], `gochara_${row.planet}`, gocharaTitle(row)))
   }
 
   const chain = chainAt(ctx, span.start)
   if (chain.length >= 2) {
     const ad = chain[1]
-    reasons.push(...dashaInfo(chain))
+    reasons.push(...dashaInfo(ctx, chain), ...dashaPromiseReasons(ctx, chain))
     const row = rows.find((r) => r.planet === ad.lord)!
     reasons.push({
-      factor: 'dasha_transit', effect: row.effect,
-      weight: round(DAY_WEIGHTS.dashaTransit * gocharaBalance(row.planet, row.effect) * STRENGTH_FACTOR[row.strength], 2),
-      title: `Sub-period lord ${ad.lord} in your ${ordinal(row.houseFromMoon)} from the Moon`, text: dashaTransitText(ad.lord, row.effect), source: SOURCES.dashaTransit,
+      factor: 'dasha_transit', effect: row.effect, weight: gocharaWeight(ctx, row, DAY_WEIGHTS.dashaTransit),
+      title: T.E.dashaTransitTitle(ad.lord, row.houseFromMoon), text: T.dashaTransitText(ad.lord, row.effect), source: T.SOURCES.dashaTransit,
     })
   }
 
   // Panchanga cautions for the daytime, when new things are begun: a Rikta tithi or Amavasya, weighted
   // by the share of the daytime it holds (a tithi often changes mid-morning, so the one at sunrise
   // alone can mislead), and Vishti karana, each with its times.
-  const daytime = (from: number, to: number) => from <= span.start && to >= span.sunset ? 'through the daytime'
-    : from <= span.start ? `until ${at(to)}` : to >= span.sunset ? `from ${at(from)}` : `from ${at(from)} to ${at(to)}`
+  const daytime = (from: number, to: number) => from <= span.start && to >= span.sunset ? T.E.throughDaytime
+    : from <= span.start ? T.E.until(at(to)) : to >= span.sunset ? T.E.from(at(from)) : T.E.fromTo(at(from), at(to))
   const tithis = tithiSpans(settings, span.start, span.sunset)
   for (const [i, t] of tithis.entries()) {
     const amavasya = t.tithi === 30
@@ -700,13 +738,13 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
     const next = tithis[i + 1] && tithiLabel(tithis[i + 1].tithi)
     const weight = round(DAY_WEIGHTS.tithi * Math.min(1, (t.to - t.from) / (span.sunset - span.start)), 2)
     reasons.push(amavasya
-      ? { factor: 'tithi', effect: -1, weight, title: `Amavasya (New Moon) ${when}`, text: PANCHANGA_TEXT.amavasya(when, next), source: SOURCES.tithi }
-      : { factor: 'tithi', effect: -1, weight, title: `${tithiLabel(t.tithi)} (Rikta tithi) ${when}`, text: PANCHANGA_TEXT.rikta(tithiName(t.tithi), when, next), source: SOURCES.tithi })
+      ? { factor: 'tithi', effect: -1, weight, title: T.E.amavasyaTitle(when), text: T.PANCHANGA_TEXT.amavasya(when, next), source: T.SOURCES.tithi }
+      : { factor: 'tithi', effect: -1, weight, title: T.E.riktaTitle(tithiLabel(t.tithi), when), text: T.PANCHANGA_TEXT.rikta(tithiName(t.tithi), when, next), source: T.SOURCES.tithi })
   }
   const vishti = vishtiSpan(settings, span.start, span.sunset)
   if (vishti) {
     const when = daytime(...vishti)
-    reasons.push({ factor: 'vishti', effect: -1, weight: DAY_WEIGHTS.vishti, title: `Vishti (Bhadra) karana ${when}`, text: PANCHANGA_TEXT.vishti(when), source: SOURCES.vishti })
+    reasons.push({ factor: 'vishti', effect: -1, weight: DAY_WEIGHTS.vishti, title: T.E.vishtiTitle(when), text: T.PANCHANGA_TEXT.vishti(when), source: T.SOURCES.vishti })
   }
 
   const score = scoreReasons(reasons)
@@ -714,14 +752,14 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
   const timings = span.solarDay ? timingsForSolarDay(span.solarDay, date, ctx.place.timeZone) : undefined
   // "A well-placed Moon" would read oddly beside the Moon's stay in the 8th, whatever part of the day it covers.
   const support = strongest(reasons, 1, stay ? (r) => (r.factor === 'chandra_bala' ? 0 : dayPriority(r)) : dayPriority)
-  const supportPhrase = support && SUPPORT_PHRASE[support.factor]
+  const supportPhrase = support && T.SUPPORT_PHRASE[support.factor]
   const caution = strongest(reasons, -1, dayPriority)
-  const cautionPhrase = caution ? (caution.factor === 'chandrashtama' && stayCaution) || CAUTION_PHRASE[caution.factor] : timings && CAUTION_PHRASE.rahu_kalam
+  const cautionPhrase = caution ? (caution.factor === 'chandrashtama' && stayCaution) || T.CAUTION_PHRASE[caution.factor] : timings && T.CAUTION_PHRASE.rahu_kalam
   const variant = Number(date.slice(8))
   const forecast: Forecast = {
     horizon: 'day', start: date, end: date, rating, score,
     // On a Chandrashtama day the 8th-sign Moon leads the headline, whatever else weighs more.
-    headline: ruled ? chandrashtamaHeadline(rating, supportPhrase, variant) : dayHeadline(rating, supportPhrase, cautionPhrase, variant),
+    headline: ruled ? T.chandrashtamaHeadline(rating, supportPhrase, variant) : T.dayHeadline(rating, supportPhrase, cautionPhrase, variant),
     reasons: sortReasons(reasons),
     events: periodEvents(ctx, span.start, span.end, () => true, 2, true),
     dasha: chain,
@@ -746,7 +784,7 @@ function withoutTimings(day: Forecast): Forecast {
 /** "Fri 2 Oct 15:41" (or "2 Oct 15:41"): an instant to the minute in the place's zone. */
 function instantLabel(ctx: PredictContext, jd: number, weekday: boolean): string {
   const p = jdToLocal(jd, ctx.place.timeZone, 'minute')
-  return `${weekday ? `${WEEKDAYS[p.weekday]} ` : ''}${p.day} ${MONTHS[p.month - 1]} ${p.time}`
+  return T.E.instant(p, weekday)
 }
 
 /** The Moon holds the 8th sign from the birth Moon for at least part of the daytime. */
@@ -770,19 +808,19 @@ function dayHighlights(
   if (!best.length && ranked[0] && ranked[0].score > 0) best = [ranked[0].start]
   const bestLabel = best.length ? dateList(best, weekday) : undefined
   if (bestLabel) {
-    reasons.push({ factor: 'best_days', effect: 1, weight: 1, title: `Best ${best.length > 1 ? 'days' : 'day'}: ${bestLabel}`, text: PERIOD_TEXT.bestDays(bestLabel), source: SOURCES.summary })
+    reasons.push({ factor: 'best_days', effect: 1, weight: 1, title: T.E.bestDaysTitle(best.length, bestLabel), text: T.PERIOD_TEXT.bestDays(bestLabel), source: T.SOURCES.summary })
   }
   const careful = pick(days.filter((d) => d.rating === 'challenging').sort((x, y) => x.score - y.score))
   const carefulLabel = careful.length ? dateList(careful, weekday) : undefined
   if (carefulLabel) {
-    reasons.push({ factor: 'careful_days', effect: -1, weight: 1, title: `Go gently: ${carefulLabel}`, text: PERIOD_TEXT.toughDays(carefulLabel), source: SOURCES.summary })
+    reasons.push({ factor: 'careful_days', effect: -1, weight: 1, title: T.E.carefulDaysTitle(carefulLabel), text: T.PERIOD_TEXT.toughDays(carefulLabel), source: T.SOURCES.summary })
   }
   const stays = cover(ctx, a, b).chandrashtama.filter((w) => w.startJd < b && w.endJd > a)
   for (const w of stays) {
     const [from, to] = [instantLabel(ctx, w.startJd, weekday), instantLabel(ctx, w.endJd, weekday)]
     reasons.push({
-      factor: 'chandrashtama', effect: -1, weight: 1.5, title: `Moon in your 8th: ${from} – ${to}`,
-      text: PERIOD_TEXT.chandrashtamaStay(from, to), source: SOURCES.chandrashtama,
+      factor: 'chandrashtama', effect: -1, weight: 1.5, title: T.E.chandrashtamaStayTitle(from, to),
+      text: T.PERIOD_TEXT.chandrashtamaStay(from, to), source: T.SOURCES.chandrashtama,
     })
   }
   return { reasons, best: bestLabel, careful: carefulLabel, highlights: { best, careful, chandrashtama: stays } }
@@ -819,8 +857,8 @@ function stretchReasons(
     else stretches.push({ row, from: cuts[i], to: cuts[i + 1] })
   }
   return stretches.filter(({ row }) => !skip(row)).map(({ row, from, to }) => {
-    const suffix = ` (${SIGN_NAMES[row.sign]}) ${spanLabel(ctx, from, to, a, b, whole)}`
-    return gocharaReason(row, weight * Math.max((to - from) / (b - a), 0.2), `gochara_${planet}`, gocharaTitle(row, suffix))
+    const suffix = T.E.stretchSuffix(row.sign, spanLabel(ctx, from, to, a, b, whole))
+    return gocharaReason(ctx, row, weight * Math.max((to - from) / (b - a), 0.2), `gochara_${planet}`, gocharaTitle(row, suffix))
   })
 }
 
@@ -850,28 +888,53 @@ function eventReasons(ctx: PredictContext, events: readonly TimedEvent[], weekda
     if (e.kind === 'ingress' || e.kind === 'sankranti') {
       const row = slowRow(ctx, body, e.sign!, e.jd)
       const weight = SLOW_PLANETS.includes(body) ? 1.5 : 0.75
-      reasons.push(gocharaReason(row, weight, `ingress_${body}`, `${e.title}, your ${ordinal(row.houseFromMoon)} from the Moon · ${on}`))
+      reasons.push(gocharaReason(ctx, row, weight, `ingress_${body}`, T.E.ingressReasonTitle(e.title, row.houseFromMoon, on)))
     } else if (e.kind === 'retrograde' || e.kind === 'direct') {
-      reasons.push({ factor: `station_${body}`, effect: 0, weight: 0.5, title: `${e.title} · ${on}`, text: e.detail!, source: SOURCES.stations })
+      reasons.push({ factor: `station_${body}`, effect: 0, weight: 0.5, title: `${e.title} · ${on}`, text: e.detail!, source: T.SOURCES.stations })
     }
   }
   return reasons
 }
 
+/** Dasha periods starting in the period, each read for this chart by the lord of the level that changes. */
 function dashaChangeReasons(ctx: PredictContext, events: readonly TimedEvent[], weekday: boolean): Reason[] {
-  return events.filter((e) => e.kind === 'dasha').map((e) => ({
-    factor: 'dasha_change', effect: 0, weight: 0.75,
-    title: `${e.title} · ${dateLabel(jdToLocal(e.jd, ctx.place.timeZone).date, weekday)}`,
-    text: dashaChangeText(dashaChainAt(ctx.dashas, e.jd).map((p) => p.lord)), source: SOURCES.dasha,
-  }))
+  return events.filter((e) => e.kind === 'dasha').map((e) => {
+    const chain = dashaChainAt(ctx.dashas, e.jd).map((p) => p.lord)
+    // The event is named after the highest level that changes, whose lord is e.body.
+    const level = Math.max(0, chain.indexOf(e.body!))
+    return {
+      factor: 'dasha_change', effect: 0, weight: 0.75,
+      title: `${e.title} · ${dateLabel(jdToLocal(e.jd, ctx.place.timeZone).date, weekday)}`,
+      text: T.dashaChangePromiseText(chain.slice(0, level + 1), ctx.promise[e.body!]), source: `${T.SOURCES.dasha}. ${T.SOURCES.dashaPromise}`,
+    }
+  })
 }
 
-function dashaInfo(chain: readonly DashaPeriod[]): Reason[] {
+/** The running chain, read for this chart (informational: the scored part is dashaPromiseReasons). */
+function dashaInfo(ctx: PredictContext, chain: readonly DashaPeriod[]): Reason[] {
   if (chain.length < 2) return []
-  const [md, ad, pd] = chain
+  const [md, ad, pd] = chain.map((p) => ctx.promise[p.lord])
+  const { fromMain } = chainPromise(ctx.promise, chain.map((p) => p.lord), ctx.chart.positions)
   return [{
-    factor: 'dasha', effect: 0, weight: DAY_WEIGHTS.info, title: `Dasha: ${chain.map((p) => p.lord).join('–')}`,
-    text: dashaCombination(md.lord, ad.lord, pd?.lord), source: SOURCES.dasha,
+    factor: 'dasha', effect: 0, weight: DAY_WEIGHTS.info, title: T.E.dashaTitle(chain.map((p) => p.lord)),
+    text: T.dashaChainText(md, ad, pd, fromMain), source: `${T.SOURCES.dasha}. ${T.SOURCES.dashaPromise}`,
+  }]
+}
+
+/**
+ * The natal promise of the running chain as a scored reason (BPHS ch. 53; Rao ch. 16): the
+ * antardasha lord's lordship, placement and strength lead, with the mahadasha and
+ * pratyantardasha lords and the sub-lord's place from the main lord (promise.ts chainPromise).
+ */
+function dashaPromiseReasons(ctx: PredictContext, chain: readonly DashaPeriod[]): Reason[] {
+  if (chain.length < 2) return []
+  const lords = chain.map((p) => p.lord)
+  const { score, effect } = chainPromise(ctx.promise, lords, ctx.chart.positions)
+  const weight = effect === 0 ? DAY_WEIGHTS.dashaPromise / 2 : round(Math.min(1.5, DAY_WEIGHTS.dashaPromise * (0.75 + Math.abs(score))), 2)
+  return [{
+    factor: 'dasha_promise', effect, weight, title: T.dashaPromiseTitle(lords[1], effect),
+    // The outlook stated is the chain's, so the text always agrees with the title and the vote.
+    text: T.lordOutlook(ctx.promise[lords[1]], 'sub-period', effect), source: T.SOURCES.dashaPromise,
   }]
 }
 
@@ -880,7 +943,7 @@ function slowBackdrop(ctx: PredictContext, jd: number, suffix: string): Reason[]
   const pos = planetPositions(jd, ctx.settings)
   return gochara(ctx.natal.moonSign, pos, { bav: ctx.ashtakavarga.bav, casters: SLOW_CASTERS })
     .filter((row) => SLOW_PLANETS.includes(row.planet))
-    .map((row) => gocharaReason(row, GOCHARA_WEIGHTS[row.planet], `gochara_${row.planet}`, gocharaTitle(row, suffix)))
+    .map((row) => gocharaReason(ctx, row, GOCHARA_WEIGHTS[row.planet], `gochara_${row.planet}`, gocharaTitle(row, suffix)))
 }
 
 /** Forecast for the 7 Vedic days starting on civil `startDate`. */
@@ -896,14 +959,15 @@ export function forecastWeek(ctx: PredictContext, startDate: string): Forecast {
   const highlights = dayHighlights(ctx, days, a, b, 2, true)
   const reasons = [
     ...highlights.reasons,
-    ...slowBackdrop(ctx, (a + b) / 2, ' this week'),
+    ...slowBackdrop(ctx, (a + b) / 2, T.E.thisWeek),
     ...eventReasons(ctx, events, true),
     ...dashaChangeReasons(ctx, events, true),
-    ...dashaInfo(days[0].dasha),
+    ...dashaInfo(ctx, days[0].dasha),
+    ...dashaPromiseReasons(ctx, days[0].dasha),
   ]
   return {
     horizon: 'week', start: dates[0], end: dates[6], rating, score,
-    headline: periodHeadline('week', rating, highlights.best, highlights.careful),
+    headline: T.periodHeadline('week', rating, highlights.best, highlights.careful),
     reasons: sortReasons(reasons), events, parts: days, dasha: days[0].dasha, highlights: highlights.highlights,
   }
 }
@@ -926,8 +990,8 @@ function retrogradeReasons(ctx: PredictContext, events: readonly TimedEvent[], a
     for (const [s, t] of spells) {
       reasons.push({
         factor: `retrograde_${planet}`, effect: 0, weight: 0.75,
-        title: `${planet} retrograde ${spanLabel(ctx, s, t, a, b, 'all month')}`,
-        text: STATION_TEXT.retrograde(planet, PLANET_THEMES[planet].short), source: SOURCES.stations,
+        title: T.E.retrogradeTitle(planet, spanLabel(ctx, s, t, a, b, T.E.allMonth)),
+        text: T.STATION_TEXT.retrograde(planet, T.PLANET_THEMES[planet].short), source: T.SOURCES.stations,
       })
     }
   }
@@ -940,8 +1004,8 @@ const overlapping = (periods: readonly SaturnPeriod[], a: number, b: number) => 
 function saturnReasons(ctx: PredictContext, periods: readonly SaturnPeriod[], a: number, b: number, whole: string): Reason[] {
   return overlapping(periods, a, b).map((p) => ({
     factor: p.phase.startsWith('sade_sati') ? 'sade_sati' : 'ashtama_shani', effect: -1 as const, weight: p.phase === 'sade_sati_peak' || p.phase === 'ashtama' ? 1.5 : 1,
-    title: `${SATURN_PHASE_TITLE[p.phase]} ${spanLabel(ctx, p.startJd, p.endJd, a, b, whole)}`,
-    text: SATURN_PHASE_TEXT[p.phase], source: SOURCES.sadeSati,
+    title: `${T.SATURN_PHASE_TITLE[p.phase]} ${spanLabel(ctx, p.startJd, p.endJd, a, b, whole)}`,
+    text: T.SATURN_PHASE_TEXT[p.phase], source: T.SOURCES.sadeSati,
   }))
 }
 
@@ -958,18 +1022,19 @@ function monthForecast(ctx: PredictContext, year: number, month: number, withPar
   const highlights = dayHighlights(ctx, days, a, b, 3, false)
   const isMvStation = (e: TimedEvent) => (e.body === 'Mercury' || e.body === 'Venus') && (e.kind === 'retrograde' || e.kind === 'direct')
   const reasons = [
-    ...transitStretches(ctx, events, a, b, 'all month', true),
+    ...transitStretches(ctx, events, a, b, T.E.allMonth, true),
     ...highlights.reasons,
     // Sign changes of the Sun and the slow planets are already in their stretches.
     ...eventReasons(ctx, events.filter((e) => !isIngressOf(e, ['Sun', ...SLOW_PLANETS]) && !isMvStation(e)), false),
     ...retrogradeReasons(ctx, events, a, b),
-    ...saturnReasons(ctx, saturnYear(ctx, year), a, b, 'all month'),
+    ...saturnReasons(ctx, saturnYear(ctx, year), a, b, T.E.allMonth),
     ...dashaChangeReasons(ctx, events, false),
-    ...dashaInfo(days[0].dasha),
+    ...dashaInfo(ctx, days[0].dasha),
+    ...dashaPromiseReasons(ctx, days[0].dasha),
   ]
   const forecast: Forecast = {
     horizon: 'month', start: first, end: dates.at(-1)!, rating, score,
-    headline: periodHeadline('month', rating, highlights.best, highlights.careful),
+    headline: T.periodHeadline('month', rating, highlights.best, highlights.careful),
     reasons: sortReasons(reasons), events, dasha: days[0].dasha, highlights: highlights.highlights,
   }
   if (withParts) forecast.parts = days.map(withoutTimings)
@@ -1044,26 +1109,26 @@ export function forecastYear(ctx: PredictContext, year: number): Forecast {
   const periods = saturnYear(ctx, year)
   const events = [...periodEvents(ctx, a, b, slow, 1, false), ...saturnEvents(periods, a, b)].sort((x, y) => x.jd - y.jd)
 
-  const saturn = saturnReasons(ctx, periods, a, b, 'all year')
-  const reasons = [...transitStretches(ctx, events, a, b, 'all year', false), ...saturn]
+  const saturn = saturnReasons(ctx, periods, a, b, T.E.allYear)
+  const reasons = [...transitStretches(ctx, events, a, b, T.E.allYear, false), ...saturn]
   // Whole Sade Sati dates go with its first phase in the year; a year without any phase says when the next one comes.
   const summary = sadeSatiSummary(ctx.natal.moonSign, a, ctx.settings)
   const firstSade = overlapping(periods, a, b).findIndex((p) => p.phase.startsWith('sade_sati'))
   const span = summary.sadeSati ?? summary.next
   if (firstSade >= 0 && span) {
-    saturn[firstSade].text += ` ${PERIOD_TEXT.sadeSatiSpan(fullDate(ctx, span.startJd), fullDate(ctx, span.endJd))}`
+    saturn[firstSade].text += ` ${T.PERIOD_TEXT.sadeSatiSpan(fullDate(ctx, span.startJd), fullDate(ctx, span.endJd))}`
   } else if (!saturn.length) {
     const start = summary.next && jdToLocal(summary.next.startJd, ctx.place.timeZone)
-    const next = start ? ` ${PERIOD_TEXT.nextSadeSati(`${MONTHS[start.month - 1]} ${start.year}`)}` : ''
-    reasons.push({ factor: 'sade_sati', effect: 0, weight: 0.5, title: 'No Sade Sati this year', text: `${NO_SADE_SATI_TEXT}${next}`, source: SOURCES.sadeSati })
+    const next = start ? ` ${T.PERIOD_TEXT.nextSadeSati(T.E.monthYear(start.year, start.month))}` : ''
+    reasons.push({ factor: 'sade_sati', effect: 0, weight: 0.5, title: T.E.noSadeSatiTitle, text: `${T.NO_SADE_SATI_TEXT}${next}`, source: T.SOURCES.sadeSati })
   }
   reasons.push(...munthaReasons(ctx, year, a, b))
-  reasons.push(...dashaChangeReasons(ctx, events, false), ...dashaInfo(months[0].dasha))
+  reasons.push(...dashaChangeReasons(ctx, events, false), ...dashaInfo(ctx, months[0].dasha), ...dashaPromiseReasons(ctx, months[0].dasha))
   const support = strongest(reasons, 1)
   const caution = strongest(reasons, -1)
   return {
     horizon: 'year', start: first, end: last, rating, score,
-    headline: yearHeadline(rating, support && SUPPORT_PHRASE[support.factor], caution && CAUTION_PHRASE[caution.factor]),
+    headline: T.yearHeadline(rating, support && T.SUPPORT_PHRASE[support.factor], caution && T.CAUTION_PHRASE[caution.factor]),
     reasons: sortReasons(reasons), events, parts: months, dasha: months[0].dasha,
   }
 }
@@ -1081,8 +1146,8 @@ function munthaReasons(ctx: PredictContext, year: number, a: number, b: number):
     const share = (Math.min(endJd, b) - Math.max(m.returnJd, a)) / (b - a)
     reasons.push({
       factor: 'muntha', effect: m.favourable ? 1 : -1, weight: round(1.5 * Math.max(share, 0.2), 2),
-      title: `Muntha in your ${ordinal(m.house)} (${SIGN_NAMES[m.sign]}) ${spanLabel(ctx, m.returnJd, endJd, a, b, 'all year')}`,
-      text: `${MUNTHA_TEXT[m.house - 1]} ${PERIOD_TEXT.tajakaYear(fullDate(ctx, m.returnJd), fullDate(ctx, endJd))}`, source: SOURCES.muntha,
+      title: T.E.munthaTitle(m.house, m.sign, spanLabel(ctx, m.returnJd, endJd, a, b, T.E.allYear)),
+      text: `${T.MUNTHA_TEXT[m.house - 1]} ${T.PERIOD_TEXT.tajakaYear(fullDate(ctx, m.returnJd), fullDate(ctx, endJd))}`, source: T.SOURCES.muntha,
     })
   }
   return reasons
@@ -1092,9 +1157,9 @@ function munthaReasons(ctx: PredictContext, year: number, a: number, b: number):
 function saturnEvents(periods: readonly SaturnPeriod[], a: number, b: number): TimedEvent[] {
   const out: TimedEvent[] = []
   for (const p of periods) {
-    const name = SATURN_PHASE_TITLE[p.phase]
-    if (p.startJd >= a && p.startJd < b) out.push({ jd: p.startJd, kind: 'sade_sati', body: 'Saturn', sign: p.sign, title: `${name} begins`, detail: SATURN_PHASE_TEXT[p.phase], effect: -1 })
-    if (p.endJd >= a && p.endJd < b) out.push({ jd: p.endJd, kind: 'sade_sati', body: 'Saturn', title: `${name} ends`, effect: 0 })
+    const name = T.SATURN_PHASE_TITLE[p.phase]
+    if (p.startJd >= a && p.startJd < b) out.push({ jd: p.startJd, kind: 'sade_sati', body: 'Saturn', sign: p.sign, title: T.E.phaseBegins(name), detail: T.SATURN_PHASE_TEXT[p.phase], effect: -1 })
+    if (p.endJd >= a && p.endJd < b) out.push({ jd: p.endJd, kind: 'sade_sati', body: 'Saturn', title: T.E.phaseEnds(name), effect: 0 })
   }
   return out
 }

@@ -4,11 +4,27 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { addDays, addMonths, daysInMonth, weekdayOf } from '@/engine/time'
 import type { Horizon } from '@/engine/types'
+import { languageTag, t, type MessageKey } from '@/i18n'
+import { intlDates, intlMonth, intlWeekday } from '@/i18n/intl'
+import { getLanguage } from '@/i18n/store'
 
 export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const
 export const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as const
 export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
 export const WEEKDAYS_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const
+
+// Names in the current language: English keeps the arrays above, the Indian languages use Intl.
+const english = () => getLanguage() === 'en'
+/** Month 1..12, "Oct". */
+export const monthShort = (month: number): string => (english() ? MONTHS[month - 1] : intlMonth(languageTag(), month, 'short'))
+/** Month 1..12, "October". */
+export const monthLong = (month: number): string => (english() ? MONTHS_LONG[month - 1] : intlMonth(languageTag(), month, 'long'))
+/** Weekday 0..6 (Sunday first), "Wed". */
+export const weekdayShort = (weekday: number): string => (english() ? WEEKDAYS[weekday] : intlWeekday(languageTag(), weekday, 'short'))
+/** Weekday 0..6 in one or two letters for calendar headers, "We". */
+export const weekdayNarrow = (weekday: number): string => (english() ? WEEKDAYS[weekday].slice(0, 2) : intlWeekday(languageTag(), weekday, 'narrow'))
+/** Weekday 0..6, "Wednesday". */
+export const weekdayLong = (weekday: number): string => (english() ? WEEKDAYS_LONG[weekday] : intlWeekday(languageTag(), weekday, 'long'))
 
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/
 
@@ -78,18 +94,27 @@ export function monthWeeks(date: string): (string | null)[][] {
 /** "Wednesday, 14 October" (the year is added when it differs from `currentYear`). */
 export function longDate(date: string, currentYear?: number): string {
   const { year, month, day } = dateParts(date)
+  if (!english()) return intlDates(languageTag()).long(date, currentYear !== year)
   return `${WEEKDAYS_LONG[weekdayOf(date)]}, ${day} ${MONTHS_LONG[month - 1]}${currentYear === year ? '' : ` ${year}`}`
+}
+
+/** "28 Apr 1990": a full civil date. */
+export function civilDate(date: string): string {
+  const { year, month, day } = dateParts(date)
+  return english() ? `${day} ${MONTHS[month - 1]} ${year}` : intlDates(languageTag()).full(date)
 }
 
 /** "Wed 14 Oct" */
 export function shortDate(date: string): string {
   const { month, day } = dateParts(date)
+  if (!english()) return intlDates(languageTag()).short(date)
   return `${WEEKDAYS[weekdayOf(date)]} ${day} ${MONTHS[month - 1]}`
 }
 
 /** "14 Oct" */
-function dayMonth(date: string): string {
+export function dayMonth(date: string): string {
   const { month, day } = dateParts(date)
+  if (!english()) return intlDates(languageTag()).short(date, false)
   return `${day} ${MONTHS[month - 1]}`
 }
 
@@ -97,7 +122,7 @@ function dayMonth(date: string): string {
 export function rangeLabel(start: string, end: string): string {
   const a = dateParts(start), b = dateParts(end)
   if (a.year !== b.year) return `${dayMonth(start)} ${a.year} – ${dayMonth(end)} ${b.year}`
-  if (a.month !== b.month) return `${dayMonth(start)} – ${dayMonth(end)}`
+  if (a.month !== b.month || !english()) return `${dayMonth(start)} – ${dayMonth(end)}`
   return `${a.day} – ${b.day} ${MONTHS[b.month - 1]}`
 }
 
@@ -111,7 +136,7 @@ export function periodTitle(horizon: Horizon, start: string, currentYear?: numbe
       const label = rangeLabel(start, end)
       return dateParts(end).year === year && year !== currentYear ? `${label} ${year}` : label
     }
-    case 'month': return `${MONTHS_LONG[month - 1]} ${year}`
+    case 'month': return english() ? `${MONTHS_LONG[month - 1]} ${year}` : intlDates(languageTag()).monthYear(year, month)
     case 'year': return String(year)
   }
 }
@@ -122,23 +147,24 @@ export function periodShortLabel(horizon: Horizon, start: string): string {
   switch (horizon) {
     case 'day': return shortDate(start)
     case 'week': return rangeLabel(start, periodEnd('week', start))
-    case 'month': return `${MONTHS[month - 1]} ${year}`
+    case 'month': return english() ? `${MONTHS[month - 1]} ${year}` : intlDates(languageTag()).monthYear(year, month, 'short')
     case 'year': return String(year)
   }
 }
 
-const RELATIVE: Record<Horizon, [string, string, string]> = {
-  day: ['Yesterday', 'Today', 'Tomorrow'],
-  week: ['Last week', 'This week', 'Next week'],
-  month: ['Last month', 'This month', 'Next month'],
-  year: ['Last year', 'This year', 'Next year'],
+/** Messages for the previous, current and next period. */
+const RELATIVE: Record<Horizon, [MessageKey, MessageKey, MessageKey]> = {
+  day: ['rel.yesterday', 'rel.today', 'rel.tomorrow'],
+  week: ['rel.lastWeek', 'rel.thisWeek', 'rel.nextWeek'],
+  month: ['rel.lastMonth', 'rel.thisMonth', 'rel.nextMonth'],
+  year: ['rel.lastYear', 'rel.thisYear', 'rel.nextYear'],
 }
 
 /** "Today", "Next week", ... when the period is next to the current one, else null. */
 export function relativeLabel(horizon: Horizon, start: string, today: string): string | null {
   const current = periodStart(horizon, today)
   for (const step of [-1, 0, 1] as const) {
-    if (periodStart(horizon, shiftDate(horizon, current, step)) === start) return RELATIVE[horizon][step + 1]
+    if (periodStart(horizon, shiftDate(horizon, current, step)) === start) return t(RELATIVE[horizon][step + 1])
   }
   return null
 }

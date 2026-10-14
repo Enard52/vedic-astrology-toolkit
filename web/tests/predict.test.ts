@@ -6,9 +6,12 @@ import { gochara } from '@/engine/gochara'
 import { chandrashtamaWindows } from '@/engine/moon'
 import {
   balanceFactor, CHALLENGING_AT, CHANDRA_BALA_GOOD, contextFor, COVER_LIMIT, createContext, DAY_CACHE_LIMIT, DAY_WEIGHTS, dayRating, FAVOURABLE_AT, forecastDay,
-  forecastMonth, forecastWeek, forecastYear, GOCHARA_MAX_BALANCE, GOCHARA_SHARES, GOCHARA_WEIGHTS, gocharaAt, gocharaBalance, INFORMATIONAL_FACTORS, munthaForYear,
+  forecastMonth, forecastWeek, forecastYear, FUNCTIONAL_TILT, functionalTilt, GOCHARA_MAX_BALANCE, GOCHARA_SHARES, GOCHARA_WEIGHTS, gocharaAt, gocharaBalance, INFORMATIONAL_FACTORS, munthaForYear,
   ratingFor, scoreReasons, STRENGTH_FACTOR, vedicDateAt, type PredictContext,
 } from '@/engine/predict'
+import { castChart } from '@/engine/chart'
+import { dashaChainAt, vimsottari } from '@/engine/dasha'
+import { analyseNatal, chainPromise, PROMISE_THRESHOLD } from '@/engine/promise'
 import { solarDayForDate } from '@/engine/sunrise'
 import { addDays, daysInMonth, localToJd } from '@/engine/time'
 import { PLANETS, PRESETS, type BirthInput, type Forecast, type Rating, type Reason } from '@/engine/types'
@@ -136,27 +139,34 @@ describe('forecasts for book Example 118 in Bengaluru', () => {
   it('explains 20 Oct 2026 deterministically', () => {
     const day = forecastDay(ctx, '2026-10-20')
     checkReasons(day)
-    expect(day).toMatchObject({ horizon: 'day', start: '2026-10-20', end: '2026-10-20', rating: 'favourable', score: 0.515 })
+    expect(day).toMatchObject({ horizon: 'day', start: '2026-10-20', end: '2026-10-20', rating: 'favourable', score: 0.346 })
     expect(day.headline).toBe('A well-placed Moon lifts the day, but handle relationships with extra tact.')
     expect(forecastDay(ctx, '2026-10-19').headline).toMatch(/^A good day, helped by /)
     // Weights are nominal x balance (GOCHARA_SHARES, capped at GOCHARA_MAX_BALANCE) x ashtakavarga
-    // strength, e.g. Saturn 1 x 1.2 x 0.75. The Moon's own factors lead.
+    // strength x functional tilt for the Leo lagna (FUNCTIONAL_TILT), e.g. Saturn, a functional
+    // malefic in a good house: 1 x 1.2 x 0.75 x 0.85. The Moon's own factors lead.
     expect(day.reasons.map((r) => [r.factor, r.effect, r.weight])).toEqual([
       ['chandra_bala', 1, 1.75], // Moon in Capricorn, the natal Moon sign
       ['tara_bala', 1, 1.6], // Parama Mitra
-      ['gochara_Sun', 1, 1.5], // 10th, 6 bindus (strong)
-      ['gochara_Mercury', 1, 1.31], // 10th, 6 bindus
-      ['gochara_Venus', -1, 1.2], // 10th
+      ['gochara_Sun', 1, 1.5], // 10th, 6 bindus (strong); the lagna lord, already at the cap
+      ['gochara_Venus', -1, 1.38], // 10th; Venus rules the 3rd and 10th for Leo (functional malefic)
+      ['gochara_Mercury', 1, 1.11], // 10th, 6 bindus; Mercury rules the 2nd and 11th (functional malefic)
+      ['dasha_promise', -1, 1.02], // Mercury dasha: malefic lordship, combust (see below)
       ['gochara_Jupiter', 0, 1], // 7th, obstructed by Saturn in the 3rd
-      ['gochara_Saturn', 1, 0.9], // 3rd from the Moon, an upachaya, with 3 bindus (weak)
-      ['dasha_transit', 1, 0.65], // Mercury antardasha, Mercury in the 10th (half weight)
-      ['gochara_Mars', -1, 0.37], // 7th, 3 bindus (a bad transit made stronger)
+      ['gochara_Saturn', 1, 0.76], // 3rd from the Moon, an upachaya, with 3 bindus (weak)
+      ['dasha_transit', 1, 0.56], // Mercury antardasha, Mercury in the 10th (half weight)
+      ['gochara_Mars', -1, 0.32], // 7th, 3 bindus; Mars is the yogakaraka for Leo, so it eases
       ['tithi', -1, 0.28], // Sukla Navami until 12:51, about half the daytime
       ['gochara_Rahu', -1, 0.14],
       ['gochara_Ketu', -1, 0.14],
       ['moon_change', 0, 1],
       ['dasha', 0, 1],
     ])
+    // The dasha is read from the chart: Mercury rules the 2nd and 11th from Leo and sits combust in the 7th.
+    expect(byFactor(day, 'dasha_promise')[0]).toMatchObject({ title: 'Mercury sub-period: asks for patience in your chart' })
+    expect(byFactor(day, 'dasha_promise')[0].text).toMatch(/^Mercury rules your 2nd and 11th and sits in your 7th\. It sits close to the Sun, so this sub-period tends to ask for patience around family finances and gains/)
+    expect(byFactor(day, 'dasha')[0].text).toMatch(/^The Mercury period frames these years: Mercury rules your 2nd and 11th/)
+    expect(byFactor(day, 'gochara_Mars')[0].text).toMatch(/As a helpful planet for your ascendant, it tends to soften the strain\.$/)
     // Vijayadashami: Navami gives way to Dashami at midday, so the Rikta caution is timed, not for the whole day.
     expect(byFactor(day, 'tithi')[0].title).toBe('Sukla Navami (Rikta tithi) until 12:51')
     expect(byFactor(day, 'tithi')[0].text).toMatch(/Today it runs until 12:51, then Sukla Dashami begins\.$/)
@@ -370,11 +380,11 @@ describe('Chandrashtama days and period highlights', () => {
   it('keeps the score but caps the rating: the 8th-sign Moon leads the headline', () => {
     const ny = createContext(NY_BIRTH, PRESETS.popular, NEW_YORK)
     expect(forecastDay(ny, '2027-08-17')).toMatchObject({
-      rating: 'mixed', score: 0.248, headline: 'A steady day at best: go gently while the Moon crosses your 8th, with a favourable Moon star on your side.',
+      rating: 'mixed', score: 0.225, headline: 'A steady day at best: go gently while the Moon crosses your 8th, with a favourable Moon star on your side.',
     })
     // Saturn in the 6th (once weighted 3.12) used to outvote Chandrashtama here; its weight is now capped.
-    expect(forecastDay(createContext(ASHA, PRESETS.popular, BENGALURU), '2027-09-23')).toMatchObject({ rating: 'challenging', score: 0.088 })
-    expect(forecastDay(fresh(), '2026-10-07')).toMatchObject({ rating: 'challenging', score: -0.097 })
+    expect(forecastDay(createContext(ASHA, PRESETS.popular, BENGALURU), '2027-09-23')).toMatchObject({ rating: 'challenging', score: 0.075 })
+    expect(forecastDay(fresh(), '2026-10-07')).toMatchObject({ rating: 'challenging', score: -0.22 })
   })
 
   it('times the caution on a day the 8th-sign Moon only touches', () => {
@@ -399,7 +409,7 @@ describe('Chandrashtama days and period highlights', () => {
     const week = forecastWeek(asha, '2026-10-11')
     checkHighlights(week)
     expect(week.highlights).toEqual({ best: ['2026-10-14', '2026-10-15'], careful: ['2026-10-12', '2026-10-17'], chandrashtama: [] })
-    expect(week.headline).toBe('A supportive week, brightest on Wed 14 – Thu 15 Oct; go gently on Mon 12 Oct and Sat 17 Oct.')
+    expect(week.headline).toBe('A mixed week: best on Wed 14 – Thu 15 Oct, go gently on Mon 12 Oct and Sat 17 Oct.')
   })
 })
 
@@ -545,5 +555,91 @@ describe('forecast plumbing', () => {
     const rows = gocharaAt(c, localToJd('2026-10-20', 'Asia/Kolkata', '06:10'))
     expect(rows).toHaveLength(9)
     expect(rows.find((r) => r.planet === 'Saturn')).toMatchObject({ houseFromMoon: 3, houseFromLagna: 8, bindus: 3 })
+  })
+})
+
+describe('natal promise', () => {
+  beforeAll(async () => {
+    await loadSwe()
+  })
+
+  it('reads each planet from the lagna: lordship, placement, dignity, strength and Vipareeta (Example 118, Leo rising)', () => {
+    const { promise } = analyseNatal(castChart(BIRTH, PRESETS.popular))
+    // Rao Table 30 for Leo: Sun, Mars, Jupiter benefic, Mars the yogakaraka; Mercury, Venus, Saturn malefic.
+    expect(promise.Mars).toMatchObject({ role: 'benefic', yogakaraka: true, rules: [4, 9], house: 3, effect: 1 })
+    // Jupiter rules the 5th and 8th and sits exalted in the 12th: a dusthana lord in a dusthana.
+    expect(promise.Jupiter).toMatchObject({ rules: [5, 8], house: 12, dignity: 'exalted', vipareeta: true, effect: 1 })
+    expect(promise.Venus).toMatchObject({ role: 'malefic', rules: [3, 10], house: 8, effect: -1 })
+    expect(promise.Mercury).toMatchObject({ rules: [2, 11], house: 7, combust: true, supportiveYogas: ['Budha-Aaditya'] })
+    // The nodes own nothing and act for their sign lord.
+    expect(promise.Rahu).toMatchObject({ role: 'unclassified', rules: [], dispositor: 'Mars', strengthRatio: null })
+    for (const p of PLANETS) expect(Math.abs(promise[p].score), p).toBeLessThanOrEqual(1)
+  })
+
+  it('averages close to zero over the toolkit charts, with dashas of every kind', () => {
+    const scores: number[] = []
+    const effects = { 1: 0, 0: 0, '-1': 0 } as Record<string, number>
+    const charts = (fixtures as unknown as { charts: { input: { datetime: string; timezone?: string; fold?: 0 | 1; latitude: number; longitude: number } }[] }).charts
+    for (const f of charts.slice(0, 24)) {
+      const m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})(?::\d{2})?(.*)$/.exec(f.input.datetime)!
+      const chart = castChart({ date: m[1], time: m[2], timeZone: m[3] || f.input.timezone!, fold: f.input.fold, latitude: f.input.latitude, longitude: f.input.longitude }, PRESETS.popular)
+      const { promise } = analyseNatal(chart)
+      scores.push(...PLANETS.map((p) => promise[p].score))
+      const dashas = vimsottari(chart.positions.Moon.longitude, chart.jd, 'solar', 2)
+      for (let jd = chart.jd; jd < chart.jd + 80 * 365.25; jd += 61) {
+        effects[chainPromise(promise, dashaChainAt(dashas, jd).map((p) => p.lord), chart.positions).effect]++
+      }
+    }
+    const mean = scores.reduce((a, b) => a + b, 0) / scores.length
+    expect(Math.abs(mean)).toBeLessThan(0.06)
+    const total = effects[1] + effects[0] + effects[-1]
+    for (const e of ['1', '0', '-1']) expect(effects[e] / total, e).toBeGreaterThan(0.15)
+    expect(PROMISE_THRESHOLD).toBe(0.15)
+  })
+
+  it('tilts transits modestly by functional nature, without lifting any above the gochara cap', () => {
+    const { promise } = analyseNatal(castChart(BIRTH, PRESETS.popular))
+    expect(functionalTilt(promise.Mars, 1)).toBe(1 + FUNCTIONAL_TILT) // yogakaraka, good transit
+    expect(functionalTilt(promise.Mars, -1)).toBe(1 - FUNCTIONAL_TILT)
+    expect(functionalTilt(promise.Venus, 1)).toBe(1 - FUNCTIONAL_TILT) // functional malefic
+    expect(functionalTilt(promise.Venus, -1)).toBe(1 + FUNCTIONAL_TILT)
+    expect(functionalTilt(promise.Rahu, -1)).toBe(1)
+    expect(functionalTilt(promise.Jupiter, 0)).toBe(1)
+    const ctx = fresh()
+    for (let i = 0; i < 30; i++) {
+      for (const r of forecastDay(ctx, addDays('2026-10-01', i)).reasons.filter((x) => x.factor.startsWith('gochara_'))) {
+        expect(r.weight, r.factor).toBeLessThanOrEqual(DAY_WEIGHTS.chandraBala + 1e-9)
+      }
+    }
+  })
+
+  it('states the same outlook in the title, text and vote of the dasha reason', () => {
+    const phrase = { 1: 'tends to support', 0: 'both openings and effort', '-1': 'ask for patience' } as Record<string, string>
+    for (const birth of [BIRTH, ASHA, NY_BIRTH]) {
+      const ctx = createContext(birth, PRESETS.popular, BENGALURU)
+      for (let i = 0; i < 400; i += 9) {
+        const r = byFactor(forecastDay(ctx, addDays('2026-01-01', i)), 'dasha_promise')[0]
+        expect(r.text, r.title).toContain(phrase[r.effect])
+        expect(r.title).toMatch(r.effect > 0 ? /well supported/ : r.effect < 0 ? /asks for patience/ : /mixed/)
+      }
+    }
+  })
+
+  it('gives two charts with the same Moon sign but different lagnas different dasha readings', () => {
+    // The same instant in Bengaluru and New York: the same Moon (so the same dasha periods to the
+    // second), but a different rising sign.
+    const early = createContext(ASHA, PRESETS.popular, BENGALURU)
+    const late = createContext({ date: '1990-05-11', time: '20:30', ...NEW_YORK }, PRESETS.popular, BENGALURU)
+    expect(late.chart.jd).toBeCloseTo(early.chart.jd, 9)
+    expect(late.natal.moonSign).toBe(early.natal.moonSign)
+    expect(late.natal.moonNakshatra).toBe(early.natal.moonNakshatra)
+    expect(late.natal.ascSign).not.toBe(early.natal.ascSign)
+    const [a, b] = [forecastDay(early, '2026-10-20'), forecastDay(late, '2026-10-20')]
+    expect(a.dasha.map((p) => p.lord)).toEqual(b.dasha.map((p) => p.lord))
+    // The Moon-based factors agree; the dasha reasons do not.
+    expect(byFactor(a, 'tara_bala')).toEqual(byFactor(b, 'tara_bala'))
+    expect(byFactor(a, 'dasha_promise')[0].text).not.toBe(byFactor(b, 'dasha_promise')[0].text)
+    expect(byFactor(a, 'dasha')[0].text).not.toBe(byFactor(b, 'dasha')[0].text)
+    for (const d of [a, b]) expect(byFactor(d, 'dasha_promise')[0].text).toMatch(/^\w+(, your yogakaraka,)? (rules your|sits in your) /)
   })
 })

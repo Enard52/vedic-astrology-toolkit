@@ -2,7 +2,7 @@
 // visually hidden table that gives screen-reader users the same data as the drawing.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { useLayoutEffect, useRef, useState, type RefObject } from 'react'
-import { SIGN_NAMES } from '@/engine/core'
+import { useT } from '@/i18n'
 import type { Chart, Planet } from '@/engine/types'
 import { degreeText, describeOccupant, HIGHLIGHT_PAD, labelScale, type HouseLayout, type HouseModel } from './chartModel'
 import { LABEL, labelWidthEm } from './layout'
@@ -105,20 +105,21 @@ export function HouseLabels({ house, layout }: { house: HouseModel; layout: Hous
  * sr-only because a table sizes itself to its content and would ignore the 1px box.
  */
 export function ChartTable({ houses, varga }: { houses: readonly HouseModel[]; varga: number }) {
+  const { t, n } = useT()
   return (
     <div className="sr-only">
       <table>
-        <caption>{vargaLabel(varga)}: houses, signs and planets</caption>
+        <caption>{t('chart.tableCaption', { varga: vargaLabel(varga) })}</caption>
         <thead>
-          <tr><th scope="col">House</th><th scope="col">Sign</th><th scope="col">Occupants</th></tr>
+          <tr><th scope="col">{t('chart.houseCol')}</th><th scope="col">{t('moon.sign')}</th><th scope="col">{t('chart.occupants')}</th></tr>
         </thead>
         <tbody>
           {houses.map((h) => (
             <tr key={h.house}>
               <th scope="row">{h.house}</th>
-              <td>{SIGN_NAMES[h.sign]}</td>
+              <td>{n.sign[h.sign]}</td>
               <td>
-                {h.occupants.length ? h.occupants.map((o) => `${describeOccupant(o)}${o.highlight ? ' (highlighted)' : ''}`).join(', ') : 'None'}
+                {h.occupants.length ? h.occupants.map((o) => `${describeOccupant(o)}${o.highlight ? ` ${t('chart.highlighted')}` : ''}`).join(', ') : t('common.none')}
               </td>
             </tr>
           ))}

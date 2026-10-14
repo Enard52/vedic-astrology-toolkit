@@ -4,8 +4,8 @@
     "sha256": "40cc2af22f80a1b869c194bc53aa3a52e06a97053c13f92f8105e25b6a7c66d5"
   },
   ".gitignore": {
-    "bytes": 1228,
-    "sha256": "f5266e5135d07839e48a9b6780f93959d022be567c32b8ebee77efbaace69002"
+    "bytes": 1242,
+    "sha256": "a3f483b74cff896c75b7a6a126f8443a8b76a10891832d0d03f16d26c3e5b2b2"
   },
   "BOOK_LANDSCAPE.md": {
     "bytes": 4030,
@@ -40,8 +40,8 @@
     "sha256": "7b834043e1af8c1e08a3f0b3f8c8dd44279279b4d34f7517a70782e1cdafcb09"
   },
   "README.md": {
-    "bytes": 15007,
-    "sha256": "1922799cb38c4ab123c6601e3dac3c8f65e3591d86db92f0463b0dfd801765b4"
+    "bytes": 15864,
+    "sha256": "316dc96c54d03737d475acab054984772bfe9789eab1f19d1525afc8fa430f28"
   },
   "RESEARCH_CLOSEOUT.md": {
     "bytes": 12838,
@@ -276,8 +276,8 @@
     "sha256": "f09e86fb38c17b246b93de823da4329656f14bd92ecdc0df37485c0bc2832287"
   },
   "vedic_toolkit/yogas.py": {
-    "bytes": 27152,
-    "sha256": "e2781dc7147ecae7cff7c460d99fcfa06c4af864f4cd9974a85686cf29b2b31a"
+    "bytes": 27854,
+    "sha256": "436c6b6c089830dae7011a9d2e663057d32abbd034f0b046682584c03077391a"
   },
   "verification_metrics.json": {
     "bytes": 610,
@@ -292,7 +292,7 @@
     "sha256": "2ad781b6db32faae0f809ae9d35fd5c84337612461e272a19096098a03b5eb36"
   },
   "yoga_audit_results.json": {
-    "bytes": 495012,
-    "sha256": "8e780ad3442f1ceaf8381c034fcc256ce7376dbedf86c9f1ab08dc140c3370d0"
+    "bytes": 514100,
+    "sha256": "8b58b4da0486ac8cbf1430729e6901667cb8f03019487a6f44c1253ef7bb75e2"
   }
 }

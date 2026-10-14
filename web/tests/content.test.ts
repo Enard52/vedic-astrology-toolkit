@@ -55,6 +55,11 @@ function allTexts(): string[] {
     for (const e of EFFECTS) {
       const variant = { ...l, effect: e }
       out.push(lordOutlook(variant, 'sub-period'), lordOutlook(variant, 'period'), lordBrief(variant, 'phase'), dashaPromiseTitle(l.planet, e))
+      // A chain whose outlook differs from the sub-lord's: once with the main period deciding it, once without.
+      for (const c of EFFECTS.filter((x) => x !== e)) {
+        const main = lords[(i + 1) % 9]
+        out.push(lordOutlook(variant, 'sub-period', c, { ...main, effect: c }), lordOutlook(variant, 'sub-period', c, main))
+      }
       out.push(dashaChainText(variant, lords[(i + 1) % 9], lords[(i + 2) % 9], [null, 5, 8, 3][i % 4]), dashaChangePromiseText([l.planet, lords[(i + 1) % 9].planet], variant))
       out.push(functionalNote('benefic', false, e), functionalNote('malefic', false, e), functionalNote('neutral', true, e))
     }
@@ -135,6 +140,26 @@ describe('interpretation library', () => {
       expect(h, h).not.toMatch(/undefined|\s{2}|\s[,.;:]/)
       expect(h, h).not.toMatch(BANNED)
     }
+  })
+
+  it('joins a dasha lord\'s condition to its outlook by polarity and names the main period when it decides', () => {
+    const base: LordPromise = {
+      planet: 'Venus', role: 'malefic', yogakaraka: false, rules: [2, 7], house: 12, dignity: 'exalted', strengthRatio: 1.1, combust: false,
+      vipareeta: false, supportiveYogas: [], challengingYogas: [], score: -0.3, effect: -1,
+    }
+    expect(lordOutlook(base, 'period')).toBe('Venus rules your 2nd and 7th and sits in your 12th. Although it is exalted, this period tends to ask for patience around family finances and partnerships, where steady habits help most.')
+    expect(lordOutlook({ ...base, effect: 1 }, 'period')).toMatch(/ It is exalted, so this period tends to support /)
+    expect(lordOutlook({ ...base, dignity: 'debilitated', strengthRatio: 1.4 }, 'period')).toMatch(/ It is debilitated, though strong overall; on balance, this period tends to ask /)
+    expect(lordOutlook({ ...base, dignity: 'debilitated', effect: 1 }, 'period')).toMatch(/ Although it is debilitated, this period tends to support /)
+    expect(lordOutlook({ ...base, dignity: 'friend', effect: 0 }, 'period')).toMatch(/12th\. This period tends to bring both openings and effort/)
+    // Vipareeta: the lord sits in a hard house of its own or another's.
+    expect(lordOutlook({ ...base, dignity: 'friend', rules: [6, 11], house: 6, vipareeta: true, effect: 1 }, 'period')).toMatch(/As the lord of a hard house sitting in a hard house, it can turn obstacles to your advantage\.$/)
+    // The chain's outlook differs from the sub-lord's: say where it comes from, not blame the sub-lord.
+    const mercury: LordPromise = { ...base, planet: 'Mercury', dignity: 'friend', rules: [3, 6], house: 1, effect: 0, supportiveYogas: ['Gaja-Kesari'] }
+    const venus = { ...base, effect: -1 as const }
+    expect(lordOutlook(mercury, 'sub-period', -1, venus)).toBe('Mercury rules your 3rd and 6th and sits in your 1st. This sub-period tends to bring both openings and effort around your own initiative and daily work. Within the Venus period, which asks for patience in your chart, this sub-period leans toward patience overall.')
+    expect(lordOutlook(mercury, 'sub-period', 1, venus)).toMatch(/\. Taken together with the rest of the running dasha, this sub-period leans toward support overall\.$/)
+    expect(lordOutlook(mercury, 'sub-period', 0, venus)).toMatch(/It also helps form Gaja-Kesari in your chart\.$/)
   })
 
   it('formats ordinals and lists', () => {

@@ -933,8 +933,9 @@ function dashaPromiseReasons(ctx: PredictContext, chain: readonly DashaPeriod[])
   const weight = effect === 0 ? DAY_WEIGHTS.dashaPromise / 2 : round(Math.min(1.5, DAY_WEIGHTS.dashaPromise * (0.75 + Math.abs(score))), 2)
   return [{
     factor: 'dasha_promise', effect, weight, title: T.dashaPromiseTitle(lords[1], effect),
-    // The outlook stated is the chain's, so the text always agrees with the title and the vote.
-    text: T.lordOutlook(ctx.promise[lords[1]], 'sub-period', effect), source: T.SOURCES.dashaPromise,
+    // The text gives the sub-lord's own outlook and, when the chain's differs, a clause naming where
+    // that comes from, so it agrees with the title and the vote without blaming the sub-lord.
+    text: T.lordOutlook(ctx.promise[lords[1]], 'sub-period', effect, ctx.promise[lords[0]]), source: T.SOURCES.dashaPromise,
   }]
 }
 

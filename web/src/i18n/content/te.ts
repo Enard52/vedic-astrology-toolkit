@@ -3,7 +3,7 @@
 // translation; corrections are welcome (see the About page). Yoga names stay in English.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import type { DashaScope } from '@/content/promise'
-import { scopeOfLevel } from '@/content/promise'
+import { chainClause, conditionLink, conditionNotes, scopeOfLevel, type ConditionNote } from '@/content/promise'
 import type { ContentPack } from '@/content/pack'
 import { yogaContent } from '@/content/yogas'
 import type { FunctionalRole } from '@/engine/functional'
@@ -259,16 +259,19 @@ function lordPlacement(p: LordPromise): string {
   if (!p.rules.length) return `${who} మీ ${ord(p.house)} స్థానంలో ఉండి, తాను ఉన్న రాశి అధిపతి (${P(p.dispositor!)}) తరఫున ఫలితమిస్తాడు`
   return `${who} మీ ${houses(p.rules)} అధిపతిగా ${ord(p.house)} స్థానంలో ఉన్నాడు`
 }
-function lordCondition(p: LordPromise): string {
-  const notes: string[] = []
-  if (p.dignity === 'exalted') notes.push('ఉచ్చలో ఉన్నాడు')
-  else if (p.dignity === 'own' || p.dignity === 'moolatrikona') notes.push('స్వక్షేత్రంలో ఉన్నాడు')
-  else if (p.dignity === 'debilitated') notes.push('నీచలో ఉన్నాడు')
-  if (p.strengthRatio !== null && p.strengthRatio >= 1.25) notes.push('మీ జాతకంలో బలంగా ఉన్నాడు')
-  else if (p.strengthRatio !== null && p.strengthRatio < 0.9) notes.push('మధ్యస్థ బలంతో ఉన్నాడు')
-  if (p.combust) notes.push('సూర్యునికి దగ్గరగా (అస్తంగతుడై) ఉన్నాడు')
-  return list(notes)
+type Key = '1' | '0' | '-1'
+const NOTE: Readonly<Record<ConditionNote, string>> = {
+  exalted: 'ఉచ్చలో ఉన్నాడు',
+  own: 'స్వక్షేత్రంలో ఉన్నాడు',
+  debilitated: 'నీచలో ఉన్నాడు',
+  strong: 'మీ జాతకంలో బలంగా ఉన్నాడు',
+  modest: 'మధ్యస్థ బలంతో ఉన్నాడు',
+  combust: 'సూర్యునికి దగ్గరగా (అస్తంగతుడై) ఉన్నాడు',
+  debilitatedButStrong: 'నీచలో ఉన్నా, మొత్తంమీద బలంగా ఉన్నాడు',
+  exaltedButModest: 'ఉచ్చలో ఉన్నా, మొత్తంమీద మధ్యస్థ బలంతో ఉన్నాడు',
+  ownButModest: 'స్వక్షేత్రంలో ఉన్నా, మొత్తంమీద మధ్యస్థ బలంతో ఉన్నాడు',
 }
+const lordCondition = (p: LordPromise): string => list(conditionNotes(p).map((n) => NOTE[n]))
 const OUTLOOK: Readonly<Record<'1' | '0' | '-1', (scope: string, areas: string) => string>> = {
   '1': (scope, areas) => `${scope} ${areas} విషయాలకు మద్దతు ఇచ్చే అవకాశం ఉంది`,
   '0': (scope, areas) => `${scope} ${areas} విషయాల్లో అవకాశాలనూ శ్రమనూ తెచ్చే అవకాశం ఉంది`,
@@ -276,12 +279,20 @@ const OUTLOOK: Readonly<Record<'1' | '0' | '-1', (scope: string, areas: string) 
 }
 const outlook = (p: LordPromise, scope: DashaScope, effect: Effect = p.effect) => OUTLOOK[String(effect) as '1' | '0' | '-1'](SCOPE[scope], lordAreas(p))
 const yogaName = (name: string) => (yogaContent(name)?.title ?? name).split(':')[0].replace(/ \(\d+\)$/, '')
-function lordOutlook(p: LordPromise, scope: DashaScope, effect: Effect = p.effect): string {
+const MAIN_TONE: Readonly<Record<Key, string>> = { '1': 'మంచి మద్దతు పొందుతుంది', '0': 'మిశ్రమ ఫలితం ఇస్తుంది', '-1': 'ఓర్పు కోరుతుంది' }
+const LEAN: Readonly<Record<Key, string>> = { '1': 'మద్దతు వైపు మొగ్గుతుంది', '0': 'మిశ్రమంగానే ఉంటుంది', '-1': 'ఓర్పు వైపు మొగ్గుతుంది' }
+function lordOutlook(p: LordPromise, scope: DashaScope, effect: Effect = p.effect, main?: LordPromise): string {
   const condition = lordCondition(p)
-  const out = [`${lordPlacement(p)}.`, condition ? `ఈ గ్రహం ${condition}; కాబట్టి ${outlook(p, scope, effect)}.` : `${outlook(p, scope, effect)}.`]
-  if (p.vipareeta) out.push('కష్టమైన స్థానాధిపతి మరో కష్టమైన స్థానంలో ఉండటం వల్ల, అడ్డంకులను మీకు అనుకూలంగా మలచగలడు.')
-  else if (p.supportiveYogas.length) out.push(`మీ జాతకంలో ${yogaName(p.supportiveYogas[0])} యోగం ఏర్పడటానికి కూడా ఇది సహాయపడుతుంది.`)
-  else if (p.challengingYogas.length) out.push(`ఇది ${yogaName(p.challengingYogas[0])} యోగంలో కూడా పాలుపంచుకుంటుంది; కాబట్టి దీని విషయాలకు కాస్త అదనపు శ్రద్ధ ఇవ్వండి.`)
+  const own = outlook(p, scope)
+  const link = conditionLink(p)
+  const out = [`${lordPlacement(p)}.`, !condition ? `${own}.` : link === 'so' ? `ఈ గ్రహం ${condition}; కాబట్టి ${own}.` : link === 'although' ? `ఈ గ్రహం ${condition}; అయినప్పటికీ ${own}.` : `ఈ గ్రహం ${condition}; అన్నీ కలిపి చూస్తే ${own}.`]
+  const chain = chainClause(p, effect, main)
+  const lean = LEAN[String(effect) as Key]
+  if (!chain && p.vipareeta) out.push('కష్టమైన స్థానాధిపతి కష్టమైన స్థానంలోనే ఉండటం వల్ల, అడ్డంకులను మీకు అనుకూలంగా మలచగలడు.')
+  else if (!chain && p.supportiveYogas.length) out.push(`మీ జాతకంలో ${yogaName(p.supportiveYogas[0])} యోగం ఏర్పడటానికి కూడా ఇది సహాయపడుతుంది.`)
+  else if (!chain && p.challengingYogas.length) out.push(`ఇది ${yogaName(p.challengingYogas[0])} యోగంలో కూడా పాలుపంచుకుంటుంది; కాబట్టి దీని విషయాలకు కాస్త అదనపు శ్రద్ధ ఇవ్వండి.`)
+  else if (chain?.main) out.push(`${P(chain.main.planet)} మహాదశ మీ జాతకంలో ${MAIN_TONE[String(chain.main.effect) as Key]}; కాబట్టి మొత్తంమీద ${SCOPE[scope]} ${lean}.`)
+  else if (chain) out.push(`నడుస్తున్న దశలోని మిగతా స్థాయిలనూ కలిపి చూస్తే, ${SCOPE[scope]} ${lean}.`)
   return out.join(' ')
 }
 function lordBrief(p: LordPromise, scope: DashaScope): string {

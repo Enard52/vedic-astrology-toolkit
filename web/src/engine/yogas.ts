@@ -240,6 +240,7 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
   const nd = (p: P) => SIGN_LORDS[sn[p]] // navamsa dispositor
   const deep = (p: P) => angularDistance(lon[p], DEEP_EXALT[p]!) <= orb
   const without = (set: Set<P>, ...xs: P[]) => [...set].filter((p) => !xs.includes(p))
+  const uniq = (...ps: P[]): P[] => [...new Set(ps)]
 
   const rows: YogaResult[] = []
   const add = (name: string, page: number, conditions: Record<string, Tri>, category: YogaCategory = 'popular', participants: P[] = []) => {
@@ -262,8 +263,8 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
   add('Kemadruma', 109, {
     no_lunar_companions: !planets.some((p) => p !== 'Sun' && p !== 'Moon' && [1, 2, 12].includes(relative(p, 'Moon'))),
     no_angular_planets_other_than_moon: !planets.some((p) => p !== 'Moon' && kendra(p)),
-  }, 'lunar')
-  add('Chandra-Mangala', 109, { conjunction: joint('Moon', 'Mars') })
+  }, 'lunar', ['Moon'])
+  add('Chandra-Mangala', 109, { conjunction: joint('Moon', 'Mars') }, 'popular', ['Moon', 'Mars'])
   add('Adhi', 109, { benefics_in_each_of_6_7_8: occupy([6, 7, 8], without(good, 'Moon'), s.Moon) })
   for (const [p, name] of [['Mars', 'Ruchaka'], ['Mercury', 'Bhadra'], ['Saturn', 'Sasa'], ['Venus', 'Maalavya'], ['Jupiter', 'Hamsa']] as const) {
     add(name, ['Mars', 'Mercury', 'Saturn'].includes(p) ? 110 : 111, { angular: kendra(p), own_or_exalted: oe(p) }, 'mahapurusha', [p])
@@ -273,6 +274,8 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
   const occupied = new Set(SEVEN.map(h))
   const signset = new Set(SEVEN.map((p) => s[p]))
   ;['Rajju', 'Musala', 'Nala'].forEach((name, i) => add(name, 112, { all_same_modality: [...signset].every((x) => x % 3 === i) }, 'nabhasa'))
+  // Book convention (PDF 112): natural malefics include the nodes; its Sarpa example is Mars, Rahu
+  // and Ketu in angles. BPHS-based tools count only Sun, Mars and Saturn (noted in content/yogas.ts).
   add('Maalaa', 112, { benefics_in_at_least_three_quadrants: QUADS.filter((q) => [...good].some((p) => h(p) === q)).length >= 3 }, 'nabhasa')
   rows[rows.length - 1].qualifications = { no_angular_malefic: ![...bad].some(kendra) }
   add('Sarpa', 112, { malefics_in_at_least_three_quadrants: QUADS.filter((q) => [...bad].some((p) => h(p) === q)).length >= 3 }, 'nabhasa')
@@ -309,8 +312,8 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
     jupiter_angular_from_moon: QUADS.includes(relative('Jupiter', 'Moon')),
     other_benefic_influence: without(good, 'Jupiter').some((p) => influence(p, 'Jupiter')),
     not_debilitated_combust_or_inimical: !(deb('Jupiter') || comb('Jupiter') || enemy('Jupiter')),
-  })
-  add('Guru-Mangala', 116, { conjunction_or_opposition: [1, 7].includes(relative('Mars', 'Jupiter')) })
+  }, 'popular', ['Jupiter', 'Moon'])
+  add('Guru-Mangala', 116, { conjunction_or_opposition: [1, 7].includes(relative('Mars', 'Jupiter')) }, 'popular', ['Jupiter', 'Mars'])
   const amala = (['Asc', 'Moon'] as const).some((ref) => occupy([10], good, s[ref]) && !occupy([10], bad, s[ref]))
   add('Amala', 117, { tenth_only_benefics: amala })
   add('Parvata', 117, {
@@ -341,7 +344,7 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
     benefics_5_6_7_dignified: occupy([5, 6, 7], [...good].filter((p) => isSeven(p) && (oe(p) || friend(p)))),
     malefics_1_3_11_dignified: occupy([1, 3, 11], [...bad].filter(oe)),
   })
-  add('Khadga', 118, { exchange_2_9: exchange(2, 9), lagna_lord_angular_or_trinal: kendra(lord(1)) || trikona(lord(1)) })
+  add('Khadga', 118, { exchange_2_9: exchange(2, 9), lagna_lord_angular_or_trinal: kendra(lord(1)) || trikona(lord(1)) }, 'popular', uniq(lord(2), lord(9), lord(1)))
   add('Kusuma', 118, {
     fixed_asc: asc % 3 === 1,
     angular_venus: kendra('Venus'),
@@ -394,8 +397,8 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
     jupiter_dignity: oe('Jupiter') || friend('Jupiter'),
   })
   add('Amsaavatara', 122, { angular_jupiter_venus_saturn: (['Jupiter', 'Venus', 'Saturn'] as const).every(kendra), saturn_exalted: ex('Saturn') })
-  add('Devendra', 122, { fixed_asc: asc % 3 === 1, exchange_2_10: exchange(2, 10), exchange_1_11: exchange(1, 11) })
-  add('Indra', 122, { exchange_5_11: exchange(5, 11), moon_5: h('Moon') === 5 })
+  add('Devendra', 122, { fixed_asc: asc % 3 === 1, exchange_2_10: exchange(2, 10), exchange_1_11: exchange(1, 11) }, 'popular', uniq(lord(2), lord(10), lord(1), lord(11)))
+  add('Indra', 122, { exchange_5_11: exchange(5, 11), moon_5: h('Moon') === 5 }, 'popular', uniq(lord(5), lord(11), 'Moon'))
   add('Ravi', 122, { sun_10: h('Sun') === 10, tenth_lord_saturn_3: h(lord(10)) === 3 && h('Saturn') === 3 })
   add('Bhaaskara', 122, {
     moon_12_from_sun: relative('Moon', 'Sun') === 12,
@@ -421,7 +424,7 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
     joins_venus: joint(lord(11), 'Venus'),
     angular_from_lagna_lord: QUADS.includes(relative(lord(11), lord(1))),
   })
-  add('Chapa', 123, { exchange_4_10: exchange(4, 10), lagna_lord_exalted: ex(lord(1)) })
+  add('Chapa', 123, { exchange_4_10: exchange(4, 10), lagna_lord_exalted: ex(lord(1)) }, 'popular', uniq(lord(4), lord(10), lord(1)))
   {
     const md = SIGN_LORDS[s.Moon]
     add('Pushkala', 123, {
@@ -433,20 +436,22 @@ function evaluateOnce(inp: YogaInputs, orb: number, tie: 'unresolved' | 'benefic
   }
   add('Makuta', 123, { jupiter_ninth_from_9lord: relative('Jupiter', lord(9)) === 9, benefic_ninth_from_jupiter: occupy([9], good, s.Jupiter), saturn_10: h('Saturn') === 10 })
   add('Jaya', 123, { tenth_lord_deep_exaltation: deep(lord(10)), sixth_lord_debilitated: deb(lord(6)) })
-  for (const [name, house] of [['Harsha', 6], ['Sarala', 8], ['Vimala', 12]] as const) add(name, 123, { lord_in_own_house: h(lord(house)) === house })
+  for (const [name, house] of [['Harsha', 6], ['Sarala', 8], ['Vimala', 12]] as const) add(name, 123, { lord_in_own_house: h(lord(house)) === house }, 'popular', [lord(house)])
 
   // Raja relationships (PDF 124): evidence of magnitude, never deterministic outcomes.
-  let raajaPair = false
-  for (const a of QUADS) for (const b of [1, 5, 9]) if (lord(a) !== lord(b) && association(lord(a), lord(b))) raajaPair = true
-  add('Basic_Raaja', 124, { quadrant_trine_lord_association: raajaPair }, 'raaja')
-  add('Dharma_Karmadhipati', 124, { ninth_tenth_lord_association: association(lord(9), lord(10)) }, 'raaja')
-  const dustlords = [...new Set([lord(6), lord(8), lord(12)])]
-  add('Vipareeta_Raaja_base', 124, { dusthana_lord_in_dusthana: dustlords.some((p) => [6, 8, 12].includes(h(p))) }, 'raaja')
+  // Participants: the lords that form the yoga (toolkit order: PLANETS for the raja pairs, else 6/8/12).
+  const raajaLords = new Set<P>()
+  for (const a of QUADS) for (const b of [1, 5, 9]) if (lord(a) !== lord(b) && association(lord(a), lord(b))) raajaLords.add(lord(a)).add(lord(b))
+  add('Basic_Raaja', 124, { quadrant_trine_lord_association: raajaLords.size > 0 }, 'raaja', planets.filter((p) => raajaLords.has(p)))
+  add('Dharma_Karmadhipati', 124, { ninth_tenth_lord_association: association(lord(9), lord(10)) }, 'raaja', uniq(lord(9), lord(10)))
+  const dustlords = uniq(lord(6), lord(8), lord(12))
+  const inDusthana = dustlords.filter((p) => [6, 8, 12].includes(h(p)))
+  add('Vipareeta_Raaja_base', 124, { dusthana_lord_in_dusthana: inDusthana.length > 0 }, 'raaja', inDusthana)
   add('Vipareeta_Raaja_ideal', 124, {
     three_lords_together: new Set(dustlords.map((p) => s[p])).size === 1,
     allowed_house: [3, 6, 8, 11, 12].includes(h(lord(6))),
     no_other_planet: !planets.some((p) => !dustlords.includes(p) && s[p] === s[lord(6)]),
-  }, 'raaja')
+  }, 'raaja', dustlords)
 
   // Twelve ascendant-specific wealth combinations (PDF 130-131); Pisces' missing Saturn repaired from BPHS 41.8.
   const fifth: [P, P[]][] = [

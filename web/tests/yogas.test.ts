@@ -109,6 +109,23 @@ describe('yogas parity with vedic_toolkit/yogas.py evaluate()', () => {
     expect(both.find((r) => r.name === 'daridra_10')!.conditions.benefics_in_malefic_owned_signs).toBeNull()
   })
 
+  it("follows the book's Sarpa example (PDF 112) and names yoga participants", () => {
+    // vedic_toolkit tests/test_research.py sample(): Scorpio rising, Jupiter in the lagna.
+    const sample = (changes: Partial<Record<Body, number>>) =>
+      ({ Sun: 10, Moon: 42, Mars: 78, Mercury: 95, Jupiter: 139, Venus: 173, Saturn: 211, Rahu: 244, Ketu: 64, Asc: 15, ...changes }) as Record<Body, number>
+    const rule = (changes: Partial<Record<Body, number>>, name: string) => evaluateYogaRules({ longitudes: sample(changes) }).find((r) => r.name === name)!
+    // The book's example: Mars, Rahu and Ketu in three angles forms Sarpa; Jupiter in the lagna weakens it.
+    const sarpa = rule({ Asc: 215, Mars: 37, Rahu: 127, Ketu: 307, Jupiter: 217 }, 'Sarpa')
+    expect(sarpa.status).toBe('conditions_met')
+    expect(sarpa.qualifications).toEqual({ no_angular_benefic: false })
+    const rules = evaluateYogaRules({ longitudes: sample({ Asc: 215 }) })
+    const by = (name: string) => rules.find((r) => r.name === name)!.participants
+    expect([by('Gaja-Kesari'), by('Kemadruma'), by('Chandra-Mangala'), by('Guru-Mangala')]).toEqual([['Jupiter', 'Moon'], ['Moon'], ['Moon', 'Mars'], ['Jupiter', 'Mars']])
+    // Scorpio rising: Mars rules the 6th, Mercury the 8th, Venus the 12th; only Mars sits in a hard house (8th).
+    expect([by('Harsha'), by('Sarala'), by('Vimala'), by('Vipareeta_Raaja_base'), by('Vipareeta_Raaja_ideal')]).toEqual([['Mars'], ['Mercury'], ['Venus'], ['Mars'], ['Mars', 'Mercury', 'Venus']])
+    expect(by('Dharma_Karmadhipati')).toEqual(['Moon', 'Sun'])
+  })
+
   it('rejects a negative deep-exaltation orb', () => {
     const longitudes = { Sun: 10, Moon: 33, Mars: 298, Mercury: 165, Jupiter: 95, Venus: 357, Saturn: 200, Rahu: 0, Ketu: 180, Asc: 0 } as Record<Body, number>
     expect(() => evaluateYogaRules({ longitudes }, { deepExaltationOrb: -1 })).toThrow()

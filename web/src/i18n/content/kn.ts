@@ -3,7 +3,7 @@
 // translation; corrections are welcome (see the About page). Yoga names stay in English.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import type { DashaScope } from '@/content/promise'
-import { scopeOfLevel } from '@/content/promise'
+import { chainClause, conditionLink, conditionNotes, scopeOfLevel, type ConditionNote } from '@/content/promise'
 import type { ContentPack } from '@/content/pack'
 import { yogaContent } from '@/content/yogas'
 import type { FunctionalRole } from '@/engine/functional'
@@ -259,16 +259,19 @@ function lordPlacement(p: LordPromise): string {
   if (!p.rules.length) return `${who} ನಿಮ್ಮ ${ord(p.house)} ಮನೆಯಲ್ಲಿದ್ದು ತನ್ನ ರಾಶ್ಯಧಿಪತಿಯ (${P(p.dispositor!)}) ಪರವಾಗಿ ಫಲ ನೀಡುತ್ತಾನೆ`
   return `${who} ನಿಮ್ಮ ${houses(p.rules)} ಅಧಿಪತಿಯಾಗಿ ${ord(p.house)} ಮನೆಯಲ್ಲಿದ್ದಾನೆ`
 }
-function lordCondition(p: LordPromise): string {
-  const notes: string[] = []
-  if (p.dignity === 'exalted') notes.push('ಉಚ್ಚನಾಗಿದ್ದಾನೆ')
-  else if (p.dignity === 'own' || p.dignity === 'moolatrikona') notes.push('ಸ್ವಕ್ಷೇತ್ರದಲ್ಲಿದ್ದಾನೆ')
-  else if (p.dignity === 'debilitated') notes.push('ನೀಚನಾಗಿದ್ದಾನೆ')
-  if (p.strengthRatio !== null && p.strengthRatio >= 1.25) notes.push('ನಿಮ್ಮ ಜಾತಕದಲ್ಲಿ ಬಲಶಾಲಿ')
-  else if (p.strengthRatio !== null && p.strengthRatio < 0.9) notes.push('ಮಧ್ಯಮ ಬಲ ಹೊಂದಿದ್ದಾನೆ')
-  if (p.combust) notes.push('ಸೂರ್ಯನ ಸಮೀಪದಲ್ಲಿದ್ದಾನೆ (ಅಸ್ತ)')
-  return list(notes)
+type Key = '1' | '0' | '-1'
+const NOTE: Readonly<Record<ConditionNote, string>> = {
+  exalted: 'ಉಚ್ಚನಾಗಿದ್ದಾನೆ',
+  own: 'ಸ್ವಕ್ಷೇತ್ರದಲ್ಲಿದ್ದಾನೆ',
+  debilitated: 'ನೀಚನಾಗಿದ್ದಾನೆ',
+  strong: 'ನಿಮ್ಮ ಜಾತಕದಲ್ಲಿ ಬಲಶಾಲಿ',
+  modest: 'ಮಧ್ಯಮ ಬಲ ಹೊಂದಿದ್ದಾನೆ',
+  combust: 'ಸೂರ್ಯನ ಸಮೀಪದಲ್ಲಿದ್ದಾನೆ (ಅಸ್ತ)',
+  debilitatedButStrong: 'ನೀಚನಾಗಿದ್ದರೂ ಒಟ್ಟಾರೆ ಬಲಶಾಲಿ',
+  exaltedButModest: 'ಉಚ್ಚನಾಗಿದ್ದರೂ ಒಟ್ಟಾರೆ ಮಧ್ಯಮ ಬಲ ಹೊಂದಿದ್ದಾನೆ',
+  ownButModest: 'ಸ್ವಕ್ಷೇತ್ರದಲ್ಲಿದ್ದರೂ ಒಟ್ಟಾರೆ ಮಧ್ಯಮ ಬಲ ಹೊಂದಿದ್ದಾನೆ',
 }
+const lordCondition = (p: LordPromise): string => list(conditionNotes(p).map((n) => NOTE[n]))
 const OUTLOOK: Readonly<Record<'1' | '0' | '-1', (scope: string, areas: string) => string>> = {
   '1': (scope, areas) => `${scope} ${areas} ವಿಷಯಗಳಿಗೆ ಬೆಂಬಲ ನೀಡುವ ಸಾಧ್ಯತೆ ಇದೆ`,
   '0': (scope, areas) => `${scope} ${areas} ವಿಷಯಗಳಲ್ಲಿ ಅವಕಾಶಗಳನ್ನೂ ಶ್ರಮವನ್ನೂ ತರುವ ಸಾಧ್ಯತೆ ಇದೆ`,
@@ -276,12 +279,20 @@ const OUTLOOK: Readonly<Record<'1' | '0' | '-1', (scope: string, areas: string) 
 }
 const outlook = (p: LordPromise, scope: DashaScope, effect: Effect = p.effect) => OUTLOOK[String(effect) as '1' | '0' | '-1'](SCOPE[scope], lordAreas(p))
 const yogaName = (name: string) => (yogaContent(name)?.title ?? name).split(':')[0].replace(/ \(\d+\)$/, '')
-function lordOutlook(p: LordPromise, scope: DashaScope, effect: Effect = p.effect): string {
+const MAIN_TONE: Readonly<Record<Key, string>> = { '1': 'ಉತ್ತಮ ಬೆಂಬಲ ಪಡೆದಿದೆ', '0': 'ಮಿಶ್ರ ಫಲ ನೀಡುತ್ತದೆ', '-1': 'ತಾಳ್ಮೆ ಕೇಳುತ್ತದೆ' }
+const LEAN: Readonly<Record<Key, string>> = { '1': 'ಬೆಂಬಲದ ಕಡೆಗೆ ವಾಲುತ್ತದೆ', '0': 'ಮಿಶ್ರವಾಗಿರುತ್ತದೆ', '-1': 'ತಾಳ್ಮೆಯ ಕಡೆಗೆ ವಾಲುತ್ತದೆ' }
+function lordOutlook(p: LordPromise, scope: DashaScope, effect: Effect = p.effect, main?: LordPromise): string {
   const condition = lordCondition(p)
-  const out = [`${lordPlacement(p)}.`, condition ? `ಈ ಗ್ರಹ ${condition}; ಆದ್ದರಿಂದ ${outlook(p, scope, effect)}.` : `${outlook(p, scope, effect)}.`]
-  if (p.vipareeta) out.push('ಕಷ್ಟದ ಮನೆಯ ಅಧಿಪತಿ ಮತ್ತೊಂದು ಕಷ್ಟದ ಮನೆಯಲ್ಲಿರುವುದರಿಂದ, ಅಡೆತಡೆಗಳನ್ನು ನಿಮ್ಮ ಅನುಕೂಲಕ್ಕೆ ತಿರುಗಿಸಬಲ್ಲದು.')
-  else if (p.supportiveYogas.length) out.push(`ನಿಮ್ಮ ಜಾತಕದಲ್ಲಿ ${yogaName(p.supportiveYogas[0])} ಯೋಗ ರೂಪಿಸಲೂ ಇದು ನೆರವಾಗುತ್ತದೆ.`)
-  else if (p.challengingYogas.length) out.push(`ಇದು ${yogaName(p.challengingYogas[0])} ಯೋಗದಲ್ಲೂ ಭಾಗಿಯಾಗಿದೆ; ಹಾಗಾಗಿ ಇದರ ವಿಷಯಗಳಿಗೆ ಸ್ವಲ್ಪ ಹೆಚ್ಚು ಕಾಳಜಿ ಕೊಡಿ.`)
+  const own = outlook(p, scope)
+  const link = conditionLink(p)
+  const out = [`${lordPlacement(p)}.`, !condition ? `${own}.` : link === 'so' ? `ಈ ಗ್ರಹ ${condition}; ಆದ್ದರಿಂದ ${own}.` : link === 'although' ? `ಈ ಗ್ರಹ ${condition}; ಆದರೂ ${own}.` : `ಈ ಗ್ರಹ ${condition}; ಎಲ್ಲವನ್ನೂ ಗಮನಿಸಿದರೆ ${own}.`]
+  const chain = chainClause(p, effect, main)
+  const lean = LEAN[String(effect) as Key]
+  if (!chain && p.vipareeta) out.push('ಕಷ್ಟದ ಮನೆಯ ಅಧಿಪತಿ ಕಷ್ಟದ ಮನೆಯಲ್ಲೇ ಇರುವುದರಿಂದ, ಅಡೆತಡೆಗಳನ್ನು ನಿಮ್ಮ ಅನುಕೂಲಕ್ಕೆ ತಿರುಗಿಸಬಲ್ಲದು.')
+  else if (!chain && p.supportiveYogas.length) out.push(`ನಿಮ್ಮ ಜಾತಕದಲ್ಲಿ ${yogaName(p.supportiveYogas[0])} ಯೋಗ ರೂಪಿಸಲೂ ಇದು ನೆರವಾಗುತ್ತದೆ.`)
+  else if (!chain && p.challengingYogas.length) out.push(`ಇದು ${yogaName(p.challengingYogas[0])} ಯೋಗದಲ್ಲೂ ಭಾಗಿಯಾಗಿದೆ; ಹಾಗಾಗಿ ಇದರ ವಿಷಯಗಳಿಗೆ ಸ್ವಲ್ಪ ಹೆಚ್ಚು ಕಾಳಜಿ ಕೊಡಿ.`)
+  else if (chain?.main) out.push(`${P(chain.main.planet)} ದಶೆ ನಿಮ್ಮ ಜಾತಕದಲ್ಲಿ ${MAIN_TONE[String(chain.main.effect) as Key]}; ಹಾಗಾಗಿ ಒಟ್ಟಾರೆಯಾಗಿ ${SCOPE[scope]} ${lean}.`)
+  else if (chain) out.push(`ನಡೆಯುತ್ತಿರುವ ದಶೆಯ ಉಳಿದ ಹಂತಗಳನ್ನೂ ಸೇರಿಸಿ ನೋಡಿದರೆ, ${SCOPE[scope]} ${lean}.`)
   return out.join(' ')
 }
 function lordBrief(p: LordPromise, scope: DashaScope): string {

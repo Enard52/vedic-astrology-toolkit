@@ -12,7 +12,11 @@
 //   neutral, a planet ruling both an angle and a trine a yogakaraka).
 // - Vipareeta raja yoga: a lord of the 6th, 8th or 12th placed in one of those houses turns the
 //   difficulty around (Rao PDF 124, the toolkit's Vipareeta_Raaja_base condition); it is not
-//   counted when that lord is debilitated, as most modern texts add.
+//   counted when that lord is debilitated, as most modern texts add, nor for a lord of the lagna or
+//   a trine, whose own houses suffer from a 6th/8th/12th placement (BPHS ch. 24, lords in houses).
+// - Upachaya: natural malefics (Sun, Mars, Saturn and the nodes) do well in the 3rd, 6th and 11th
+//   (Rao PDF 127-128, the toolkit's advanced_raaja_05/17 conditions, and the gochara rule in
+//   gochara.ts; the 11th is good for every planet anyway).
 // - Rahu and Ketu own no sign here; as commonly taught they act for their sign lord (dispositor)
 //   and the house they occupy, so they borrow half of the dispositor's functional role.
 // - Strength: dignity (Rao Table 7 compound relations), Shadbala as a share of the Raman/Sripati
@@ -45,7 +49,7 @@ export interface LordPromise {
   /** Shadbala as a share of the required minimum; null for the nodes or when Shadbala is unavailable. */
   strengthRatio: number | null
   combust: boolean
-  /** A lord of the 6th, 8th or 12th placed in one of them, not debilitated. */
+  /** A lord of the 6th, 8th or 12th placed in one of them, not debilitated, ruling no trine or the lagna. */
   vipareeta: boolean
   /** Toolkit names of the met yogas it takes part in, by their nature. */
   supportiveYogas: string[]
@@ -71,14 +75,23 @@ const DIGNITY_VALUE: Readonly<Record<Dignity, number>> = {
 const DUSTHANA = [6, 8, 12]
 const TRIKONA = [1, 5, 9]
 const KENDRA = [4, 7, 10]
+const UPACHAYA_GOOD = [3, 6, 11]
+const NATURAL_MALEFICS: readonly Planet[] = ['Sun', 'Mars', 'Saturn', 'Rahu', 'Ketu']
 
-/** BPHS ch. 53 v. 49: trines best, angles and the 11th good, the 6th, 8th and 12th hard. */
-function placementValue(house: number, vipareeta: boolean): number {
+/**
+ * BPHS ch. 53 v. 49: trines best, angles and the 11th good, the 6th, 8th and 12th hard; natural
+ * malefics are good in the 3rd, 6th and 11th (upachaya), checked before the hard-house rule.
+ */
+export function placementValue(planet: Planet, house: number, vipareeta: boolean): number {
   if (TRIKONA.includes(house)) return 1
+  if (NATURAL_MALEFICS.includes(planet) && UPACHAYA_GOOD.includes(house)) return 0.5
   if (KENDRA.includes(house) || house === 11) return 0.5
   if (DUSTHANA.includes(house)) return vipareeta ? 0.5 : -1
   return 0
 }
+
+/** Yogas whose effect the `vipareeta` flag already carries (a hard-house lord in a hard house). */
+const VIPAREETA_YOGAS: readonly string[] = ['Vipareeta_Raaja_base', 'Vipareeta_Raaja_ideal', 'Harsha', 'Sarala', 'Vimala']
 
 /**
  * Shadbala as a share of the minimum, centred on 1.1 (the mean over the toolkit's 64 fixture charts
@@ -129,7 +142,8 @@ export function natalPromise(chart: Chart, strengths: NatalStrengths, yogas: rea
     const yogakaraka = fn.yogakarakas.includes(planet)
     const dispositor = planet === 'Rahu' || planet === 'Ketu' ? SIGN_LORDS[sign] : undefined
     const dignity = dignityFor(chart, strengths, planet)
-    const vipareeta = rules.some((h) => DUSTHANA.includes(h)) && DUSTHANA.includes(house) && dignity !== 'debilitated'
+    const ownsTrine = rules.some((h) => TRIKONA.includes(h))
+    const vipareeta = !ownsTrine && rules.some((h) => DUSTHANA.includes(h)) && DUSTHANA.includes(house) && dignity !== 'debilitated'
     let rv = dispositor ? 0.5 * roleValue[dispositor] : yogakaraka ? 1 : ROLE_VALUE[role]
     // A dusthana lord spent in a dusthana loses its harmful lordship (Vipareeta).
     if (vipareeta) rv = Math.max(rv, 0)
@@ -139,15 +153,16 @@ export function natalPromise(chart: Chart, strengths: NatalStrengths, yogas: rea
     const supportiveYogas: string[] = []
     const challengingYogas: string[] = []
     for (const y of met) {
-      if (!y.participants.includes(planet)) continue
+      if (!y.participants.includes(planet) || VIPAREETA_YOGAS.includes(y.name)) continue
       const nature = yogaContent(y.name)?.nature
-      if (nature === 'supportive') supportiveYogas.push(y.name)
+      // A combust participant lends little to a supportive yoga (e.g. Budha-Aaditya with Mercury too close).
+      if (nature === 'supportive' && !combust) supportiveYogas.push(y.name)
       else if (nature === 'challenging') challengingYogas.push(y.name)
     }
     const yogaValue = Math.max(-1, Math.min(1, 0.34 * (supportiveYogas.length - challengingYogas.length)))
     const W = PROMISE_WEIGHTS
     const score = round3(clamp1(
-      W.role * rv + W.placement * placementValue(house, vipareeta) + W.dignity * DIGNITY_VALUE[dignity]
+      W.role * rv + W.placement * placementValue(planet, house, vipareeta) + W.dignity * DIGNITY_VALUE[dignity]
       + W.strength * strengthValue(strengthRatio) + W.yogas * yogaValue - (combust ? W.combust : 0) - PROMISE_CENTRE,
     ))
     out[planet] = {

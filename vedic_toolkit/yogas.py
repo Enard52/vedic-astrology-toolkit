@@ -65,6 +65,7 @@ def evaluate(longitudes,varga=1,strong=None,speeds=None,points=None,colord_overr
     association=lambda p,q:p!=q and (joint(p,q) or mutual(p,q) or (c.LORDS[s[p]]==q and c.LORDS[s[q]]==p))
     nd=lambda p:c.LORDS[sn[p]]
     deep=lambda p:angular_distance(longitudes[p],DEEP_EXALT[p])<=deep_exaltation_orb
+    uniq=lambda *ps:tuple(dict.fromkeys(ps))
     rows=[]
     def add(name,page,conditions,category='popular',participants=()):
         value=all3(conditions.values())
@@ -78,8 +79,8 @@ def evaluate(longitudes,varga=1,strong=None,speeds=None,points=None,colord_overr
         for name,condition in zip(names,(a,b,a and b)):add(name,page,{'placement':condition},'luminary')
     add('Budha-Aaditya',107,{'conjunction':joint('Sun','Mercury')},participants=('Sun','Mercury'))
     add('Kemadruma',109,{'no_lunar_companions':not any(relative(p,'Moon') in (1,2,12) for p in planets if p not in ('Sun','Moon')),
-        'no_angular_planets_other_than_moon':not any(kendra(p) for p in planets if p!='Moon')},'lunar')
-    add('Chandra-Mangala',109,{'conjunction':joint('Moon','Mars')})
+        'no_angular_planets_other_than_moon':not any(kendra(p) for p in planets if p!='Moon')},'lunar',('Moon',))
+    add('Chandra-Mangala',109,{'conjunction':joint('Moon','Mars')},participants=('Moon','Mars'))
     add('Adhi',109,{'benefics_in_each_of_6_7_8':occupy((6,7,8),good-{'Moon'},s['Moon'])})
     for p,name in [('Mars','Ruchaka'),('Mercury','Bhadra'),('Saturn','Sasa'),('Venus','Maalavya'),('Jupiter','Hamsa')]:
         add(name,110 if p in ('Mars','Mercury','Saturn') else 111,{'angular':kendra(p),'own_or_exalted':oe(p)},'mahapurusha',(p,))
@@ -87,6 +88,8 @@ def evaluate(longitudes,varga=1,strong=None,speeds=None,points=None,colord_overr
     occupied={h(p) for p in c.SEVEN};signset={s[p] for p in c.SEVEN}
     for i,name in enumerate(('Rajju','Musala','Nala')):add(name,112,{'all_same_modality':all(x%3==i for x in signset)},'nabhasa')
     quadrants=(1,4,7,10)
+    # Book convention (PDF 112): natural malefics include the nodes; its Sarpa example is Mars, Rahu
+    # and Ketu in angles. BPHS-based tools count only Sun, Mars and Saturn; the web app notes this.
     add('Maalaa',112,{'benefics_in_at_least_three_quadrants':len({h(p) for p in good}&set(quadrants))>=3},'nabhasa')
     rows[-1]['qualifications']={'no_angular_malefic':not any(kendra(p) for p in bad)}
     add('Sarpa',112,{'malefics_in_at_least_three_quadrants':len({h(p) for p in bad}&set(quadrants))>=3},'nabhasa')
@@ -110,8 +113,8 @@ def evaluate(longitudes,varga=1,strong=None,speeds=None,points=None,colord_overr
     add('Asubha',116,{'malefic_in_lagna_or_flanks':occupy([1],bad) or occupy([2,12],bad)})
     add('Gaja-Kesari',116,{'jupiter_angular_from_moon':relative('Jupiter','Moon') in quadrants,
         'other_benefic_influence':any(influence(p,'Jupiter') for p in good-{'Jupiter'}),
-        'not_debilitated_combust_or_inimical':not (deb('Jupiter') or comb('Jupiter') or enemy('Jupiter'))})
-    add('Guru-Mangala',116,{'conjunction_or_opposition':relative('Mars','Jupiter') in (1,7)})
+        'not_debilitated_combust_or_inimical':not (deb('Jupiter') or comb('Jupiter') or enemy('Jupiter'))},participants=('Jupiter','Moon'))
+    add('Guru-Mangala',116,{'conjunction_or_opposition':relative('Mars','Jupiter') in (1,7)},participants=('Jupiter','Mars'))
     amala=any(occupy([10],good,s[ref]) and not occupy([10],bad,s[ref]) for ref in ('Asc','Moon'))
     add('Amala',117,{'tenth_only_benefics':amala})
     add('Parvata',117,{'angular_benefic':any(kendra(p) for p in good),'no_angular_malefic':not any(kendra(p) for p in bad),
@@ -125,7 +128,7 @@ def evaluate(longitudes,varga=1,strong=None,speeds=None,points=None,colord_overr
     add('Matsya',118,{'benefics_1_9':occupy((1,9),good),'planet_5':occupy([5]),'malefics_4_8':occupy((4,8),bad)})
     add('Koorma',118,{'benefics_5_6_7_dignified':occupy((5,6,7),[p for p in good if p in c.SEVEN and (oe(p) or friend(p))]),
         'malefics_1_3_11_dignified':occupy((1,3,11),[p for p in bad if oe(p)])})
-    add('Khadga',118,{'exchange_2_9':exchange(2,9),'lagna_lord_angular_or_trinal':kendra(lord[1]) or trikona(lord[1])})
+    add('Khadga',118,{'exchange_2_9':exchange(2,9),'lagna_lord_angular_or_trinal':kendra(lord[1]) or trikona(lord[1])},participants=uniq(lord[2],lord[9],lord[1]))
     add('Kusuma',118,{'fixed_asc':asc%3==1,'angular_venus':kendra('Venus'),'moon_trinal_with_benefic':trikona('Moon') and any(joint('Moon',p) for p in good-{'Moon'}),'saturn_10':h('Saturn')==10})
     add('Kalaanidhi',118,{'jupiter_2_or_5':h('Jupiter') in (2,5),'mercury_venus_influence':all(influence(p,'Jupiter') for p in ('Mercury','Venus'))})
     a=lord[1];b=c.LORDS[s[a]];chain=(a,b,c.LORDS[s[b]],nd(b))
@@ -145,8 +148,8 @@ def evaluate(longitudes,varga=1,strong=None,speeds=None,points=None,colord_overr
     add('Bhaarathi',121,{'exalted_dispositor_joins_9lord':any(ex(nd(lord[x])) and joint(nd(lord[x]),lord[9]) for x in (2,5,11))})
     add('Saraswathi',122,{'three_benefic_placements':all(h(p) in (1,2,4,5,7,9,10) for p in ('Mercury','Jupiter','Venus')),'jupiter_dignity':oe('Jupiter') or friend('Jupiter')})
     add('Amsaavatara',122,{'angular_jupiter_venus_saturn':all(kendra(p) for p in ('Jupiter','Venus','Saturn')),'saturn_exalted':ex('Saturn')})
-    add('Devendra',122,{'fixed_asc':asc%3==1,'exchange_2_10':exchange(2,10),'exchange_1_11':exchange(1,11)})
-    add('Indra',122,{'exchange_5_11':exchange(5,11),'moon_5':h('Moon')==5})
+    add('Devendra',122,{'fixed_asc':asc%3==1,'exchange_2_10':exchange(2,10),'exchange_1_11':exchange(1,11)},participants=uniq(lord[2],lord[10],lord[1],lord[11]))
+    add('Indra',122,{'exchange_5_11':exchange(5,11),'moon_5':h('Moon')==5},participants=uniq(lord[5],lord[11],'Moon'))
     add('Ravi',122,{'sun_10':h('Sun')==10,'tenth_lord_saturn_3':h(lord[10])==h('Saturn')==3})
     add('Bhaaskara',122,{'moon_12_from_sun':relative('Moon','Sun')==12,'mercury_2_from_sun':relative('Mercury','Sun')==2,'jupiter_trinal_moon':relative('Jupiter','Moon') in (5,9)})
     add('Kulavardhana',122,{'all_planets_fifth_from_any_reference':all(any(c.count(s[ref],s[p])==5 for ref in ('Asc','Moon','Sun')) for p in planets)})
@@ -156,24 +159,24 @@ def evaluate(longitudes,varga=1,strong=None,speeds=None,points=None,colord_overr
     add('Gandharva',123,{'tenth_lord_trinal_7':h(lord[10]) in (3,7,11),'jupiter_influences_lagna_lord':influence('Jupiter',lord[1]),'sun_exalted':ex('Sun'),'sun_strong':strong.get('Sun'),'moon_9':h('Moon')==9})
     add('Go',123,{'jupiter_moola':s['Jupiter']==c.MOOLA['Jupiter'],'jupiter_strong':strong.get('Jupiter'),'second_lord_joins_jupiter':joint(lord[2],'Jupiter'),'lagna_lord_exalted':ex(lord[1])})
     add('Vidyut',123,{'eleventh_lord_deep_exaltation':deep(lord[11]),'joins_venus':joint(lord[11],'Venus'),'angular_from_lagna_lord':relative(lord[11],lord[1]) in quadrants})
-    add('Chapa',123,{'exchange_4_10':exchange(4,10),'lagna_lord_exalted':ex(lord[1])})
+    add('Chapa',123,{'exchange_4_10':exchange(4,10),'lagna_lord_exalted':ex(lord[1])},participants=uniq(lord[4],lord[10],lord[1]))
     md=c.LORDS[s['Moon']]
     add('Pushkala',123,{'lagna_lord_joins_moon':joint(lord[1],'Moon'),'moon_dispositor_angular_or_great_friend':kendra(md) or relation(md)=='great_friend','moon_dispositor_aspects_asc':asc in c.planetary_aspects(md,s[md]),'planet_in_asc':occupy([1])})
     add('Makuta',123,{'jupiter_ninth_from_9lord':relative('Jupiter',lord[9])==9,'benefic_ninth_from_jupiter':occupy([9],good,s['Jupiter']),'saturn_10':h('Saturn')==10})
     add('Jaya',123,{'tenth_lord_deep_exaltation':deep(lord[10]),'sixth_lord_debilitated':deb(lord[6])})
-    for name,house in [('Harsha',6),('Sarala',8),('Vimala',12)]:add(name,123,{'lord_in_own_house':h(lord[house])==house})
+    for name,house in [('Harsha',6),('Sarala',8),('Vimala',12)]:add(name,123,{'lord_in_own_house':h(lord[house])==house},participants=(lord[house],))
     # Raja relationships and magnitude evidence, never deterministic outcomes.
     pairs=set()
     for a in quadrants:
         for b in (1,5,9):
             p,q=lord[a],lord[b]
             if p!=q and association(p,q):pairs.add(tuple(sorted((p,q))))
-    add('Basic_Raaja',124,{'quadrant_trine_lord_association':bool(pairs)},'raaja')
-    add('Dharma_Karmadhipati',124,{'ninth_tenth_lord_association':association(lord[9],lord[10])},'raaja')
-    dustlords={lord[x] for x in (6,8,12)}
-    add('Vipareeta_Raaja_base',124,{'dusthana_lord_in_dusthana':any(h(p) in (6,8,12) for p in dustlords)},'raaja')
+    add('Basic_Raaja',124,{'quadrant_trine_lord_association':bool(pairs)},'raaja',tuple(p for p in c.PLANETS if any(p in x for x in pairs)))
+    add('Dharma_Karmadhipati',124,{'ninth_tenth_lord_association':association(lord[9],lord[10])},'raaja',uniq(lord[9],lord[10]))
+    dustlords=uniq(lord[6],lord[8],lord[12])
+    add('Vipareeta_Raaja_base',124,{'dusthana_lord_in_dusthana':any(h(p) in (6,8,12) for p in dustlords)},'raaja',tuple(p for p in dustlords if h(p) in (6,8,12)))
     add('Vipareeta_Raaja_ideal',124,{'three_lords_together':len({s[p] for p in dustlords})==1,'allowed_house':h(lord[6]) in (3,6,8,11,12),
-        'no_other_planet':not any(s[p]==s[lord[6]] for p in planets if p not in dustlords)},'raaja')
+        'no_other_planet':not any(s[p]==s[lord[6]] for p in planets if p not in dustlords)},'raaja',dustlords)
     # Twelve specific ascendant wealth combinations. Pisces missing Saturn repaired from BPHS 41.8.
     fifth=(('Sun',('Saturn','Moon','Jupiter')),('Mercury',('Moon','Mars','Jupiter')),('Venus',('Mars',)),('Mars',('Venus',)),
         ('Jupiter',('Mercury',)),('Saturn',('Sun','Moon')),('Saturn',('Sun','Moon')),('Jupiter',('Mercury',)),('Mars',('Venus',)),

@@ -36,7 +36,12 @@ A fast, mobile-friendly companion to the toolkit. It runs the **same Swiss Ephem
 
 - **Today:** a favourable / mixed / challenging rating with plain-English reasons, Rahu Kalam, Yamaganda, Gulika Kalam, Abhijit, Durmuhurta, Choghadiya and horas for where you are, Tara bala, Chandra bala and Chandrashtama
 - **Week, Month, Year:** best and go-gently days, a calendar coloured by rating, Jupiter/Saturn/Rahu–Ketu transits with dates, Sade Sati, Muntha and dasha changes
-- **Chart:** North and South Indian charts, 20 divisional charts, planet table, panchanga and the Vimsottari timeline (solar-year or Rao's 360-day years)
+- **Chart:** North and South Indian charts, 20 divisional charts, planet table, panchanga, the Vimsottari timeline (solar-year or Rao's 360-day years), **170 yogas** with plain-English meanings and the planets that form them, and **Shadbala / Vimsopaka** strength with functional benefics and malefics for the lagna
+- **Readings that know your chart:** dasha and transit reasons weigh the dasha lord's houses, strength and yogas in *your* chart, not just your Moon sign
+- **Varshaphal:** the Tajaka annual chart for each year: Muntha, year lord, sahams and Mudda dasha
+- **Kundli matching:** 36-guna Ashtakoota, South Indian 10 porutham and Manglik (Kuja dosha) with cancellations
+- **Printable report:** a clean A4 kundli report you can save as PDF
+- **Your language:** English, ಕನ್ನಡ, हिन्दी, தமிழ், తెలుగు (AI-assisted translations, corrections welcome)
 
 | Today on desktop | Today on a phone | A month, light theme |
 |---|---|---|
@@ -185,9 +190,10 @@ Details: [RESEARCH_CLOSEOUT.md](RESEARCH_CLOSEOUT.md) · [CALCULATION_PROFILE.md
 - [x] Gochara (transit) analysis from the natal Moon, with vedha, Sade Sati and Ashtakavarga transit scoring (web app)
 - [x] Daily panchang timings: Rahu Kalam, Yamaganda, Gulika Kalam, Abhijit, Durmuhurta, Choghadiya, horas (web app)
 - [x] North and South Indian chart drawings (web app)
-- [ ] Printable PDF reports
+- [x] Printable PDF reports (web app)
 - [ ] Bring the web app's gochara, timings and rating engine back into the Python toolkit
-- [ ] Kundli matching (Ashtakoota and Porutham)
+- [x] Kundli matching (Ashtakoota, Porutham and Manglik) (web app)
+- [x] Kannada, Hindi, Tamil and Telugu (web app; yoga meanings still in English)
 - [ ] PyPI package
 
 ## 🧪 Reproduce the audits

@@ -52,6 +52,8 @@ const YearPage = preloadable(() => import('@/pages/YearPage'))
 const ChartPage = preloadable(() => import('@/pages/ChartPage'))
 const FORECAST_PAGES = [TodayPage, WeekPage, MonthPage, YearPage, ChartPage]
 // Component showcase, compiled into development builds only.
+const MatchingPage = lazy(() => import('@/pages/MatchingPage'))
+const ReportPage = lazy(() => import('@/pages/ReportPage'))
 const DevChartPage = import.meta.env.DEV ? lazy(() => import('@/pages/DevChartPage')) : null
 
 function NotFound() {
@@ -145,6 +147,8 @@ function Routes() {
               <Route path="/p/:id/month" component={MonthPage} />
               <Route path="/p/:id/year" component={YearPage} />
               <Route path="/p/:id/chart" component={ChartPage} />
+              <Route path="/p/:id/report" component={ReportPage} />
+              <Route path="/match" component={MatchingPage} />
               {DevChartPage && <Route path="/dev/chart" component={DevChartPage} />}
               <Route component={NotFound} />
             </Switch>

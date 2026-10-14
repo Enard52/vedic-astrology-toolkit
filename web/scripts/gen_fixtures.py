@@ -145,6 +145,42 @@ def tara_fixtures() -> list[dict]:
     return rows
 
 
+def strength_and_yoga_fixtures(cases: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Natal strengths for every case; full yoga results for the first 30 (size)."""
+    strengths, yogas = [], []
+    for i, case in enumerate(cases):
+        ch = analysis.chart(toolkit_spec(case))
+        vim = ch['vimsopaka']
+        strengths.append({
+            'id': case['id'],
+            'shadbala': ch['shadbala'],
+            'vimsopaka': {g: {p: v['total'] for p, v in vim[g]['planets'].items()} for g in vim if isinstance(vim[g], dict) and 'planets' in vim[g]},
+            'dignities': ch['dignities'],
+            'combustion': ch['combustion'],
+            'compound_relationships': ch['compound_relationships'],
+            'functional_nature': ch['yoga_review'].get('functional_nature'),
+        })
+        if i < 30:
+            yogas.append({'id': case['id'], 'rules': [{k: r[k] for k in ('name', 'pdf_page', 'category', 'status', 'conditions', 'participants') if k in r} for r in ch['yogas']['rules']]})
+    return strengths, yogas
+
+
+TAJAKA_KEYS = ('julian_day_ut1', 'local_datetime', 'return_details', 'muntha_sign', 'year_lord', 'year_lord_candidates', 'harsha_bala',
+               'pancha_vargeeya', 'dwadasa_vargeeya', 'sahams', 'tajaka_yogas', 'mudda', 'patyayini')
+
+
+def tajaka_fixtures(cases: list[dict]) -> list[dict]:
+    """Annual (Tajaka) charts: book Example 118 (years 33 and 59) and three synthetic births."""
+    picks = [(cases[0], 33), (cases[0], 59)] + [(c, 30) for c in cases[9:12]]
+    rows = []
+    for case, years in picks:
+        r = analysis.solar_return(toolkit_spec(case), years)
+        rows.append({'id': case['id'], 'completed_years': years, 'input': {k: v for k, v in case.items() if k != 'id'},
+                     'positions': {p: v['longitude'] for p, v in r['positions'].items()},
+                     **{k: r[k] for k in TAJAKA_KEYS if k in r}})
+    return rows
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     cases = BOOK + EDGE + synthetic(40)
@@ -158,6 +194,11 @@ def main() -> None:
     (OUT / 'charts.json').write_text(json.dumps({'meta': meta, 'charts': charts}, default=str, separators=(',', ':')) + '\n', encoding='utf-8', newline='\n')
     (OUT / 'time.json').write_text(json.dumps({'meta': meta, 'cases': time_fixtures(cases)}, indent=1, default=str) + '\n', encoding='utf-8', newline='\n')
     (OUT / 'tara.json').write_text(json.dumps({'meta': meta, 'cases': tara_fixtures()}, indent=1, default=str) + '\n', encoding='utf-8', newline='\n')
+    strengths, yogas = strength_and_yoga_fixtures(cases)
+    compact = {'default': str, 'separators': (',', ':')}
+    (OUT / 'strengths.json').write_text(json.dumps({'meta': meta, 'charts': strengths}, **compact) + '\n', encoding='utf-8', newline='\n')
+    (OUT / 'yogas.json').write_text(json.dumps({'meta': meta, 'charts': yogas}, **compact) + '\n', encoding='utf-8', newline='\n')
+    (OUT / 'tajaka.json').write_text(json.dumps({'meta': meta, 'returns': tajaka_fixtures(cases)}, **compact) + '\n', encoding='utf-8', newline='\n')
     print(f'wrote {len(charts)} chart fixtures to {OUT}')
 
 

@@ -78,3 +78,8 @@ node_modules/
 Thumbs.db
 desktop.ini
 .claude/settings.local.json
+
+# Web app
+web/test-results/
+web/playwright-report/
+web/.cache-cities/

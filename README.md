@@ -9,8 +9,13 @@
 ![Ephemeris](https://img.shields.io/badge/ephemeris-Swiss%20Ephemeris-6f42c1)
 ![JPL check](https://img.shields.io/badge/JPL%20DE440s-67%2F67%20matched-0969da)
 [![License: AGPL v3](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE.txt)
+[![Web app](https://img.shields.io/badge/web%20app-live-f0a530?logo=googlechrome&logoColor=white)](https://chethandvg.github.io/vedic-astrology-toolkit/)
 
 Birth charts · 20 divisional charts · Shadbala · Ashtakavarga · 170 yogas · 11 dasha systems · Tajaka annual charts · Panchanga · Muhurta screening
+
+### 🌐 [Open the web app: Jyotish Daily →](https://chethandvg.github.io/vedic-astrology-toolkit/)
+
+Your chart, dashas and daily, weekly, monthly and yearly guidance, computed privately on your device.
 
 </div>
 
@@ -22,6 +27,22 @@ Birth charts · 20 divisional charts · Shadbala · Ashtakavarga · 170 yogas ·
 - **Checked against independent references.** Planet positions match NASA/JPL DE440s within 1.2″ for the Moon and 0.3″ for other bodies (67/67 comparisons). Ashtakavarga, dasha, divisional-chart and Tajaka results reproduce the book's worked examples.
 - **Honest about limits.** Disagreements with other software, rules that cannot be satisfied under the chosen conventions and experimental features are all labelled. Nothing is presented as a validated prediction.
 - **Scriptable.** One JSON file in, structured JSON out. Easy to plug into notebooks, research pipelines or a web app.
+
+## 📱 Jyotish Daily web app
+
+**[https://chethandvg.github.io/vedic-astrology-toolkit/](https://chethandvg.github.io/vedic-astrology-toolkit/)** · free, no sign-up, works offline once loaded
+
+A fast, mobile-friendly companion to the toolkit. It runs the **same Swiss Ephemeris code compiled to WebAssembly**, and parity tests check it against the Python toolkit on 64 reference charts (planet positions agree to within 0.00000001°). Your birth details never leave your browser.
+
+- **Today:** a favourable / mixed / challenging rating with plain-English reasons, Rahu Kalam, Yamaganda, Gulika Kalam, Abhijit, Durmuhurta, Choghadiya and horas for where you are, Tara bala, Chandra bala and Chandrashtama
+- **Week, Month, Year:** best and go-gently days, a calendar coloured by rating, Jupiter/Saturn/Rahu–Ketu transits with dates, Sade Sati, Muntha and dasha changes
+- **Chart:** North and South Indian charts, 20 divisional charts, planet table, panchanga and the Vimsottari timeline (solar-year or Rao's 360-day years)
+
+| Today on desktop | Today on a phone | A month, light theme |
+|---|---|---|
+| <img src="docs/images/web-today-desktop.png" alt="Today view on desktop with rating, right-now strip, day timings, Moon and dasha cards" width="520"> | <img src="docs/images/web-today-phone.png" alt="Today view on a phone" width="200"> | <img src="docs/images/web-month-phone-light.png" alt="Month view in the light theme" width="200"> |
+
+Source and developer notes: [web/README.md](web/README.md).
 
 ## 🚀 Quick start
 
@@ -159,11 +180,13 @@ Details: [RESEARCH_CLOSEOUT.md](RESEARCH_CLOSEOUT.md) · [CALCULATION_PROFILE.md
 
 ## 🗺️ Roadmap
 
-- [ ] **Web app** (GitHub Pages): a fast, private, mobile-friendly site with daily, weekly, monthly and yearly guidance computed in the browser
-- [ ] Solar-year default option for nakshatra dashas, plus True Chitrapaksha and other ayanamsas
-- [ ] Gochara (transit) analysis from the natal Moon, with vedha, Sade Sati and Ashtakavarga transit scoring
-- [ ] Daily panchang timings: Rahu Kalam, Yamaganda, Gulika Kalam, Abhijit, Choghadiya
-- [ ] North and South Indian chart drawings and printable reports
+- [x] **[Web app](https://chethandvg.github.io/vedic-astrology-toolkit/)** (GitHub Pages): a fast, private, mobile-friendly site with daily, weekly, monthly and yearly guidance computed in the browser
+- [x] Solar-year option for nakshatra dashas, plus True Chitrapaksha, True Pushya and Yukteshwar ayanamsas (web app)
+- [x] Gochara (transit) analysis from the natal Moon, with vedha, Sade Sati and Ashtakavarga transit scoring (web app)
+- [x] Daily panchang timings: Rahu Kalam, Yamaganda, Gulika Kalam, Abhijit, Durmuhurta, Choghadiya, horas (web app)
+- [x] North and South Indian chart drawings (web app)
+- [ ] Printable PDF reports
+- [ ] Bring the web app's gochara, timings and rating engine back into the Python toolkit
 - [ ] Kundli matching (Ashtakoota and Porutham)
 - [ ] PyPI package
 

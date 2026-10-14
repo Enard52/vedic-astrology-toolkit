@@ -1,0 +1,510 @@
+{
+ "meta": {
+  "toolkit_version": "0.4.0",
+  "swisseph": "2.10.03",
+  "tzdata": "2026e",
+  "generator": "web/scripts/gen_fixtures.py",
+  "count": 64
+ },
+ "cases": [
+  {
+   "id": "book_example_118",
+   "input": {
+    "datetime": "1967-03-08T17:40:00",
+    "timezone": "UTC+05:30"
+   },
+   "utc_offset_minutes": 330.0,
+   "jd": 2439558.0069444445,
+   "error": null
+  },
+  {
+   "id": "book_example_50",
+   "input": {
+    "datetime": "2000-04-28T05:50:00",
+    "timezone": "UTC-04:00"
+   },
+   "utc_offset_minutes": -240.0,
+   "jd": 2451662.9097252553,
+   "error": null
+  },
+  {
+   "id": "raman_1918",
+   "input": {
+    "datetime": "1918-10-16T14:20:00",
+    "timezone": "UTC+05:30"
+   },
+   "utc_offset_minutes": 330.0,
+   "jd": 2421882.8680555555,
+   "error": null
+  },
+  {
+   "id": "dst_ambiguous_fold0",
+   "input": {
+    "datetime": "2021-11-07T01:30:00",
+    "timezone": "America/New_York",
+    "fold": 0
+   },
+   "utc_offset_minutes": -240.0,
+   "jd": 2459525.729165238,
+   "error": null
+  },
+  {
+   "id": "dst_ambiguous_fold1",
+   "input": {
+    "datetime": "2021-11-07T01:30:00",
+    "timezone": "America/New_York",
+    "fold": 1
+   },
+   "utc_offset_minutes": -300.0,
+   "jd": 2459525.7708319053,
+   "error": null
+  },
+  {
+   "id": "india_war_time",
+   "input": {
+    "datetime": "1943-06-15T09:00:00",
+    "timezone": "Asia/Kolkata"
+   },
+   "utc_offset_minutes": 390.0,
+   "jd": 2430890.6041666665,
+   "error": null
+  },
+  {
+   "id": "lmt_offset",
+   "input": {
+    "datetime": "1901-02-03T06:15:00+05:10:20"
+   },
+   "utc_offset_minutes": 310.3333333333333,
+   "jd": 2415418.5449074074,
+   "error": null
+  },
+  {
+   "id": "south_sydney",
+   "input": {
+    "datetime": "1985-07-20T23:15:00",
+    "timezone": "Australia/Sydney"
+   },
+   "utc_offset_minutes": 600.0,
+   "jd": 2446267.0520896404,
+   "error": null
+  },
+  {
+   "id": "north_oslo",
+   "input": {
+    "datetime": "1999-05-01T04:00:00",
+    "timezone": "Europe/Oslo"
+   },
+   "utc_offset_minutes": 120.0,
+   "jd": 2451299.5833400935,
+   "error": null
+  },
+  {
+   "id": "synthetic_00",
+   "input": {
+    "datetime": "2086-09-06T21:49:09",
+    "timezone": "Asia/Kathmandu"
+   },
+   "utc_offset_minutes": 345.0,
+   "jd": 2483205.169548611,
+   "error": null
+  },
+  {
+   "id": "synthetic_01",
+   "input": {
+    "datetime": "2062-06-11T16:22:50",
+    "timezone": "Europe/London"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2474352.1408564816,
+   "error": null
+  },
+  {
+   "id": "synthetic_02",
+   "input": {
+    "datetime": "1979-08-14T08:15:03",
+    "timezone": "America/Anchorage"
+   },
+   "utc_offset_minutes": -540.0,
+   "jd": 2444100.218784652,
+   "error": null
+  },
+  {
+   "id": "synthetic_03",
+   "input": {
+    "datetime": "2069-09-26T20:37:40",
+    "timezone": "Africa/Johannesburg"
+   },
+   "utc_offset_minutes": 120.0,
+   "jd": 2477016.2761574076,
+   "error": null
+  },
+  {
+   "id": "synthetic_04",
+   "input": {
+    "datetime": "2008-10-07T02:44:21",
+    "timezone": "Australia/Sydney"
+   },
+   "utc_offset_minutes": 660.0,
+   "jd": 2454746.155792605,
+   "error": null
+  },
+  {
+   "id": "synthetic_05",
+   "input": {
+    "datetime": "2086-01-12T08:25:59",
+    "timezone": "America/New_York"
+   },
+   "utc_offset_minutes": -300.0,
+   "jd": 2482968.0597106484,
+   "error": null
+  },
+  {
+   "id": "synthetic_06",
+   "input": {
+    "datetime": "1923-03-05T23:48:52",
+    "timezone": "America/Sao_Paulo"
+   },
+   "utc_offset_minutes": -180.0,
+   "jd": 2423484.6172685185,
+   "error": null
+  },
+  {
+   "id": "synthetic_07",
+   "input": {
+    "datetime": "2076-03-02T06:00:18",
+    "timezone": "Europe/Berlin"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2479364.7085416666,
+   "error": null
+  },
+  {
+   "id": "synthetic_08",
+   "input": {
+    "datetime": "1968-02-12T17:45:49",
+    "timezone": "America/Anchorage"
+   },
+   "utc_offset_minutes": -600.0,
+   "jd": 2439899.65681713,
+   "error": null
+  },
+  {
+   "id": "synthetic_09",
+   "input": {
+    "datetime": "1991-01-09T00:07:48",
+    "timezone": "America/Los_Angeles"
+   },
+   "utc_offset_minutes": -480.0,
+   "jd": 2448265.8387569636,
+   "error": null
+  },
+  {
+   "id": "synthetic_10",
+   "input": {
+    "datetime": "1954-01-27T23:10:13",
+    "timezone": "Europe/Berlin"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2434770.423761574,
+   "error": null
+  },
+  {
+   "id": "synthetic_11",
+   "input": {
+    "datetime": "1995-05-01T06:09:06",
+    "timezone": "America/Anchorage"
+   },
+   "utc_offset_minutes": -480.0,
+   "jd": 2449839.089654083,
+   "error": null
+  },
+  {
+   "id": "synthetic_12",
+   "input": {
+    "datetime": "1924-12-07T11:34:55",
+    "timezone": "America/Sao_Paulo"
+   },
+   "utc_offset_minutes": -180.0,
+   "jd": 2424127.1075810185,
+   "error": null
+  },
+  {
+   "id": "synthetic_13",
+   "input": {
+    "datetime": "2054-04-05T00:01:29",
+    "timezone": "Asia/Kathmandu"
+   },
+   "utc_offset_minutes": 345.0,
+   "jd": 2471362.261446759,
+   "error": null
+  },
+  {
+   "id": "synthetic_14",
+   "input": {
+    "datetime": "2056-08-22T22:52:00",
+    "timezone": "Pacific/Auckland"
+   },
+   "utc_offset_minutes": 720.0,
+   "jd": 2472232.952777778,
+   "error": null
+  },
+  {
+   "id": "synthetic_15",
+   "input": {
+    "datetime": "1976-05-08T09:04:51",
+    "timezone": "Asia/Kathmandu"
+   },
+   "utc_offset_minutes": 330.0,
+   "jd": 2442906.649205514,
+   "error": null
+  },
+  {
+   "id": "synthetic_16",
+   "input": {
+    "datetime": "2050-03-14T13:31:18",
+    "timezone": "Pacific/Auckland"
+   },
+   "utc_offset_minutes": 780.0,
+   "jd": 2469879.521736111,
+   "error": null
+  },
+  {
+   "id": "synthetic_17",
+   "input": {
+    "datetime": "1959-07-14T09:22:25",
+    "timezone": "Europe/Oslo"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2436763.848900463,
+   "error": null
+  },
+  {
+   "id": "synthetic_18",
+   "input": {
+    "datetime": "2049-11-27T20:11:59",
+    "timezone": "Asia/Kathmandu"
+   },
+   "utc_offset_minutes": 345.0,
+   "jd": 2469773.1020717593,
+   "error": null
+  },
+  {
+   "id": "synthetic_19",
+   "input": {
+    "datetime": "1939-06-11T08:31:15",
+    "timezone": "America/Anchorage"
+   },
+   "utc_offset_minutes": -600.0,
+   "jd": 2429426.271701389,
+   "error": null
+  },
+  {
+   "id": "synthetic_20",
+   "input": {
+    "datetime": "2041-02-13T16:03:00",
+    "timezone": "Asia/Kathmandu"
+   },
+   "utc_offset_minutes": 345.0,
+   "jd": 2466563.9291666667,
+   "error": null
+  },
+  {
+   "id": "synthetic_21",
+   "input": {
+    "datetime": "1979-05-24T07:43:20",
+    "timezone": "Pacific/Auckland"
+   },
+   "utc_offset_minutes": 720.0,
+   "jd": 2444017.321761691,
+   "error": null
+  },
+  {
+   "id": "synthetic_22",
+   "input": {
+    "datetime": "1962-08-12T05:04:59",
+    "timezone": "Asia/Dubai"
+   },
+   "utc_offset_minutes": 240.0,
+   "jd": 2437888.545127315,
+   "error": null
+  },
+  {
+   "id": "synthetic_23",
+   "input": {
+    "datetime": "1928-09-19T19:50:53",
+    "timezone": "Asia/Kolkata"
+   },
+   "utc_offset_minutes": 330.0,
+   "jd": 2425509.0978356483,
+   "error": null
+  },
+  {
+   "id": "synthetic_24",
+   "input": {
+    "datetime": "2052-11-24T03:45:22",
+    "timezone": "Europe/Berlin"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2470865.614837963,
+   "error": null
+  },
+  {
+   "id": "synthetic_25",
+   "input": {
+    "datetime": "1982-03-21T13:12:52",
+    "timezone": "America/Los_Angeles"
+   },
+   "utc_offset_minutes": -480.0,
+   "jd": 2445050.383933426,
+   "error": null
+  },
+  {
+   "id": "synthetic_26",
+   "input": {
+    "datetime": "2011-06-18T23:06:27",
+    "timezone": "America/Sao_Paulo"
+   },
+   "utc_offset_minutes": -180.0,
+   "jd": 2455731.5878094165,
+   "error": null
+  },
+  {
+   "id": "synthetic_27",
+   "input": {
+    "datetime": "2093-03-18T12:02:07",
+    "timezone": "Pacific/Auckland"
+   },
+   "utc_offset_minutes": 780.0,
+   "jd": 2485589.459803241,
+   "error": null
+  },
+  {
+   "id": "synthetic_28",
+   "input": {
+    "datetime": "1993-11-22T05:05:40",
+    "timezone": "America/Anchorage"
+   },
+   "utc_offset_minutes": -540.0,
+   "jd": 2449314.0872718743,
+   "error": null
+  },
+  {
+   "id": "synthetic_29",
+   "input": {
+    "datetime": "2057-05-15T07:19:57",
+    "timezone": "America/Sao_Paulo"
+   },
+   "utc_offset_minutes": -180.0,
+   "jd": 2472498.9305208335,
+   "error": null
+  },
+  {
+   "id": "synthetic_30",
+   "input": {
+    "datetime": "1913-09-19T03:58:04",
+    "timezone": "America/Los_Angeles"
+   },
+   "utc_offset_minutes": -480.0,
+   "jd": 2420029.9986574072,
+   "error": null
+  },
+  {
+   "id": "synthetic_31",
+   "input": {
+    "datetime": "1989-08-13T10:31:59",
+    "timezone": "Asia/Kolkata"
+   },
+   "utc_offset_minutes": 330.0,
+   "jd": 2447751.709705536,
+   "error": null
+  },
+  {
+   "id": "synthetic_32",
+   "input": {
+    "datetime": "2051-01-27T19:13:11",
+    "timezone": "Europe/Oslo"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2470199.2591550928,
+   "error": null
+  },
+  {
+   "id": "synthetic_33",
+   "input": {
+    "datetime": "1986-11-14T21:26:49",
+    "timezone": "Europe/Berlin"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2446749.35195509,
+   "error": null
+  },
+  {
+   "id": "synthetic_34",
+   "input": {
+    "datetime": "1962-01-01T12:42:29",
+    "timezone": "Pacific/Auckland"
+   },
+   "utc_offset_minutes": 720.0,
+   "jd": 2437665.529502315,
+   "error": null
+  },
+  {
+   "id": "synthetic_35",
+   "input": {
+    "datetime": "1994-03-07T04:43:43",
+    "timezone": "Europe/Oslo"
+   },
+   "utc_offset_minutes": 60.0,
+   "jd": 2449418.6553594293,
+   "error": null
+  },
+  {
+   "id": "synthetic_36",
+   "input": {
+    "datetime": "1946-02-27T17:15:11",
+    "timezone": "Europe/London"
+   },
+   "utc_offset_minutes": 0.0,
+   "jd": 2431879.2188773146,
+   "error": null
+  },
+  {
+   "id": "synthetic_37",
+   "input": {
+    "datetime": "1916-01-13T23:11:47",
+    "timezone": "America/Anchorage"
+   },
+   "utc_offset_minutes": -600.0,
+   "jd": 2420876.88318287,
+   "error": null
+  },
+  {
+   "id": "synthetic_38",
+   "input": {
+    "datetime": "2048-08-03T17:54:03",
+    "timezone": "America/Los_Angeles"
+   },
+   "utc_offset_minutes": -420.0,
+   "jd": 2469292.537534722,
+   "error": null
+  },
+  {
+   "id": "synthetic_39",
+   "input": {
+    "datetime": "1970-05-11T05:36:31",
+    "timezone": "Pacific/Auckland"
+   },
+   "utc_offset_minutes": 720.0,
+   "jd": 2440717.2336921296,
+   "error": null
+  },
+  {
+   "id": "dst_gap",
+   "input": {
+    "datetime": "2021-03-14T02:30:00",
+    "timezone": "America/New_York"
+   },
+   "error": "Nonexistent local time during a clock change"
+  }
+ ]
+}

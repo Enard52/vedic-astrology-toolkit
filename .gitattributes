@@ -4,3 +4,6 @@
 examples/*.json linguist-generated=true
 *_results.json linguist-generated=true
 strength_reconciliation.json linguist-generated=true
+web/tests/fixtures/*.json linguist-generated=true
+web/wasm/swisseph.mjs linguist-generated=true
+web/wasm/swisseph.wasm binary

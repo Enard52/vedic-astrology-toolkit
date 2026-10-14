@@ -1,5 +1,7 @@
 # Jyotish Daily
 
+**Live app: [https://chethandvg.github.io/vedic-astrology-toolkit/](https://chethandvg.github.io/vedic-astrology-toolkit/)**
+
 A private Vedic astrology web app: your birth chart and Vimsottari dashas, plus daily, weekly,
 monthly and yearly guidance from classical rules (Tara bala, Chandra bala, Chandrashtama, gochara
 with vedha and ashtakavarga, Sade Sati, Muntha, panchanga cautions), with sunrise-based timings

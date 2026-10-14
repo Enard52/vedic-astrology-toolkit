@@ -1,15 +1,11 @@
 {
   ".gitattributes": {
-    "bytes": 177,
-    "sha256": "dc32ec9e4eff77e91fc9e810e469fdbc5e35506dd0623355ab0c080daf82b1b8"
-  },
-  ".github/workflows/tests.yml": {
-    "bytes": 869,
-    "sha256": "7d793751bef72ef26e17afc92c71c9a05871e36aea616448fbc2236aa6543413"
+    "bytes": 303,
+    "sha256": "40cc2af22f80a1b869c194bc53aa3a52e06a97053c13f92f8105e25b6a7c66d5"
   },
   ".gitignore": {
-    "bytes": 1157,
-    "sha256": "97a3599deafa4195a619ab020df0457b01e317e68ee954d149af5cac32f2b59c"
+    "bytes": 1228,
+    "sha256": "f5266e5135d07839e48a9b6780f93959d022be567c32b8ebee77efbaace69002"
   },
   "BOOK_LANDSCAPE.md": {
     "bytes": 4030,
@@ -44,8 +40,8 @@
     "sha256": "7b834043e1af8c1e08a3f0b3f8c8dd44279279b4d34f7517a70782e1cdafcb09"
   },
   "README.md": {
-    "bytes": 12921,
-    "sha256": "ffdce1a6a05ef92166b194e2802528bc145beb3529e3e4ffda67904d59d1df27"
+    "bytes": 15007,
+    "sha256": "1922799cb38c4ab123c6601e3dac3c8f65e3591d86db92f0463b0dfd801765b4"
   },
   "RESEARCH_CLOSEOUT.md": {
     "bytes": 12838,

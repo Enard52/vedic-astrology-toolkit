@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import math
+from datetime import datetime
 import sys
 import tempfile
 from pathlib import Path
@@ -20,6 +21,14 @@ import gen_fixtures  # noqa: E402
 TOLERANCE = 1e-9
 # Swiss Ephemeris computes speeds numerically; builds differ by ~1e-8 deg/day.
 SPEED_TOLERANCE = 1e-7
+TIME_TOLERANCE_S = 0.001
+
+
+def _instant(text):
+    try:
+        return datetime.fromisoformat(text) if 'T' in text and len(text) >= 19 else None
+    except ValueError:
+        return None
 
 
 def diff(a, b, path='$'):
@@ -40,6 +49,10 @@ def diff(a, b, path='$'):
             yield f'{path}: length {len(a)} != {len(b)}'
         for i, (x, y) in enumerate(zip(a, b)):
             yield from diff(x, y, f'{path}[{i}]')
+    elif isinstance(a, str) and isinstance(b, str) and a != b and _instant(a) and _instant(b):
+        # Timestamps from numerical searches (solar returns, dasha splits) differ by microseconds across platforms.
+        if abs((_instant(a) - _instant(b)).total_seconds()) > TIME_TOLERANCE_S:
+            yield f'{path}: {a!r} != {b!r}'
     elif a != b:
         yield f'{path}: {a!r} != {b!r}'
 

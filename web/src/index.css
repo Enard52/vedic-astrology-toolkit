@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
+
+/* Design tokens. Dark "night sky" is the default; light mode via data-theme or OS. */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+
+  --color-night-950: #070a16;
+  --color-night-900: #0b1020;
+  --color-night-800: #121a33;
+  --color-night-700: #1b2547;
+  --color-night-600: #2a3766;
+  --color-saffron-300: #ffd38a;
+  --color-saffron-400: #f8bd57;
+  --color-saffron-500: #f0a530;
+  --color-saffron-600: #d4861a;
+  --color-violet-glow: #8b7cf6;
+
+  --color-good: #34d399;
+  --color-mixed: #fbbf24;
+  --color-bad: #fb7185;
+
+  --radius-card: 1.25rem;
+  --shadow-glow: 0 0 0 1px rgb(255 255 255 / 0.06), 0 20px 60px -20px rgb(139 124 246 / 0.35);
+}
+
+/* Semantic tokens used by components. */
+:root {
+  --bg: var(--color-night-900);
+  --bg-elevated: rgb(18 26 51 / 0.72);
+  --surface-border: rgb(255 255 255 / 0.08);
+  --text: #e8ecf8;
+  --text-muted: #9aa5c4;
+  --accent: var(--color-saffron-400);
+  --accent-contrast: #1a1205;
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f7f5ef;
+  --bg-elevated: rgb(255 255 255 / 0.82);
+  --surface-border: rgb(15 23 42 / 0.1);
+  --text: #141a2e;
+  --text-muted: #56607a;
+  --accent: var(--color-saffron-600);
+  --accent-contrast: #ffffff;
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

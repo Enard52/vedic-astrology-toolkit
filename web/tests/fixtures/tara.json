@@ -1,0 +1,910 @@
+{
+ "meta": {
+  "toolkit_version": "0.4.0",
+  "swisseph": "2.10.03",
+  "generator": "web/scripts/gen_fixtures.py",
+  "count": 64
+ },
+ "cases": [
+  {
+   "moon": 116.57979533993846,
+   "natal_moon": 54.305702612820696,
+   "count_from_natal": 5,
+   "number": 5,
+   "name": "Pratyak",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 234.33641029434736,
+   "natal_moon": 26.077063200315393,
+   "count_from_natal": 17,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 192.9175215504081,
+   "natal_moon": 131.64801008853078,
+   "count_from_natal": 6,
+   "number": 6,
+   "name": "Saadhana",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 20.879612918894452,
+   "natal_moon": 182.67686394819128,
+   "count_from_natal": 16,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 13.498437039114556,
+   "natal_moon": 156.1124461184589,
+   "count_from_natal": 18,
+   "number": 9,
+   "name": "Parama Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 25.147952486862817,
+   "natal_moon": 32.65668480379142,
+   "count_from_natal": 27,
+   "number": 9,
+   "name": "Parama Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 152.82690809130503,
+   "natal_moon": 297.6667648819337,
+   "count_from_natal": 17,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 44.568706013872415,
+   "natal_moon": 80.36602725852524,
+   "count_from_natal": 25,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 225.87596006601214,
+   "natal_moon": 341.17521928452203,
+   "count_from_natal": 19,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 207.7570615022995,
+   "natal_moon": 142.80497087428085,
+   "count_from_natal": 6,
+   "number": 6,
+   "name": "Saadhana",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 351.4518380134512,
+   "natal_moon": 16.76976502239226,
+   "count_from_natal": 26,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 309.04864525752464,
+   "natal_moon": 104.25934307940345,
+   "count_from_natal": 17,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 51.93183000867751,
+   "natal_moon": 42.40520570821261,
+   "count_from_natal": 1,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 111.05345667669637,
+   "natal_moon": 293.80548928321133,
+   "count_from_natal": 14,
+   "number": 5,
+   "name": "Pratyak",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 65.06149677261749,
+   "natal_moon": 209.37605891848784,
+   "count_from_natal": 17,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 230.00884881342625,
+   "natal_moon": 134.06311538126323,
+   "count_from_natal": 8,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 197.1880076554408,
+   "natal_moon": 22.604030990396332,
+   "count_from_natal": 14,
+   "number": 5,
+   "name": "Pratyak",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 21.45642118784376,
+   "natal_moon": 74.14513661495755,
+   "count_from_natal": 24,
+   "number": 6,
+   "name": "Saadhana",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 244.94399034544293,
+   "natal_moon": 153.93323004098502,
+   "count_from_natal": 8,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 113.09298133564495,
+   "natal_moon": 210.80227086274994,
+   "count_from_natal": 21,
+   "number": 3,
+   "name": "Vipat",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 163.14637549347913,
+   "natal_moon": 107.91611887092564,
+   "count_from_natal": 5,
+   "number": 5,
+   "name": "Pratyak",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 285.9766133480968,
+   "natal_moon": 251.63799614264565,
+   "count_from_natal": 4,
+   "number": 4,
+   "name": "Kshema",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 87.87474385997504,
+   "natal_moon": 206.79253569312155,
+   "count_from_natal": 19,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 189.0707413721225,
+   "natal_moon": 315.0494984064344,
+   "count_from_natal": 19,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 262.60030419811835,
+   "natal_moon": 103.65759536046714,
+   "count_from_natal": 13,
+   "number": 4,
+   "name": "Kshema",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 352.86294509732954,
+   "natal_moon": 42.503680171786364,
+   "count_from_natal": 24,
+   "number": 6,
+   "name": "Saadhana",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 150.5242158426818,
+   "natal_moon": 272.5707346434898,
+   "count_from_natal": 19,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 54.71443247778171,
+   "natal_moon": 176.02671617129002,
+   "count_from_natal": 19,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 14.114612537077559,
+   "natal_moon": 240.55770835238226,
+   "count_from_natal": 11,
+   "number": 2,
+   "name": "Sampat",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 275.2455118366127,
+   "natal_moon": 206.28933849985822,
+   "count_from_natal": 6,
+   "number": 6,
+   "name": "Saadhana",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 315.17201225911975,
+   "natal_moon": 112.94910462531483,
+   "count_from_natal": 16,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 250.30633185851735,
+   "natal_moon": 213.97315575780664,
+   "count_from_natal": 3,
+   "number": 3,
+   "name": "Vipat",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 208.7622735416972,
+   "natal_moon": 164.23391926850869,
+   "count_from_natal": 4,
+   "number": 4,
+   "name": "Kshema",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 302.3884009845149,
+   "natal_moon": 340.08519423885747,
+   "count_from_natal": 25,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 170.675401471072,
+   "natal_moon": 239.09479397088282,
+   "count_from_natal": 23,
+   "number": 5,
+   "name": "Pratyak",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 21.840993934999098,
+   "natal_moon": 252.5371276695926,
+   "count_from_natal": 11,
+   "number": 2,
+   "name": "Sampat",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 232.96638762996076,
+   "natal_moon": 357.51453820798827,
+   "count_from_natal": 19,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 295.89292317949736,
+   "natal_moon": 102.45439155389373,
+   "count_from_natal": 16,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 138.8849192808159,
+   "natal_moon": 240.71497771830775,
+   "count_from_natal": 20,
+   "number": 2,
+   "name": "Sampat",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 8.122654100011886,
+   "natal_moon": 166.2103030679157,
+   "count_from_natal": 16,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 60.49741640635604,
+   "natal_moon": 42.15448601342349,
+   "count_from_natal": 2,
+   "number": 2,
+   "name": "Sampat",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 21.223590959271746,
+   "natal_moon": 276.5638758501075,
+   "count_from_natal": 9,
+   "number": 9,
+   "name": "Parama Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 46.56247992672632,
+   "natal_moon": 89.14134013088915,
+   "count_from_natal": 25,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 140.74189312796176,
+   "natal_moon": 313.7119106854678,
+   "count_from_natal": 15,
+   "number": 6,
+   "name": "Saadhana",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 29.009268432049904,
+   "natal_moon": 161.70746434175913,
+   "count_from_natal": 18,
+   "number": 9,
+   "name": "Parama Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 197.79836729185345,
+   "natal_moon": 318.01817751894447,
+   "count_from_natal": 19,
+   "number": 1,
+   "name": "Janma",
+   "classification": "mixed",
+   "good": false,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 294.9407416208669,
+   "natal_moon": 311.0344090914655,
+   "count_from_natal": 27,
+   "number": 9,
+   "name": "Parama Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 100.23158322500296,
+   "natal_moon": 149.50674619621148,
+   "count_from_natal": 24,
+   "number": 6,
+   "name": "Saadhana",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 129.15761951938492,
+   "natal_moon": 318.3094177913581,
+   "count_from_natal": 14,
+   "number": 5,
+   "name": "Pratyak",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 344.78323342703686,
+   "natal_moon": 54.33152608479922,
+   "count_from_natal": 22,
+   "number": 4,
+   "name": "Kshema",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 63.438382256533316,
+   "natal_moon": 83.50447205503288,
+   "count_from_natal": 26,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 84.00099012511001,
+   "natal_moon": 174.5865829228884,
+   "count_from_natal": 21,
+   "number": 3,
+   "name": "Vipat",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 212.08446134361202,
+   "natal_moon": 94.58878294747366,
+   "count_from_natal": 9,
+   "number": 9,
+   "name": "Parama Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 1.4736972186230135,
+   "natal_moon": 150.82074040511804,
+   "count_from_natal": 17,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 132.93128624210112,
+   "natal_moon": 203.8828405343011,
+   "count_from_natal": 22,
+   "number": 4,
+   "name": "Kshema",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 343.1152531890343,
+   "natal_moon": 248.57771656895204,
+   "count_from_natal": 8,
+   "number": 8,
+   "name": "Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 185.5769159054802,
+   "natal_moon": 222.33338978728597,
+   "count_from_natal": 25,
+   "number": 7,
+   "name": "Naidhana",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 243.4320296818205,
+   "natal_moon": 19.43744156056447,
+   "count_from_natal": 18,
+   "number": 9,
+   "name": "Parama Mitra",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 323.83188362086275,
+   "natal_moon": 280.7890166541862,
+   "count_from_natal": 4,
+   "number": 4,
+   "name": "Kshema",
+   "classification": "good",
+   "good": true,
+   "not_adverse": true,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  },
+  {
+   "moon": 314.8247462884116,
+   "natal_moon": 287.23432363076375,
+   "count_from_natal": 3,
+   "number": 3,
+   "name": "Vipat",
+   "classification": "adverse",
+   "good": false,
+   "not_adverse": false,
+   "source_pdf_pages": [
+    315,
+    316,
+    418
+   ]
+  }
+ ]
+}

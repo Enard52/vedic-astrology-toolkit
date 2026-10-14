@@ -1,15 +1,15 @@
 // Data seam for the forecast screens: the pages read forecasts, the birth chart and the
 // timings place only through the hooks below, which call the engine worker (src/lib/engine.ts).
-// Requests are keyed by the profile's birth details, the calculation settings and the timings
-// place, so changing any of them recomputes, and results are cached by that key, so returning
-// to a view or a date is instant.
+// Requests are keyed by the birth details that change results (not the name or place label),
+// the calculation settings and the timings place, so changing any of them recomputes, and
+// results are cached by that key, so returning to a view or a date is instant.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { useEffect, useSyncExternalStore } from 'react'
 import type { ChartData, ForecastResult } from '@/engine/api'
 import type { ForecastExtras } from '@/engine/extras'
 import type { BirthInput, DayTimings, Forecast, Horizon, Settings } from '@/engine/types'
 import { prefetchEngine, useEngineQuery, type Engine } from '@/lib/engine'
-import { useActiveProfile, useProfile } from '@/state/profiles'
+import { useActiveProfile, useProfile, type Profile } from '@/state/profiles'
 import { calcSettings, useSettings } from '@/state/settings'
 import { createPersistentStore } from '@/state/storage'
 import { periodStart } from './dates'
@@ -50,6 +50,14 @@ interface ForecastRequest {
   anchor: string
 }
 
+/**
+ * The birth fields that change results. The name and place label are left out, so renaming a
+ * profile neither splits the cache here nor the engine's memoised contexts (keyed on the birth).
+ */
+export function birthForEngine({ date, time, timeZone, fold, latitude, longitude }: BirthInput): BirthInput {
+  return fold === undefined ? { date, time, timeZone, latitude, longitude } : { date, time, timeZone, fold, latitude, longitude }
+}
+
 const forecastKey = (r: ForecastRequest) => JSON.stringify(['forecast', r.birth, r.settings, r.place, r.horizon, r.anchor])
 const loadForecast = (r: ForecastRequest) => (engine: Engine) => engine.forecast(r.birth, r.settings, r.place, r.horizon, r.anchor)
 const chartKey = (birth: BirthInput, settings: Settings) => JSON.stringify(['chart', birth, settings])
@@ -66,9 +74,9 @@ const PREFETCH_AFTER_DAY: readonly Horizon[] = ['week', 'month']
 export function useForecast(profileId: string, horizon: Horizon, anchor: string): ForecastQuery {
   const profile = useProfile(profileId)
   const settings = calcSettings(useSettings())
-  const { place: { latitude, longitude, timeZone } } = useTimingsPlace()
+  const { place: { latitude, longitude, timeZone } } = useTimingsPlace(profile)
   const request: ForecastRequest | null = profile
-    ? { birth: profile.birth, settings, place: { latitude, longitude, timeZone }, horizon, anchor }
+    ? { birth: birthForEngine(profile.birth), settings, place: { latitude, longitude, timeZone }, horizon, anchor }
     : null
   const key = request && forecastKey(request)
   const query = useEngineQuery<ForecastResult>(key, (engine) => loadForecast(request!)(engine))
@@ -90,14 +98,15 @@ export function useForecast(profileId: string, horizon: Horizon, anchor: string)
 export function useChartData(profileId: string): Query<ChartData> {
   const profile = useProfile(profileId)
   const settings = calcSettings(useSettings())
-  const key = profile ? chartKey(profile.birth, settings) : null
-  const query = useEngineQuery<ChartData>(key, (engine) => loadChart(profile!.birth, settings)(engine))
+  const birth = profile && birthForEngine(profile.birth)
+  const key = birth ? chartKey(birth, settings) : null
+  const query = useEngineQuery<ChartData>(key, (engine) => loadChart(birth!, settings)(engine))
   return { data: query.data, error: query.error ?? undefined, loading: query.loading, retry: query.retry }
 }
 
 /** Timings of the Vedic day beginning on `date` at the timings place; null `date` asks for nothing. */
-export function useDayTimings(date: string | null): Query<DayTimings | null> {
-  const { place: { latitude, longitude, timeZone } } = useTimingsPlace()
+export function useDayTimings(date: string | null, profile?: Profile): Query<DayTimings | null> {
+  const { place: { latitude, longitude, timeZone } } = useTimingsPlace(profile)
   const key = date ? JSON.stringify(['timings', date, latitude, longitude, timeZone]) : null
   const query = useEngineQuery<DayTimings | null>(key, (engine) => engine.dayTimings(date!, latitude, longitude, timeZone))
   return { data: query.data, error: query.error ?? undefined, loading: query.loading, retry: query.retry }
@@ -129,7 +138,7 @@ export const shortPlaceName = (place: TimingsPlace): string => place.name.split(
 
 export interface TimingsPlaceState {
   place: TimingsPlace
-  /** True while the user has not chosen a place, so the active profile's birthplace is used. */
+  /** True while the user has not chosen a place, so the profile's birthplace is used. */
   isDefault: boolean
   /** Choose a place, or null to go back to the birthplace. */
   setPlace(place: TimingsPlace | null): void
@@ -137,10 +146,15 @@ export interface TimingsPlaceState {
 
 const setPlace = (place: TimingsPlace | null) => placeStore.set(place)
 
-/** The user's current place (persisted on this device); defaults to the active profile's birthplace. */
-export function useTimingsPlace(): TimingsPlaceState {
+/**
+ * The user's current place (persisted on this device); defaults to the birthplace of `profile`,
+ * the profile on screen. Pages pass their own profile: while one leaves (its exit animation) the
+ * active profile is already the next one, whose birthplace would make the leaving page recompute.
+ */
+export function useTimingsPlace(profile?: Profile): TimingsPlaceState {
   const stored = useSyncExternalStore(placeStore.subscribe, placeStore.get, placeStore.get)
   const active = useActiveProfile()
-  const place = stored ?? (active ? birthPlace(active.birth) : FALLBACK_PLACE)
+  const shown = profile ?? active
+  const place = stored ?? (shown ? birthPlace(shown.birth) : FALLBACK_PLACE)
   return { place, isDefault: stored === null, setPlace }
 }

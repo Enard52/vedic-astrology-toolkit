@@ -47,6 +47,14 @@ export const CAUTION_PHRASE: Readonly<Record<string, string>> = {
   ...perPlanet('ingress', PLANET_CAUTION),
 }
 
+/**
+ * Caution for a day the Moon's stay in the 8th sign only touches (it begins after the middle of the
+ * daytime or ends before it), with its time: such a day keeps its own rating until then.
+ */
+export function chandrashtamaCaution(at: { from: string } | { until: string }): string {
+  return 'from' in at ? `go gently from ${at.from}, as the Moon enters your 8th` : `go gently until ${at.until}, when the Moon leaves your 8th`
+}
+
 type DayTemplate = (support?: string, caution?: string) => string
 
 /** Two wordings per rating; the engine alternates them by date so consecutive days read differently. */

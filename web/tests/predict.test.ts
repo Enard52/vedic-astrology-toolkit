@@ -5,13 +5,14 @@ import { moonLongitude, planetPositions, sunLongitude } from '@/engine/ephem'
 import { gochara } from '@/engine/gochara'
 import { chandrashtamaWindows } from '@/engine/moon'
 import {
-  balanceFactor, CHALLENGING_AT, CHANDRA_BALA_GOOD, contextFor, createContext, DAY_WEIGHTS, dayRating, FAVOURABLE_AT, forecastDay, forecastMonth, forecastWeek,
-  forecastYear, GOCHARA_SHARES, gocharaAt, INFORMATIONAL_FACTORS, munthaForYear, ratingFor, scoreReasons, vedicDateAt, type PredictContext,
+  balanceFactor, CHALLENGING_AT, CHANDRA_BALA_GOOD, contextFor, COVER_LIMIT, createContext, DAY_CACHE_LIMIT, DAY_WEIGHTS, dayRating, FAVOURABLE_AT, forecastDay,
+  forecastMonth, forecastWeek, forecastYear, GOCHARA_MAX_BALANCE, GOCHARA_SHARES, GOCHARA_WEIGHTS, gocharaAt, gocharaBalance, INFORMATIONAL_FACTORS, munthaForYear,
+  ratingFor, scoreReasons, STRENGTH_FACTOR, vedicDateAt, type PredictContext,
 } from '@/engine/predict'
 import { solarDayForDate } from '@/engine/sunrise'
 import { addDays, daysInMonth, localToJd } from '@/engine/time'
 import { PLANETS, PRESETS, type BirthInput, type Forecast, type Rating, type Reason } from '@/engine/types'
-import { CAUTION_PHRASE } from '@/content'
+import { CAUTION_PHRASE, SUPPORT_PHRASE } from '@/content'
 import { loadSwe } from './helpers/swe'
 
 type Fixture = { id: string; input: { datetime: string; timezone?: string; latitude: number; longitude: number } }
@@ -82,6 +83,21 @@ describe('forecast scoring rules', () => {
     expect([balanceFactor(0.25, 0.75, 1), balanceFactor(0.25, 0.75, -1), balanceFactor(0.25, 0.75, 0)]).toEqual([2, 2 / 3, 1])
   })
 
+  it('bounds each planet\'s gochara weight by Chandra bala while keeping its zero mean', () => {
+    expect(GOCHARA_MAX_BALANCE).toBe(1.2)
+    for (const p of PLANETS) {
+      const [good, bad] = GOCHARA_SHARES[p]
+      const [plus, minus] = [gocharaBalance(p, 1), gocharaBalance(p, -1)]
+      expect(good * plus - bad * minus, p).toBeCloseTo(0, 12)
+      expect(Math.max(plus, minus), p).toBeLessThanOrEqual(GOCHARA_MAX_BALANCE + 1e-12)
+      // No transit outweighs Chandra bala in a bad sign, however strong its ashtakavarga.
+      expect(GOCHARA_WEIGHTS[p] * Math.max(plus, minus) * STRENGTH_FACTOR.strong, p).toBeLessThanOrEqual(DAY_WEIGHTS.chandraBala + 1e-12)
+    }
+    // Mercury's outcomes are nearly even, so it keeps the plain balancing.
+    expect(gocharaBalance('Mercury', 1)).toBe(balanceFactor(...GOCHARA_SHARES.Mercury, 1))
+    expect(gocharaBalance('Saturn', 0)).toBe(1)
+  })
+
   it('balances the Moon\'s sign cycle: six good signs against five bad ones and Chandrashtama', () => {
     expect(CHANDRA_BALA_GOOD).toBe(1.75)
     expect(6 * CHANDRA_BALA_GOOD).toBe(5 * DAY_WEIGHTS.chandraBala + DAY_WEIGHTS.chandrashtama)
@@ -120,26 +136,30 @@ describe('forecasts for book Example 118 in Bengaluru', () => {
   it('explains 20 Oct 2026 deterministically', () => {
     const day = forecastDay(ctx, '2026-10-20')
     checkReasons(day)
-    expect(day).toMatchObject({ horizon: 'day', start: '2026-10-20', end: '2026-10-20', rating: 'favourable', score: 0.386 })
+    expect(day).toMatchObject({ horizon: 'day', start: '2026-10-20', end: '2026-10-20', rating: 'favourable', score: 0.515 })
     expect(day.headline).toBe('A well-placed Moon lifts the day, but handle relationships with extra tact.')
     expect(forecastDay(ctx, '2026-10-19').headline).toMatch(/^A good day, helped by /)
-    // Weights are nominal x balance (GOCHARA_SHARES) x ashtakavarga strength, e.g. Saturn 1 x 2.50 x 0.75.
+    // Weights are nominal x balance (GOCHARA_SHARES, capped at GOCHARA_MAX_BALANCE) x ashtakavarga
+    // strength, e.g. Saturn 1 x 1.2 x 0.75. The Moon's own factors lead.
     expect(day.reasons.map((r) => [r.factor, r.effect, r.weight])).toEqual([
-      ['gochara_Sun', 1, 2], // 10th, 6 bindus (strong)
-      ['gochara_Venus', -1, 1.89], // 10th
-      ['gochara_Saturn', 1, 1.87], // 3rd from the Moon, an upachaya, with 3 bindus (weak)
       ['chandra_bala', 1, 1.75], // Moon in Capricorn, the natal Moon sign
       ['tara_bala', 1, 1.6], // Parama Mitra
+      ['gochara_Sun', 1, 1.5], // 10th, 6 bindus (strong)
       ['gochara_Mercury', 1, 1.31], // 10th, 6 bindus
+      ['gochara_Venus', -1, 1.2], // 10th
       ['gochara_Jupiter', 0, 1], // 7th, obstructed by Saturn in the 3rd
-      ['gochara_Mars', -1, 0.78], // 7th, 3 bindus (a bad transit made stronger)
+      ['gochara_Saturn', 1, 0.9], // 3rd from the Moon, an upachaya, with 3 bindus (weak)
       ['dasha_transit', 1, 0.65], // Mercury antardasha, Mercury in the 10th (half weight)
-      ['tithi', -1, 0.5], // Sukla Navami (Rikta)
-      ['gochara_Rahu', -1, 0.31],
-      ['gochara_Ketu', -1, 0.31],
+      ['gochara_Mars', -1, 0.37], // 7th, 3 bindus (a bad transit made stronger)
+      ['tithi', -1, 0.28], // Sukla Navami until 12:51, about half the daytime
+      ['gochara_Rahu', -1, 0.14],
+      ['gochara_Ketu', -1, 0.14],
       ['moon_change', 0, 1],
       ['dasha', 0, 1],
     ])
+    // Vijayadashami: Navami gives way to Dashami at midday, so the Rikta caution is timed, not for the whole day.
+    expect(byFactor(day, 'tithi')[0].title).toBe('Sukla Navami (Rikta tithi) until 12:51')
+    expect(byFactor(day, 'tithi')[0].text).toMatch(/Today it runs until 12:51, then Sukla Dashami begins\.$/)
     expect(byFactor(day, 'tara_bala')[0].title).toBe('Parama Mitra tara: Moon in Shravana')
     expect(byFactor(day, 'gochara_Jupiter')[0].text).toMatch(/held back by Saturn in your 3rd \(vedha\)/)
     expect(byFactor(day, 'moon_change')[0].text).toMatch(/^The Moon moves into Dhanishtha nakshatra at 18:02\./)
@@ -166,9 +186,21 @@ describe('forecasts for book Example 118 in Bengaluru', () => {
       checkReasons(day)
       const tara = byFactor(day, 'tara_bala')[0]
       expect(tara.title.endsWith(nakshatra(moon).name), date).toBe(true)
+      // A Rikta tithi or Amavasya is flagged for the part of the daytime it holds (an hour at least),
+      // weighted by that share; here sampled every 10 minutes.
+      const held = new Map<number, number>()
+      for (let jd = sd.sunriseJd; jd < sd.sunsetJd; jd += 10 * MINUTE) {
+        const p = panchanga(sunLongitude(jd, settings), moonLongitude(jd, settings))
+        if (p.tithi === 30 || (p.tithi !== 15 && [4, 9, 14].includes(p.tithiInPaksha))) held.set(p.tithi, (held.get(p.tithi) ?? 0) + 10 * MINUTE)
+      }
+      const tithis = byFactor(day, 'tithi')
+      expect(tithis.length, date).toBeGreaterThanOrEqual([...held.values()].filter((d) => d >= 70 * MINUTE).length)
+      expect(tithis.length, date).toBeLessThanOrEqual([...held.values()].filter((d) => d >= 50 * MINUTE).length)
+      for (const t of tithis) {
+        expect(t.title, date).toMatch(/^(Amavasya \(New Moon\)|(Sukla|Krishna) \w+ \(Rikta tithi\)) (until \d\d:\d\d|from \d\d:\d\d|through the daytime)/)
+        if (tithis.length === 1) expect(t.weight, date).toBeCloseTo((0.5 * [...held.values()][0]) / (sd.sunsetJd - sd.sunriseJd), 1)
+      }
       const sunrise = panchanga(sunLongitude(sd.sunriseJd, settings), moonLongitude(sd.sunriseJd, settings))
-      const rikta = sunrise.tithi === 30 || (sunrise.tithi !== 15 && [4, 9, 14].includes(sunrise.tithiInPaksha))
-      expect(byFactor(day, 'tithi').length, date).toBe(rikta ? 1 : 0)
       if (sunrise.karana === 'Vishti') expect(byFactor(day, 'vishti')[0]?.title, date).toMatch(/^Vishti \(Bhadra\) karana (until|through)/)
       const stay = windows.find((w) => w.startJd < sd.nextSunriseJd && w.endJd > sd.sunriseJd)
       const reason = byFactor(day, 'chandrashtama')[0]
@@ -306,6 +338,7 @@ describe('Chandrashtama days and period highlights', () => {
 
   it('never rates a day ruled by Chandrashtama favourable, over 2026-2027 for three charts', () => {
     let ruled = 0
+    let touched = 0
     for (const birth of [BIRTH, ASHA, NY_BIRTH]) {
       const ctx = createContext(birth, PRESETS.popular, BENGALURU)
       for (let y = 2026; y <= 2027; y++) {
@@ -317,22 +350,39 @@ describe('Chandrashtama days and period highlights', () => {
             expect(d.rating, d.start).toBe(d.score >= FAVOURABLE_AT ? 'mixed' : 'challenging')
             expect(d.headline.toLowerCase(), d.start).toContain(CAUTION_PHRASE.chandrashtama.toLowerCase())
           }
+          // A day the stay only touches gives its time, and never pairs it with "a well-placed Moon".
+          for (const d of month.parts!.filter((p) => byFactor(p, 'chandrashtama').length && !ruledBy(p))) {
+            touched++
+            expect(d.headline, d.start).not.toContain(CAUTION_PHRASE.chandrashtama)
+            expect(d.headline, d.start).not.toContain(SUPPORT_PHRASE.chandra_bala)
+            if (d.headline.includes('your 8th')) expect(d.headline, d.start).toMatch(/go gently (from|until) \d\d:\d\d( tomorrow)?, (as|when) the Moon (enters|leaves) your 8th/)
+          }
         }
       }
     }
     expect(ruled).toBeGreaterThan(150)
+    expect(touched).toBeGreaterThan(60)
     expect(dayRating(0.5, true)).toBe('mixed')
     expect(dayRating(0.1, true)).toBe('challenging')
     expect(dayRating(0.1, false)).toBe('mixed')
   })
 
   it('keeps the score but caps the rating: the 8th-sign Moon leads the headline', () => {
-    const asha = createContext(ASHA, PRESETS.popular, BENGALURU)
-    // Saturn in the 6th (weight 3.12) used to outvote Chandrashtama here and rate the day favourable.
-    expect(forecastDay(asha, '2027-09-23')).toMatchObject({
-      rating: 'mixed', score: 0.201, headline: 'A steady day at best: go gently while the Moon crosses your 8th, with a favourable Moon star on your side.',
+    const ny = createContext(NY_BIRTH, PRESETS.popular, NEW_YORK)
+    expect(forecastDay(ny, '2027-08-17')).toMatchObject({
+      rating: 'mixed', score: 0.248, headline: 'A steady day at best: go gently while the Moon crosses your 8th, with a favourable Moon star on your side.',
     })
-    expect(forecastDay(fresh(), '2026-10-07')).toMatchObject({ rating: 'challenging', score: -0.13 })
+    // Saturn in the 6th (once weighted 3.12) used to outvote Chandrashtama here; its weight is now capped.
+    expect(forecastDay(createContext(ASHA, PRESETS.popular, BENGALURU), '2027-09-23')).toMatchObject({ rating: 'challenging', score: 0.088 })
+    expect(forecastDay(fresh(), '2026-10-07')).toMatchObject({ rating: 'challenging', score: -0.097 })
+  })
+
+  it('times the caution on a day the 8th-sign Moon only touches', () => {
+    const asha = createContext(ASHA, PRESETS.popular, BENGALURU)
+    // The Moon is in the 7th (a good sign) until 15:41, then enters the 8th.
+    expect(forecastDay(asha, '2026-10-02')).toMatchObject({
+      rating: 'favourable', headline: 'A favourable Moon star lifts the day, but go gently from 15:41, as the Moon enters your 8th.',
+    })
   })
 
   it('names the same best and careful days in the month summary and its highlights, with Chandrashtama by its times', () => {
@@ -416,6 +466,18 @@ describe('forecast plumbing', () => {
     expect(time((c) => forecastWeek(c, '2026-10-19'))).toBeLessThan(600)
     expect(time((c) => forecastMonth(c, 2026, 10))).toBeLessThan(2000)
     expect(time((c) => forecastYear(c, 2026))).toBeLessThan(5000)
+  })
+
+  it('keeps its caches bounded while stepping through the years', () => {
+    const c = fresh()
+    for (let y = 2026; y <= 2028; y++) forecastYear(c, y)
+    expect(c.cache.days.size).toBeLessThanOrEqual(DAY_CACHE_LIMIT)
+    expect(c.cache.spans.size).toBeLessThanOrEqual(DAY_CACHE_LIMIT)
+    expect(c.cache.coverage!.end - c.cache.coverage!.start).toBeLessThanOrEqual(COVER_LIMIT)
+    // The most recent days stay; an evicted one is simply computed again, the same as before.
+    expect(c.cache.days.has('2028-12-31')).toBe(true)
+    expect(c.cache.days.has('2026-01-01')).toBe(false)
+    expect(forecastDay(c, '2026-01-01')).toEqual(forecastDay(fresh(), '2026-01-01'))
   })
 
   it('reuses cached days across views', () => {

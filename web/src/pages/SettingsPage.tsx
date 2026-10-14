@@ -2,6 +2,7 @@ import { BookOpen, Monitor, Moon, RotateCcw, SlidersHorizontal, Sparkles, Sun, T
 import { RadioGroup } from 'radix-ui'
 import { useId, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { deleteAllProfiles, useProfiles } from '@/state/profiles'
 import {
   AYANAMSA_OPTIONS, NODE_OPTIONS, resetSettings, updateSettings, useSettings, YEAR_MODEL_OPTIONS,
@@ -23,6 +24,7 @@ const PRESET_NOTES: Record<PresetName, string> = {
 }
 
 export default function SettingsPage() {
+  useDocumentTitle(pageTitle('Settings'))
   const s = useSettings()
   const profiles = useProfiles()
   const ayanamsaNote = AYANAMSA_OPTIONS.find((o) => o.value === s.ayanamsa)?.note

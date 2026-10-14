@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  binduNote, CAUTION_PHRASE, chandrashtamaHeadline, DAY_HEADLINE_VARIANTS, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText, DASHA_THEMES,
+  binduNote, CAUTION_PHRASE, chandrashtamaCaution, chandrashtamaHeadline, DAY_HEADLINE_VARIANTS, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText, DASHA_THEMES,
   dayHeadline, GOCHARA_TEXT, HOUSE_THEMES, joinList, MOON_CHANGE_TEXT, MUNTHA_TEXT, NO_SADE_SATI_TEXT, ordinal, PANCHANGA_TEXT,
   PERIOD_TEXT, periodHeadline, PLANET_THEMES, SATURN_PHASE_TEXT, SATURN_PHASE_TITLE, SOURCES, STATION_TEXT, SUPPORT_PHRASE, TARA_TEXT,
   vedhaNote, vipareetaNote, yearHeadline,
@@ -27,7 +27,9 @@ function allTexts(): string[] {
     ...HOUSE_THEMES, ...MUNTHA_TEXT, ...Object.values(TARA_TEXT), CHANDRA_BALA_TEXT.good, CHANDRA_BALA_TEXT.bad, CHANDRASHTAMA_TEXT,
     MOON_CHANGE_TEXT, NO_SADE_SATI_TEXT, ...Object.values(SATURN_PHASE_TEXT), ...Object.values(SATURN_PHASE_TITLE),
     ...Object.values(SUPPORT_PHRASE), ...Object.values(CAUTION_PHRASE), ...Object.values(SOURCES),
-    PANCHANGA_TEXT.amavasya, PANCHANGA_TEXT.rikta('Navami'), PANCHANGA_TEXT.vishti('until 11:20'),
+    PANCHANGA_TEXT.amavasya('through the daytime'), PANCHANGA_TEXT.amavasya('until 10:05', 'Sukla Pratipada'),
+    PANCHANGA_TEXT.rikta('Navami', 'until 12:50', 'Sukla Dashami'), PANCHANGA_TEXT.rikta('Chaturthi', 'from 09:12'), PANCHANGA_TEXT.vishti('until 11:20'),
+    chandrashtamaCaution({ from: '15:41' }), chandrashtamaCaution({ until: '09:30' }),
     PERIOD_TEXT.bestDays('Tue 20 Oct'), PERIOD_TEXT.chandrashtamaStay('Fri 2 Oct 15:41', 'Sun 4 Oct 18:32'), PERIOD_TEXT.toughDays('Fri 23 Oct'),
     PERIOD_TEXT.sadeSatiSpan('1 Jan 2020', '29 Mar 2025'), PERIOD_TEXT.nextSadeSati('Dec 2046'), PERIOD_TEXT.tajakaYear('8 Mar 2026', '9 Mar 2027'),
   ]
@@ -82,7 +84,8 @@ describe('interpretation library', () => {
 
   it('writes complete, short headlines for every rating and phrase combination', () => {
     const supports = [undefined, ...Object.values(SUPPORT_PHRASE)]
-    const cautions = [undefined, ...Object.values(CAUTION_PHRASE)]
+    // Timed Chandrashtama cautions, at their longest with a time after midnight.
+    const cautions = [undefined, ...Object.values(CAUTION_PHRASE), chandrashtamaCaution({ from: '04:03 tomorrow' }), chandrashtamaCaution({ until: '15:41' })]
     const lines: string[] = []
     for (const r of RATINGS) {
       for (const s of supports) {

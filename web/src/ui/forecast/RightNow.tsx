@@ -50,10 +50,13 @@ export function RightNow({ timings, nowJd, className }: { timings: DayTimings; n
         ) : abhijit ? (
           <Tile tone="good" icon={<ShieldCheck />} label="Auspicious window" value="Abhijit muhurta" sub={`until ${time(abhijit.endJd)}`} />
         ) : (
+          // Only these windows are meant here: a choghadiya marked Avoid has its own tile.
           <Tile
-            tone="good" icon={<ShieldCheck />} label="No Rahu Kalam now"
-            value={nowJd < rahu.startJd ? `Rahu Kalam ${timeRange(rahu.startJd, rahu.endJd, zone)}` : 'Rahu Kalam is over'}
-            sub={nextAvoid ? `Next to avoid: ${nextAvoid.name} at ${time(nextAvoid.startJd)}` : 'Nothing more to avoid today'}
+            tone="good" icon={<ShieldCheck />} label="Inauspicious windows"
+            value={nextAvoid ? `None until ${time(nextAvoid.startJd)}` : 'All over for today'}
+            sub={nextAvoid
+              ? `Next: ${nextAvoid.name} ${timeRange(nextAvoid.startJd, nextAvoid.endJd, zone)}${nextAvoid !== rahu && nowJd < rahu.startJd ? ` · Rahu Kalam ${timeRange(rahu.startJd, rahu.endJd, zone)}` : ''}`
+              : `Rahu Kalam (${timeRange(rahu.startJd, rahu.endJd, zone)}), Yamaganda, Gulika and Durmuhurta have passed`}
           />
         )}
         {hora && (

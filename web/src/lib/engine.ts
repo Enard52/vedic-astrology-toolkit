@@ -1,8 +1,9 @@
 // Main-thread client for the engine worker: one shared worker for the whole app that is
-// replaced when it dies, a small cache of results by key (so returning to a view is instant
-// and prefetches pay off), and a React hook that runs a cached engine call with a retry.
+// replaced when it dies, calls sent to it one at a time, a small cache of results by key (so
+// returning to a view is instant and prefetches pay off), and a React hook that runs a cached
+// engine call with a retry and drops requests superseded before they were sent.
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { releaseProxy, wrap, type Remote } from 'comlink'
 import type { EngineApi } from '@/engine/api'
 
@@ -79,11 +80,22 @@ export function getEngine(): Promise<Engine> {
 const isFatal = (e: unknown) =>
   e instanceof Error && (e.name === 'RuntimeError' || /^Aborted\(|unreachable|memory access out of bounds/.test(e.message))
 
+/** The last call handed to the worker (settled or not); the next one waits for it. */
+let queue: Promise<unknown> = Promise.resolve()
+
 /**
- * Run `run` against the engine. When the worker dies during the call (crash, WebAssembly abort,
- * no reply within CALL_TIMEOUT_MS) it is discarded and the call is retried once on a new worker.
+ * Run `run` against the engine. Calls reach the worker one at a time, as it computes them anyway,
+ * so a call's deadline measures its own run rather than the queue ahead of it. When the worker
+ * dies during the call (crash, WebAssembly abort, no reply within CALL_TIMEOUT_MS) it is discarded
+ * and the call is retried once on a new worker.
  */
-export async function runEngine<T>(run: (engine: Engine) => Promise<T>): Promise<T> {
+export function runEngine<T>(run: (engine: Engine) => Promise<T>): Promise<T> {
+  const result = queue.then(() => runNow(run))
+  queue = result.catch(() => {})
+  return result
+}
+
+async function runNow<T>(run: (engine: Engine) => Promise<T>): Promise<T> {
   for (let attempt = 0; ; attempt++) {
     const current = await (instance ??= start())
     const silent = new Error('The engine did not answer')
@@ -117,6 +129,9 @@ function remember(key: string, value: unknown) {
 function peek<T>(key: string): T | undefined {
   return results.get(key) as T | undefined
 }
+
+/** True when `key` is cached or already being computed, so asking for it adds no work. */
+const known = (key: string) => results.has(key) || pending.has(key)
 
 /** The result for `key`, from the cache, from a call already running, or computed now. */
 export function fetchEngine<T>(key: string, run: (engine: Engine) => Promise<T>): Promise<T> {
@@ -159,20 +174,40 @@ interface QueryState<T> {
 
 /**
  * The cached result of `run` for `key`; null runs nothing (for example, when the profile is
- * missing). A cached key renders at once, without a loading state. Results of superseded keys
- * are ignored (the worker still finishes them, since it handles one call at a time).
+ * missing). A cached key renders at once, without a loading state. Each hook keeps one request
+ * of its own in the worker: a new key asked for while it runs waits for it, and only the latest
+ * of the keys that waited is then sent, so five quick steps compute two periods, not five.
  */
 export function useEngineQuery<T>(key: string | null, run: (engine: Engine) => Promise<T>): EngineQuery<T> {
   const [attempt, setAttempt] = useState(0)
   const [state, setState] = useState<QueryState<T>>({ key: null, attempt: 0, data: undefined, error: null })
+  /** This hook's request still in the worker, if any. */
+  const inFlight = useRef<Promise<unknown> | null>(null)
   const cached = key === null ? undefined : peek<T>(key)
   useEffect(() => {
     if (key === null) return
     let current = true
-    fetchEngine(key, run).then(
-      (data) => current && setState({ key, attempt, data, error: null }),
-      (e: unknown) => current && setState({ key, attempt, data: undefined, error: e instanceof Error ? e : new Error(String(e)) }),
-    )
+    const send = () => {
+      if (!current) return // Superseded while waiting: never sent.
+      const p = fetchEngine(key, run)
+      inFlight.current = p
+      const settled = () => {
+        if (inFlight.current === p) inFlight.current = null
+      }
+      p.then(
+        (data) => {
+          settled()
+          if (current) setState({ key, attempt, data, error: null })
+        },
+        (e: unknown) => {
+          settled()
+          if (current) setState({ key, attempt, data: undefined, error: e instanceof Error ? e : new Error(String(e)) })
+        },
+      )
+    }
+    const busy = inFlight.current
+    if (busy && !known(key)) void busy.then(send, send)
+    else send()
     return () => {
       current = false
     }

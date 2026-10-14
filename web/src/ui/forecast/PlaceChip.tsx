@@ -4,16 +4,18 @@
 import { House, MapPin } from 'lucide-react'
 import { useState } from 'react'
 import { cityLabel } from '@/lib/cities'
-import { useActiveProfile } from '@/state/profiles'
+import { useActiveProfile, type Profile } from '@/state/profiles'
 import { Button } from '@/ui/components/Button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/ui/components/Dialog'
 import { Label } from '@/ui/components/Input'
 import { PlaceSearch } from '@/ui/components/PlaceSearch'
 import { birthPlace, shortPlaceName, useTimingsPlace } from './data'
 
-export function PlaceChip({ className }: { className?: string }) {
-  const { place, isDefault, setPlace } = useTimingsPlace()
+/** `profile` is the one on screen: its birthplace is the default and the way back. */
+export function PlaceChip({ profile, className }: { profile?: Profile; className?: string }) {
+  const { place, isDefault, setPlace } = useTimingsPlace(profile)
   const active = useActiveProfile()
+  const shown = profile ?? active
   const [open, setOpen] = useState(false)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -44,7 +46,7 @@ export function PlaceChip({ className }: { className?: string }) {
           <MapPin aria-hidden className="mt-0.5 size-4 shrink-0 text-[var(--accent-text)]" />
           <span><span className="text-[var(--text-muted)]">Now showing </span><span className="font-medium">{place.name}</span><span className="text-[var(--text-muted)]"> · {place.timeZone}</span></span>
         </p>
-        {!isDefault && active && (
+        {!isDefault && shown && (
           <Button
             variant="ghost" className="mt-3 w-full sm:w-auto"
             onClick={() => {
@@ -52,7 +54,7 @@ export function PlaceChip({ className }: { className?: string }) {
               setOpen(false)
             }}
           >
-            <House aria-hidden /> Use the birthplace ({shortPlaceName(birthPlace(active.birth))})
+            <House aria-hidden /> Use the birthplace ({shortPlaceName(birthPlace(shown.birth))})
           </Button>
         )}
       </DialogContent>

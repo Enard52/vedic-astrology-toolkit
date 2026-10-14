@@ -4,11 +4,12 @@ import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } 
 import { Link, useLocation, useParams } from 'wouter'
 import { cityLabel, type City } from '@/lib/cities'
 import { cn } from '@/lib/cn'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { getEngine } from '@/lib/engine'
 import {
   checkBirth, formatOffset, lmtOffset, MAX_YEAR, MIN_YEAR, parseCoordinate, typedFixedOffset, type BirthField, type FoldOption,
 } from '@/state/birth'
-import { createProfile, setActiveProfile, updateProfile, useProfile, type Profile } from '@/state/profiles'
+import { createProfile, profileName, setActiveProfile, updateProfile, useProfile, type Profile } from '@/state/profiles'
 import { Badge } from '@/ui/components/Badge'
 import { Button } from '@/ui/components/Button'
 import { Callout } from '@/ui/components/Callout'
@@ -70,6 +71,7 @@ const allZones = () => (zoneNames ??= typeof Intl.supportedValuesOf === 'functio
 export default function NewProfilePage() {
   const { id } = useParams<{ id?: string }>()
   const existing = useProfile(id)
+  useDocumentTitle(pageTitle(!id ? 'New profile' : existing ? `Edit ${profileName(existing)}` : 'Profile not found'))
   // Start the engine while the form is filled in, so the forecast opens without waiting for it.
   useEffect(() => void getEngine().catch(() => {}), [])
   if (id && !existing) {

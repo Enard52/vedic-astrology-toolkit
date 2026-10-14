@@ -7,14 +7,14 @@
 // reuse the days they share.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import {
-  binduNote, CAUTION_PHRASE, chandrashtamaHeadline, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText,
+  binduNote, CAUTION_PHRASE, chandrashtamaCaution, chandrashtamaHeadline, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText,
   dayHeadline, GOCHARA_TEXT, joinList, MOON_CHANGE_TEXT, MUNTHA_TEXT, NO_SADE_SATI_TEXT, ordinal, PANCHANGA_TEXT,
   PERIOD_TEXT, periodHeadline, PLANET_THEMES, SATURN_PHASE_TEXT, SATURN_PHASE_TITLE, SOURCES, STATION_TEXT,
   SUPPORT_PHRASE, TARA_TEXT, vedhaNote, vipareetaNote, yearHeadline,
 } from '../content'
 import { ashtakavarga, type Ashtakavarga } from './ashtakavarga'
 import { castChart } from './chart'
-import { advanceSign, houseFrom, NAKSHATRA_NAMES, norm, panchanga, SIGN_NAMES, signOf } from './core'
+import { advanceSign, houseFrom, NAKSHATRA_NAMES, norm, SIGN_NAMES, signOf, TITHI_NAMES } from './core'
 import { dashaChainAt, dashaChanges, vimsottari } from './dasha'
 import { ascendant, moonLongitude, planetLongitude, planetPositions, sunLongitude } from './ephem'
 import { eventsBetween } from './events'
@@ -40,7 +40,8 @@ export const CHALLENGING_AT = -0.15
  * Weights of the day factors. The Moon's daily factors lead (Tara bala, then Chandra bala), as in
  * muhurta practice; Chandrashtama overrides Chandra bala; panchanga cautions only matter for new
  * beginnings. The slow planets (GOCHARA_WEIGHTS) weigh no more than the others: they are the same
- * on every day of a month, so they set its level while the Moon picks out the days within it.
+ * on every day of a month, so they set its level while the Moon picks out the days within it. After
+ * balancing (GOCHARA_MAX_BALANCE) no planet's transit weighs more than Chandra bala in a bad sign.
  */
 export const DAY_WEIGHTS = {
   tara: 2,
@@ -83,12 +84,22 @@ export const CHANDRA_BALA_GOOD = (5 * DAY_WEIGHTS.chandraBala + DAY_WEIGHTS.chan
 export const STRENGTH_FACTOR: Readonly<Record<GocharaStrength, number>> = { strong: 1.25, normal: 1, weak: 0.75 }
 
 /**
+ * Largest balance multiplier of a gochara outcome. Left unbounded, a planet's rare outcome weighed
+ * up to 3.1 (Saturn or Mars in a good house with strong ashtakavarga), more than Tara bala, Chandra
+ * bala and even Chandrashtama, so one transit could lead and colour the day for weeks on end. Both
+ * outcomes of such a planet are scaled down together, which keeps its zero mean, so that a day's
+ * gochara reason weighs at most 1 × 1.2 × 1.25 = 1.5, Chandra bala in a bad sign.
+ */
+export const GOCHARA_MAX_BALANCE = DAY_WEIGHTS.chandraBala / STRENGTH_FACTOR.strong
+
+/**
  * Balancing of the cyclic factors. The classical tables call most houses unfavourable for the
  * malefics (Saturn, Mars and the nodes are good in 3 of 12, the Sun in 4), so plain ±1 votes make a
  * typical day score about -0.12 and half of all days "challenging". Instead each factor's weight
  * is split between its good and bad outcomes so that it averages zero over its full cycle while
  * its mean weight over those outcomes stays the nominal one: with shares g and b of good and bad
- * outcomes the good weight is w(g+b)/(2g) and the bad weight w(g+b)/(2b). The score is still
+ * outcomes the good weight is w(g+b)/(2g) and the bad weight w(g+b)/(2b). For gochara both are
+ * then scaled down when the larger exceeds GOCHARA_MAX_BALANCE (gocharaBalance). The score is still
  * exactly Σ effect·weight / Σ weight over the reasons as returned.
  */
 export function balanceFactor(goodShare: number, badShare: number, effect: Effect): number {
@@ -110,7 +121,13 @@ export const GOCHARA_SHARES: Readonly<Record<Planet, readonly [good: number, bad
   Venus: [0.527, 0.19], Saturn: [0.167, 0.667], Rahu: [0.147, 0.647], Ketu: [0.148, 0.648],
 }
 
-const gocharaBalance = (planet: Planet, effect: Effect) => balanceFactor(...GOCHARA_SHARES[planet], effect)
+/** balanceFactor for a planet's gochara, with both outcomes scaled so that neither exceeds GOCHARA_MAX_BALANCE. */
+export function gocharaBalance(planet: Planet, effect: Effect): number {
+  if (effect === 0) return 1
+  const [good, bad] = GOCHARA_SHARES[planet]
+  const scale = Math.min(1, GOCHARA_MAX_BALANCE / Math.max(balanceFactor(good, bad, 1), balanceFactor(good, bad, -1)))
+  return balanceFactor(good, bad, effect) * scale
+}
 /** Tara bala: 5 of the 9 taras are good, 3 adverse and Janma mixed. */
 const TARA_BALANCE = (effect: Effect) => balanceFactor(5 / 9, 3 / 9, effect)
 
@@ -226,6 +243,28 @@ const CONTEXTS = new Map<string, PredictContext>()
 const MAX_CONTEXTS = 4
 
 /**
+ * Days (and day spans) kept per context, about two years: a year view with its neighbouring weeks
+ * stays cached, while stepping through many years in one session neither grows the worker's memory
+ * without bound nor slows each new year down.
+ */
+export const DAY_CACHE_LIMIT = 800
+
+/** Least-recently-used lookup: a hit moves the entry to the back, so the oldest is evicted first. */
+function cacheGet<K, V>(map: Map<K, V>, key: K): V | undefined {
+  const value = map.get(key)
+  if (value !== undefined) {
+    map.delete(key)
+    map.set(key, value)
+  }
+  return value
+}
+
+function cacheSet<K, V>(map: Map<K, V>, key: K, value: V, limit = DAY_CACHE_LIMIT): void {
+  map.set(key, value)
+  while (map.size > limit) map.delete(map.keys().next().value!)
+}
+
+/**
  * A memoised context for the worker API, whose callers cannot hold a context across calls:
  * the same birth, settings and place reuse one context and its caches.
  */
@@ -248,7 +287,7 @@ function sunriseOn(ctx: PredictContext, date: string): number | null {
 
 /** The Vedic day that begins on civil `date` (cached): the span every day forecast is judged over. */
 export function daySpan(ctx: PredictContext, date: string): DaySpan {
-  let span = ctx.cache.spans.get(date)
+  let span = cacheGet(ctx.cache.spans, date)
   if (!span) {
     const { latitude, longitude, timeZone } = ctx.place
     const sd = solarDayForDate(date, latitude, longitude, timeZone)
@@ -263,7 +302,7 @@ export function daySpan(ctx: PredictContext, date: string): DaySpan {
       const evening = localToJd(date, timeZone, '18:00')
       span = { date, solarDay: null, start, end, sunset: evening > start && evening < end ? evening : (start + end) / 2 }
     }
-    ctx.cache.spans.set(date, span)
+    cacheSet(ctx.cache.spans, date, span)
   }
   return span
 }
@@ -281,6 +320,8 @@ export function vedicDateAt(ctx: PredictContext, jd: number): string {
 const COVER_MARGIN = 3
 /** A request farther than this from the cached range starts a new cache instead of filling the gap. */
 const COVER_GAP = 800
+/** Nor does the cached range grow past this many days (about three years): a longer one starts afresh. */
+export const COVER_LIMIT = 1100
 
 function computeCoverage(ctx: PredictContext, start: number, end: number): Coverage {
   return {
@@ -301,7 +342,7 @@ function cover(ctx: PredictContext, a: number, b: number): Coverage {
   const c = ctx.cache.coverage
   if (c && from >= c.start && to <= c.end) return c
   let next: Coverage
-  if (!c || from > c.end + COVER_GAP || to < c.start - COVER_GAP) {
+  if (!c || from > c.end + COVER_GAP || to < c.start - COVER_GAP || Math.max(to, c.end) - Math.min(from, c.start) > COVER_LIMIT) {
     next = computeCoverage(ctx, from, to)
   } else {
     const before = from < c.start ? computeCoverage(ctx, from, c.start) : null
@@ -318,6 +359,21 @@ function cover(ctx: PredictContext, a: number, b: number): Coverage {
   ctx.cache.coverage = next
   return next
 }
+
+/** Index of the first event at or after `jd`; coverage events are sorted by time. */
+function firstEventAt(events: readonly TimedEvent[], jd: number): number {
+  let lo = 0
+  let hi = events.length
+  while (lo < hi) {
+    const mid = (lo + hi) >>> 1
+    if (events[mid].jd < jd) lo = mid + 1
+    else hi = mid
+  }
+  return lo
+}
+
+/** The covered events in [a, b), by binary search rather than a scan of the whole range. */
+const eventsIn = (cov: Coverage, a: number, b: number): TimedEvent[] => cov.events.slice(firstEventAt(cov.events, a), firstEventAt(cov.events, b))
 
 /** Saturn's phases overlapping a calendar year (civil midnights in the place's zone; cached per year). */
 export function saturnYear(ctx: PredictContext, year: number): SaturnPeriod[] {
@@ -432,7 +488,7 @@ function periodEvents(
   ctx: PredictContext, a: number, b: number, keep: (e: TimedEvent) => boolean, dashaLevel: 0 | 1 | 2, withChandrashtama: boolean,
 ): TimedEvent[] {
   const cov = cover(ctx, a, b)
-  const out = cov.events.filter((e) => e.jd >= a && e.jd < b && keep(e))
+  const out = eventsIn(cov, a, b).filter(keep)
   if (withChandrashtama) out.push(...chandrashtamaEvents(ctx, cov, a, b))
   out.push(...dashaChanges(ctx.dashas, a, b, dashaLevel))
   return out.sort((x, y) => x.jd - y.jd)
@@ -496,8 +552,35 @@ const dayPriority = (r: Reason) =>
 
 const RIKTA_TITHIS: readonly number[] = [4, 9, 14]
 const TIME_TOLERANCE_DAYS = 1e-4 // about 9 seconds; times are shown to the minute
-/** Sampling step for Vishti: far shorter than the 9.4 hours a karana lasts at the very least. */
+/** Sampling step for Vishti and tithis: far shorter than the 9.4 hours a karana lasts at the very least. */
 const VISHTI_STEP_DAYS = 0.15
+/** A Rikta tithi or Amavasya holding less of the daytime than this (an hour) is left out. */
+const MIN_TITHI_DAYS = 1 / 24
+
+const tithiAt = (jd: number, settings: Settings) => Math.floor(norm(moonLongitude(jd, settings) - sunLongitude(jd, settings)) / 12) + 1
+
+/**
+ * The tithis of [a, b], each with the part of it that it holds. A tithi lasts 19 hours or more, so
+ * one sampling step holds at most one change.
+ */
+function tithiSpans(settings: Settings, a: number, b: number): { tithi: number; from: number; to: number }[] {
+  const n = Math.max(2, Math.ceil((b - a) / VISHTI_STEP_DAYS))
+  const t = Array.from({ length: n + 1 }, (_, i) => a + ((b - a) * i) / n)
+  const ids = t.map((x) => tithiAt(x, settings))
+  const out = [{ tithi: ids[0], from: a, to: b }]
+  for (let i = 1; i <= n; i++) {
+    if (ids[i] === ids[i - 1]) continue
+    const before = ids[i - 1]
+    const cut = bisectInstant((x) => tithiAt(x, settings) !== before, t[i - 1], t[i], TIME_TOLERANCE_DAYS)
+    out.at(-1)!.to = cut
+    out.push({ tithi: ids[i], from: cut, to: b })
+  }
+  return out
+}
+
+/** Name of tithi 1..30 within its fortnight ("Navami"), and its full label ("Sukla Navami", "Amavasya"). */
+const tithiName = (tithi: number) => (tithi === 15 ? 'Purnima' : tithi === 30 ? 'Amavasya' : TITHI_NAMES[(tithi - 1) % 15])
+const tithiLabel = (tithi: number) => (tithi % 15 === 0 ? tithiName(tithi) : `${tithi <= 15 ? 'Sukla' : 'Krishna'} ${tithiName(tithi)}`)
 
 const isVishti = (jd: number, settings: Settings) => {
   const half = Math.floor(norm(moonLongitude(jd, settings) - sunLongitude(jd, settings)) / 6)
@@ -519,7 +602,7 @@ function vishtiSpan(settings: Settings, a: number, b: number): [number, number] 
 
 /** Forecast for the Vedic day that begins at sunrise on civil `date` ("YYYY-MM-DD") at the context's place. */
 export function forecastDay(ctx: PredictContext, date: string): Forecast {
-  const cached = ctx.cache.days.get(date)
+  const cached = cacheGet(ctx.cache.days, date)
   if (cached) return cached
   const { settings, natal } = ctx
   const span = daySpan(ctx, date)
@@ -530,7 +613,7 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
 
   // The Moon's sign and star are those it holds at the middle of the daytime, i.e. for most of it.
   const middle = (span.start + span.sunset) / 2
-  const moonChanges = cov.events.filter((e) => e.jd >= span.start && e.jd < span.end && (e.kind === 'moon_sign' || e.kind === 'moon_nakshatra'))
+  const moonChanges = eventsIn(cov, span.start, span.end).filter((e) => e.kind === 'moon_sign' || e.kind === 'moon_nakshatra')
   let moonSign = pos.Moon.sign
   let moonStar = pos.Moon.nakshatra.index
   for (const e of moonChanges) {
@@ -563,7 +646,12 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
   const eighth = advanceSign(natal.moonSign, 8)
   const ruled = moonSign === eighth
   const stay = cov.chandrashtama.find((w) => w.startJd < span.end && w.endJd > span.start)
+  /** On a day the stay only touches, the caution says when it begins or ends rather than "while the Moon crosses". */
+  let stayCaution: string | undefined
   if (stay) {
+    // A stay that begins after midnight begins "tomorrow" for the headline, which keeps it short.
+    const short = (jd: number) => at(jd).replace(/ on .*/, ' tomorrow')
+    stayCaution = ruled ? undefined : stay.startJd <= span.start ? chandrashtamaCaution({ until: short(stay.endJd) }) : chandrashtamaCaution({ from: short(stay.startJd) })
     const weight = ruled ? DAY_WEIGHTS.chandrashtama
       : stay.startJd < span.sunset && stay.endJd > span.start ? DAY_WEIGHTS.chandrashtamaPartial : DAY_WEIGHTS.chandrashtamaNight
     const when = stay.startJd <= span.start ? `until ${at(stay.endJd)}` : `from ${at(stay.startJd)}${stay.endJd < span.end ? ` to ${at(stay.endJd)}` : ''}`
@@ -599,42 +687,47 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
     })
   }
 
-  // Panchanga cautions: the tithi at sunrise (udaya tithi) and Vishti karana during the daytime.
-  const pan = panchanga(pos.Sun.longitude, pos.Moon.longitude)
-  if (pan.tithi === 30) {
-    reasons.push({ factor: 'tithi', effect: -1, weight: DAY_WEIGHTS.tithi, title: 'Amavasya (New Moon)', text: PANCHANGA_TEXT.amavasya, source: SOURCES.tithi })
-  } else if (RIKTA_TITHIS.includes(pan.tithiInPaksha)) {
-    reasons.push({
-      factor: 'tithi', effect: -1, weight: DAY_WEIGHTS.tithi, title: `${pan.paksha} ${pan.tithiName}, a Rikta tithi`,
-      text: PANCHANGA_TEXT.rikta(pan.tithiName), source: SOURCES.tithi,
-    })
+  // Panchanga cautions for the daytime, when new things are begun: a Rikta tithi or Amavasya, weighted
+  // by the share of the daytime it holds (a tithi often changes mid-morning, so the one at sunrise
+  // alone can mislead), and Vishti karana, each with its times.
+  const daytime = (from: number, to: number) => from <= span.start && to >= span.sunset ? 'through the daytime'
+    : from <= span.start ? `until ${at(to)}` : to >= span.sunset ? `from ${at(from)}` : `from ${at(from)} to ${at(to)}`
+  const tithis = tithiSpans(settings, span.start, span.sunset)
+  for (const [i, t] of tithis.entries()) {
+    const amavasya = t.tithi === 30
+    if ((!amavasya && !RIKTA_TITHIS.includes(((t.tithi - 1) % 15) + 1)) || t.to - t.from < MIN_TITHI_DAYS) continue
+    const when = daytime(t.from, t.to)
+    const next = tithis[i + 1] && tithiLabel(tithis[i + 1].tithi)
+    const weight = round(DAY_WEIGHTS.tithi * Math.min(1, (t.to - t.from) / (span.sunset - span.start)), 2)
+    reasons.push(amavasya
+      ? { factor: 'tithi', effect: -1, weight, title: `Amavasya (New Moon) ${when}`, text: PANCHANGA_TEXT.amavasya(when, next), source: SOURCES.tithi }
+      : { factor: 'tithi', effect: -1, weight, title: `${tithiLabel(t.tithi)} (Rikta tithi) ${when}`, text: PANCHANGA_TEXT.rikta(tithiName(t.tithi), when, next), source: SOURCES.tithi })
   }
   const vishti = vishtiSpan(settings, span.start, span.sunset)
   if (vishti) {
-    const [from, to] = vishti
-    const when = from <= span.start && to >= span.sunset ? 'through the daytime'
-      : from <= span.start ? `until ${at(to)}` : to >= span.sunset ? `from ${at(from)}` : `from ${at(from)} to ${at(to)}`
+    const when = daytime(...vishti)
     reasons.push({ factor: 'vishti', effect: -1, weight: DAY_WEIGHTS.vishti, title: `Vishti (Bhadra) karana ${when}`, text: PANCHANGA_TEXT.vishti(when), source: SOURCES.vishti })
   }
 
   const score = scoreReasons(reasons)
   const rating = dayRating(score, ruled)
   const timings = span.solarDay ? timingsForSolarDay(span.solarDay, date, ctx.place.timeZone) : undefined
-  const support = strongest(reasons, 1, dayPriority)
+  // "A well-placed Moon" would read oddly beside the Moon's stay in the 8th, whatever part of the day it covers.
+  const support = strongest(reasons, 1, stay ? (r) => (r.factor === 'chandra_bala' ? 0 : dayPriority(r)) : dayPriority)
   const supportPhrase = support && SUPPORT_PHRASE[support.factor]
   const caution = strongest(reasons, -1, dayPriority)
+  const cautionPhrase = caution ? (caution.factor === 'chandrashtama' && stayCaution) || CAUTION_PHRASE[caution.factor] : timings && CAUTION_PHRASE.rahu_kalam
   const variant = Number(date.slice(8))
   const forecast: Forecast = {
     horizon: 'day', start: date, end: date, rating, score,
     // On a Chandrashtama day the 8th-sign Moon leads the headline, whatever else weighs more.
-    headline: ruled ? chandrashtamaHeadline(rating, supportPhrase, variant)
-      : dayHeadline(rating, supportPhrase, caution ? CAUTION_PHRASE[caution.factor] : timings && CAUTION_PHRASE.rahu_kalam, variant),
+    headline: ruled ? chandrashtamaHeadline(rating, supportPhrase, variant) : dayHeadline(rating, supportPhrase, cautionPhrase, variant),
     reasons: sortReasons(reasons),
     events: periodEvents(ctx, span.start, span.end, () => true, 2, true),
     dasha: chain,
   }
   if (timings) forecast.timings = timings
-  ctx.cache.days.set(date, forecast)
+  cacheSet(ctx.cache.days, date, forecast)
   return forecast
 }
 

@@ -1,11 +1,13 @@
 // The headline card of a forecast: the rating word in its colour over a soft glow, a score
-// dial, the headline and a one-line "why" built from the strongest reasons.
+// dial, the headline, what the rating is made of (the weight of a day's reasons, or how many
+// days or months rate which way) and a one-line "why" built from the strongest reasons.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { motion, useReducedMotion } from 'motion/react'
 import { useId } from 'react'
-import type { Forecast, Rating, Reason } from '@/engine/types'
+import type { Forecast, Rating } from '@/engine/types'
 import { cn } from '@/lib/cn'
 import { Badge } from '@/ui/components/Badge'
+import { ratingBalance, strongestReasons, type BalanceSlice } from './balance'
 import { EFFECT_META, RATING_ICON, RATING_TONE, RATING_WORD, scorePercent, TONE_VARS } from './meta'
 
 export function RatingHero({ forecast, label, className }: { forecast: Forecast; label: string; className?: string }) {
@@ -31,30 +33,40 @@ export function RatingHero({ forecast, label, className }: { forecast: Forecast;
       <p className="mt-4 text-pretty text-[1.05rem] leading-snug text-[var(--text)] sm:hidden">{forecast.headline}</p>
       {/* Keeps the summary at the bottom when the card is stretched beside a taller one. */}
       <div aria-hidden className="flex-1" />
-      <WhySummary reasons={forecast.reasons} />
+      <WhySummary forecast={forecast} />
     </section>
   )
 }
 
-function WhySummary({ reasons }: { reasons: readonly Reason[] }) {
-  if (!reasons.length) return null
-  const byWeight = [...reasons].sort((a, b) => b.weight - a.weight)
-  const lift = byWeight.find((r) => r.effect > 0)
-  const drag = byWeight.find((r) => r.effect < 0)
-  const counts = ([1, 0, -1] as const).map((e) => [e, reasons.filter((r) => r.effect === e).length] as const).filter(([, n]) => n > 0)
+const sliceMeta = (slice: BalanceSlice) =>
+  slice.kind === 'effect' ? EFFECT_META[slice.effect] : { tone: RATING_TONE[slice.rating], icon: RATING_ICON[slice.rating] }
+
+function WhySummary({ forecast }: { forecast: Forecast }) {
+  const balance = ratingBalance(forecast)
+  const { lift, drag } = strongestReasons(forecast.reasons)
+  if (!balance.slices.length && !lift && !drag) return null
   return (
     <div className="mt-5 border-t border-[var(--divider)] pt-4">
-      <ul className="flex flex-wrap gap-1.5" aria-label="Reasons by effect">
-        {counts.map(([effect, n]) => {
-          const meta = EFFECT_META[effect]
-          const Icon = meta.icon
-          return (
-            <li key={effect}>
-              <Badge tone={meta.tone} size="md"><Icon aria-hidden />{n} {meta.label.toLowerCase()}</Badge>
-            </li>
-          )
-        })}
-      </ul>
+      {balance.slices.length > 0 && (
+        <>
+          <div aria-hidden className="mb-3 flex h-1.5 gap-0.5 overflow-hidden rounded-full">
+            {balance.slices.map((slice) => (
+              <span key={slice.label} className="h-full rounded-full" style={{ flexGrow: slice.share, background: TONE_VARS[sliceMeta(slice).tone].solid }} />
+            ))}
+          </div>
+          <ul className="flex flex-wrap gap-1.5" aria-label={balance.title}>
+            {balance.slices.map((slice) => {
+              const meta = sliceMeta(slice)
+              const Icon = meta.icon
+              return (
+                <li key={slice.label}>
+                  <Badge tone={meta.tone} size="md"><Icon aria-hidden />{slice.label}</Badge>
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      )}
       {(lift || drag) && (
         <p className="mt-3 text-pretty text-sm leading-relaxed text-[var(--text-muted)]">
           {lift && <>Lifted most by <strong className="font-semibold text-[var(--text)]">{lift.title}</strong></>}

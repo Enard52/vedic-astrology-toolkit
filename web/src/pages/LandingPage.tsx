@@ -6,6 +6,7 @@ import { motion } from 'motion/react'
 import { useRef, type ReactNode, type RefObject } from 'react'
 import { Link } from 'wouter'
 import { cn } from '@/lib/cn'
+import { HOME_TITLE, useDocumentTitle } from '@/lib/documentTitle'
 import { profileName, useActiveProfile, useProfiles, type Profile } from '@/state/profiles'
 import { Badge } from '@/ui/components/Badge'
 import { Button } from '@/ui/components/Button'
@@ -23,6 +24,7 @@ const reveal = {
 }
 
 export default function LandingPage() {
+  useDocumentTitle(HOME_TITLE)
   const profiles = useProfiles()
   const active = useActiveProfile()
   const howRef = useRef<HTMLElement>(null)

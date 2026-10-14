@@ -1,6 +1,7 @@
 import { BookOpen, CodeXml, Compass, ExternalLink, Gauge, Scale, ShieldCheck, TriangleAlert, type LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { DISCLAIMER } from '@/engine/types'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { Button } from '@/ui/components/Button'
 import { Callout } from '@/ui/components/Callout'
 import { Card } from '@/ui/components/Card'
@@ -31,6 +32,7 @@ function Section({ icon: Icon, title, children }: { icon: LucideIcon; title: str
 }
 
 export default function AboutPage() {
+  useDocumentTitle(pageTitle('About'))
   return (
     <Page width="narrow">
       <SectionHeader

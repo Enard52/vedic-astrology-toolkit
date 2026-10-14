@@ -24,9 +24,9 @@ const KEY_KINDS: ReadonlySet<EventKind> = new Set(['ingress', 'retrograde', 'dir
 
 export default function MonthPage({ params }: RouteComponentProps<{ id: string }>) {
   const profile = useProfile(params.id)
-  const nav = useForecastDate('month')
+  const nav = useForecastDate('month', profile)
   const { data: forecast, error, loading, retry } = useForecast(params.id, 'month', nav.anchor)
-  const { place } = useTimingsPlace()
+  const { place } = useTimingsPlace(profile)
   if (!profile) return <ProfileMissing />
   const relative = relativeLabel('month', nav.anchor, nav.today)
   const parts = forecast?.parts ?? []

@@ -45,7 +45,8 @@
   --text: #141a2e;
   --text-muted: #56607a;
   --accent: var(--color-saffron-600);
-  --accent-contrast: #ffffff;
+  /* Dark ink on the saffron fill: 5.8:1 (white was 2.9:1, below WCAG AA). */
+  --accent-contrast: #2a1a04;
   color-scheme: light;
 }
 

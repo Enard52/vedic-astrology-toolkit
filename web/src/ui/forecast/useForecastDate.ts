@@ -7,6 +7,7 @@ import { useSyncExternalStore, type MouseEvent } from 'react'
 import { useLocation, useSearch } from 'wouter'
 import { epochMsToJd, todayIn } from '@/engine/time'
 import type { Horizon } from '@/engine/types'
+import type { Profile } from '@/state/profiles'
 import { useTimingsPlace } from './data'
 import { isIsoDate, periodStart } from './dates'
 
@@ -96,11 +97,11 @@ export interface ForecastDate {
   setDate(date: string | null): void
 }
 
-/** The date a forecast screen shows, read from and written to ?date=. */
-export function useForecastDate(horizon: Horizon): ForecastDate {
+/** The date a forecast screen shows, read from and written to ?date=; "today" is in `profile`'s timings place. */
+export function useForecastDate(horizon: Horizon, profile?: Profile): ForecastDate {
   const search = useSearch()
   const [location, navigate] = useLocation()
-  const { place } = useTimingsPlace()
+  const { place } = useTimingsPlace(profile)
   useNow() // Re-render after midnight so "today" moves on.
   const today = todayIn(place.timeZone)
   const requested = new URLSearchParams(search).get('date')

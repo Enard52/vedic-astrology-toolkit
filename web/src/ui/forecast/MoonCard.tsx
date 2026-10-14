@@ -5,9 +5,9 @@
 import { MoonStar } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { ordinal } from '@/content/format'
-import { NAKSHATRA_NAMES, SIGN_NAMES, SIGN_SANSKRIT } from '@/engine/core'
+import { SIGN_NAMES, SIGN_SANSKRIT } from '@/engine/core'
 import type { MoonDay } from '@/engine/moon'
-import { formatJd, jdToLocal, weekdayOf } from '@/engine/time'
+import { formatJd, weekdayOf } from '@/engine/time'
 import type { TimedEvent, TimeWindow } from '@/engine/types'
 import { Badge } from '@/ui/components/Badge'
 import { Callout } from '@/ui/components/Callout'
@@ -15,6 +15,7 @@ import { bodyColor } from '@/ui/chart/planets'
 // Planet colour variables used by bodyColor().
 import '@/ui/chart/chart.css'
 import { WEEKDAYS } from './dates'
+import { moonMoves } from './moonMoves'
 import { Panel } from './Section'
 
 const TARA_TONE = { good: 'good', mixed: 'mixed', adverse: 'bad' } as const
@@ -31,7 +32,7 @@ export function MoonCard({ moon, chandrashtama, events, date, timeZone, classNam
   className?: string
 }) {
   const { nakshatra: nak, tara, chandraBala: bala } = moon
-  const moves = events.filter((e) => e.kind === 'moon_sign' || e.kind === 'moon_nakshatra' || (e.kind === 'chandrashtama' && e.body === 'Moon'))
+  const moves = moonMoves(events, timeZone)
   const when = (jd: number) => `${formatJd(jd, timeZone, 'weekday-date')}, ${formatJd(jd, timeZone, 'time')}`
   return (
     <Panel title="Moon today" description="Around midday, counted from your birth Moon" icon={<MoonStar />} className={className}>
@@ -55,26 +56,21 @@ export function MoonCard({ moon, chandrashtama, events, date, timeZone, classNam
       )}
       {moves.length > 0 && (
         <ul className="mt-4 space-y-1.5 border-t border-[var(--divider)] pt-3 text-sm">
-          {moves.map((e) => {
-            const on = jdToLocal(e.jd, timeZone, 'minute').date
-            return (
-              <li key={e.jd} className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--text-muted)]">{moveLabel(e)}</span>
-                <span className="shrink-0 font-medium tabular-nums">{on !== date && `${WEEKDAYS[weekdayOf(on)]} `}{formatJd(e.jd, timeZone, 'time')}</span>
-              </li>
-            )
-          })}
+          {moves.map((m) => (
+            <li key={m.key} className="flex items-baseline justify-between gap-3">
+              <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1 text-[var(--text-muted)]">
+                {m.label}
+                {m.chandrashtama && (
+                  <Badge tone={m.chandrashtama === 'begins' ? 'bad' : 'neutral'}>Chandrashtama {m.chandrashtama}</Badge>
+                )}
+              </span>
+              <span className="shrink-0 font-medium tabular-nums">{m.date !== date && `${WEEKDAYS[weekdayOf(m.date)]} `}{formatJd(m.jd, timeZone, 'time')}</span>
+            </li>
+          ))}
         </ul>
       )}
     </Panel>
   )
-}
-
-/** "Into Rohini nakshatra", "Into Taurus", from the event's fields (titles are free text). */
-function moveLabel(e: TimedEvent): string {
-  if (e.kind === 'moon_nakshatra' && e.nakshatra) return `Into ${NAKSHATRA_NAMES[e.nakshatra - 1]} nakshatra`
-  if (e.sign !== undefined) return `Into ${SIGN_NAMES[e.sign]}${e.kind === 'chandrashtama' ? ' (Chandrashtama)' : ''}`
-  return e.title
 }
 
 function Fact({ term, note, children }: { term: string; note?: ReactNode; children: ReactNode }) {

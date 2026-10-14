@@ -2,6 +2,7 @@
 // Example 118) so they can be reviewed without the engine worker. Route: /dev/chart.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { useMemo, type ReactNode } from 'react'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { ChartSwitcher, DashaTimeline, NorthIndianChart, PanchangaCard, PlanetTable, SouthIndianChart, type ChartCaption } from '@/ui/chart'
 import { crowdedDemoChart, crowdedLagnaDemoChart, demoChart, demoDashas } from '@/ui/chart/demo'
 import { Page } from '@/ui/layout/Page'
@@ -20,6 +21,7 @@ function civilDate(date: string): string {
 }
 
 export default function DevChartPage() {
+  useDocumentTitle(pageTitle('Chart components'))
   const now = useMemo(nowJd, [])
   const crowded = useMemo(crowdedDemoChart, [])
   const crowdedLagna = useMemo(crowdedLagnaDemoChart, [])

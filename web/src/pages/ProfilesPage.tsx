@@ -1,6 +1,7 @@
 import { ArrowRight, Download, MapPin, Pencil, Trash, Upload, UserPlus, Users } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Link } from 'wouter'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { birthFileName, parseToolkitBirth, toToolkitBirth } from '@/state/birthJson'
 import { createProfile, deleteProfile, profileName, useProfiles, type Profile } from '@/state/profiles'
 import { calcSettings, useSettings } from '@/state/settings'
@@ -32,6 +33,7 @@ function saveFile(name: string, text: string) {
 type Message = { tone: 'info' | 'error'; text: string }
 
 export default function ProfilesPage() {
+  useDocumentTitle(pageTitle('Profiles'))
   const profiles = useProfiles()
   const settings = useSettings()
   const fileInput = useRef<HTMLInputElement>(null)

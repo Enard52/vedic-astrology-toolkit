@@ -5,6 +5,7 @@ import { Info, RotateCw, UserX } from 'lucide-react'
 import { Link } from 'wouter'
 import { DISCLAIMER } from '@/engine/types'
 import { cn } from '@/lib/cn'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { Button } from '@/ui/components/Button'
 import { Callout } from '@/ui/components/Callout'
 import { EmptyState } from '@/ui/components/EmptyState'
@@ -12,6 +13,7 @@ import { Skeleton } from '@/ui/components/Spinner'
 import { Page } from '@/ui/layout/Page'
 
 export function ProfileMissing() {
+  useDocumentTitle(pageTitle('Profile not found'))
   return (
     <Page width="narrow">
       <EmptyState

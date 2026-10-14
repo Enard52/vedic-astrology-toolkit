@@ -4,8 +4,9 @@
 import { Download, LayoutGrid, ListTree, MapPin, Pencil, Sparkles } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link, type RouteComponentProps } from 'wouter'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { birthFileName, toToolkitBirth } from '@/state/birthJson'
-import { useProfile } from '@/state/profiles'
+import { profileName, useProfile } from '@/state/profiles'
 import { AYANAMSA_OPTIONS, calcSettings, updateSettings, useSettings, YEAR_MODEL_OPTIONS } from '@/state/settings'
 import { Button } from '@/ui/components/Button'
 import { ChartSwitcher, DashaTimeline, PanchangaCard, PlanetTable } from '@/ui/chart'
@@ -31,6 +32,7 @@ export default function ChartPage({ params }: RouteComponentProps<{ id: string }
   const settings = useSettings()
   const { data, error, retry } = useChartData(params.id)
   const nowJd = useNowJd()
+  useDocumentTitle(pageTitle(profile ? `Birth chart · ${profileName(profile)}` : 'Profile not found'))
   if (!profile) return <ProfileMissing />
   const { birth } = profile
   const ayanamsa = AYANAMSA_OPTIONS.find((o) => o.value === settings.ayanamsa)?.label ?? settings.ayanamsa

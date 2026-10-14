@@ -28,7 +28,8 @@ const QUICK: readonly number[] = [1, 9, 10]
 const segment = clsx(
   'rounded-full px-3 py-1.5 text-sm font-medium text-(--text-muted) transition-colors outline-none',
   'hover:text-(--text) focus-visible:ring-2 focus-visible:ring-(--accent)',
-  'data-[state=on]:bg-(--accent) data-[state=on]:text-(--accent-contrast) data-[state=on]:shadow-sm',
+  // The app's one selected look (as SegmentedControl and the nav): soft fill, accent ring and text.
+  'data-[state=on]:bg-(--selected-bg) data-[state=on]:text-(--accent-text) data-[state=on]:shadow-sm data-[state=on]:ring-1 data-[state=on]:ring-(--accent)/45',
 )
 const group = 'inline-flex rounded-full border border-(--surface-border) bg-(--bg-elevated) p-1'
 

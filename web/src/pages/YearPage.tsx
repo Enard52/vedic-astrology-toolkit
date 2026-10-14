@@ -22,10 +22,10 @@ import { Page } from '@/ui/layout/Page'
 
 export default function YearPage({ params }: RouteComponentProps<{ id: string }>) {
   const profile = useProfile(params.id)
-  const nav = useForecastDate('year')
+  const nav = useForecastDate('year', profile)
   const { data: forecast, extras, error, loading, retry } = useForecast(params.id, 'year', nav.anchor)
   const chartData = useChartData(params.id)
-  const { place } = useTimingsPlace()
+  const { place } = useTimingsPlace(profile)
   const nowJd = useNowJd()
   if (!profile) return <ProfileMissing />
   const zone = place.timeZone

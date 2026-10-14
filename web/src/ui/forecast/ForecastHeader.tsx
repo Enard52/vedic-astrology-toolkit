@@ -4,11 +4,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import type { ReactNode } from 'react'
 import type { Horizon } from '@/engine/types'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { profileName, type Profile } from '@/state/profiles'
 import { Spinner } from '@/ui/components/Spinner'
 import { Avatar } from '@/ui/layout/ProfileSwitcher'
 import { DateNavigator } from './DateNavigator'
-import { dateParts, periodTitle, relativeLabel } from './dates'
+import { dateParts, periodShortLabel, periodTitle, relativeLabel } from './dates'
 import type { ForecastDate } from './useForecastDate'
 
 const KIND: Record<Horizon, string> = { day: 'Daily guidance', week: 'Weekly guidance', month: 'Monthly guidance', year: 'Yearly guidance' }
@@ -43,8 +44,16 @@ export function ForecastHeader({ profile, eyebrow, title, description, loading, 
   )
 }
 
-/** Header for a dated forecast screen, with the navigator for its period. */
+/** "Today, Wed 14 Oct · Asha · Jyotish Daily", "October 2026 · Asha · Jyotish Daily". */
+export function periodDocumentTitle(profile: Profile, horizon: Horizon, anchor: string, today: string): string {
+  const relative = relativeLabel(horizon, anchor, today)
+  const label = horizon === 'month' ? periodTitle('month', anchor) : periodShortLabel(horizon, anchor)
+  return pageTitle(relative ? `${relative}, ${label}` : label, profileName(profile))
+}
+
+/** Header for a dated forecast screen, with the navigator for its period; it also titles the page. */
 export function PeriodHeader({ profile, horizon, nav, loading }: { profile: Profile; horizon: Horizon; nav: ForecastDate; loading?: boolean }) {
+  useDocumentTitle(periodDocumentTitle(profile, horizon, nav.anchor, nav.today))
   return (
     <ForecastHeader
       profile={profile}

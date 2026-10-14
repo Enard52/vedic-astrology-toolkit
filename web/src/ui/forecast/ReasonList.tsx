@@ -1,12 +1,14 @@
 // The reasons behind a rating, grouped Supportive / Neutral / Challenging. Each card shows
 // its title, how much it counts (a small bar) and the plain-language text; opening it shows
-// the whole text and where the rule comes from.
+// the whole text and where the rule comes from. A long list can start with its heaviest few.
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { BookOpen, ChevronDown } from 'lucide-react'
+import { BookOpen, ChevronDown, ChevronsDown, ChevronsUp } from 'lucide-react'
 import { Collapsible } from 'radix-ui'
 import { useId, useState } from 'react'
 import type { Effect, Reason } from '@/engine/types'
 import { cn } from '@/lib/cn'
+import { Button } from '@/ui/components/Button'
+import { leadingReasons } from './balance'
 import { EFFECT_META, factorIcon, TONE_VARS } from './meta'
 import { SectionTitle } from './Section'
 
@@ -18,24 +20,31 @@ function influence(weight: number, max: number): string {
   return r > 0.75 ? 'Strong' : r > 0.4 ? 'Moderate' : 'Light'
 }
 
-export function ReasonList({ reasons, title = 'Why', description, columns = false, className }: {
+export function ReasonList({ reasons, title = 'Why', description, columns = false, initial, className }: {
   reasons: readonly Reason[]
   title?: string
   description?: string
   /** Two columns of cards on wide screens, for a full-width list. */
   columns?: boolean
+  /** Show only this many of the heaviest reasons until "Show all" is pressed. */
+  initial?: number
   className?: string
 }) {
   const headingId = useId()
+  const listId = useId()
+  const [all, setAll] = useState(false)
   if (!reasons.length) return null
   const max = Math.max(...reasons.map((r) => r.weight))
+  const collapsible = initial !== undefined && reasons.length > initial
+  const shown = collapsible && !all ? leadingReasons(reasons, initial) : null
   return (
     <section aria-labelledby={headingId} className={className}>
       <SectionTitle id={headingId} description={description}>{title}</SectionTitle>
-      <div className="space-y-6">
+      <div id={listId} className="space-y-6">
         {ORDER.map((effect) => {
           const group = reasons.filter((r) => r.effect === effect).sort((a, b) => b.weight - a.weight)
-          if (!group.length) return null
+          const visible = shown ? group.filter((r) => shown.has(r)) : group
+          if (!visible.length) return null
           const meta = EFFECT_META[effect]
           const Icon = meta.icon
           return (
@@ -43,15 +52,20 @@ export function ReasonList({ reasons, title = 'Why', description, columns = fals
               <h3 className="mb-2.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: TONE_VARS[meta.tone].fg }}>
                 <Icon aria-hidden className="size-4" />
                 {meta.label}
-                <span className="font-medium text-[var(--text-muted)]">{group.length}</span>
+                <span className="font-medium text-[var(--text-muted)]">{visible.length < group.length ? `${visible.length} of ${group.length}` : group.length}</span>
               </h3>
               <ul className={cn('space-y-2', columns && 'lg:grid lg:grid-cols-2 lg:items-start lg:gap-2.5 lg:space-y-0')}>
-                {group.map((r) => <li key={`${r.factor}-${r.title}`}><ReasonCard reason={r} max={max} /></li>)}
+                {visible.map((r) => <li key={`${r.factor}-${r.title}`}><ReasonCard reason={r} max={max} /></li>)}
               </ul>
             </div>
           )
         })}
       </div>
+      {collapsible && (
+        <Button variant="secondary" size="sm" className="mt-4" aria-expanded={all} aria-controls={listId} onClick={() => setAll((v) => !v)}>
+          {all ? <><ChevronsUp aria-hidden />Show only the top {initial}</> : <><ChevronsDown aria-hidden />Show all {reasons.length} reasons</>}
+        </Button>
+      )}
     </section>
   )
 }

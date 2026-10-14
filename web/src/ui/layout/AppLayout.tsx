@@ -1,8 +1,9 @@
 import { CalendarDays, CalendarRange, LayoutGrid, Orbit, Sun, type LucideIcon } from 'lucide-react'
 import { motion } from 'motion/react'
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 import { cn } from '@/lib/cn'
+import { titleWithoutApp, usePageTitle } from '@/lib/documentTitle'
 import { setActiveProfile, useActiveProfile, useProfiles, type Profile } from '@/state/profiles'
 import { Button } from '@/ui/components/Button'
 import { LogoMark, Wordmark } from '@/ui/components/Logo'
@@ -82,8 +83,29 @@ export function AppLayout({ children }: { children: ReactNode }) {
       {/* Clear the fixed tab bar (4rem plus the home-indicator inset on notched phones). */}
       <Footer className={active ? 'pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0' : undefined} />
       {active && <MobileTabBar profile={active} view={view} />}
+      <RouteAnnouncer />
     </div>
   )
+}
+
+/**
+ * Tells screen-reader users which page opened: after a route change focus stays on the link
+ * that was followed, so nothing else would be read. The new page's title is spoken once it
+ * has set it; a title change on the same route (a date step) is left to its own controls, and
+ * the first page is read by the browser itself.
+ */
+function RouteAnnouncer() {
+  const [location] = useLocation()
+  const title = usePageTitle()
+  const [message, setMessage] = useState('')
+  const last = useRef({ location, title })
+  useEffect(() => {
+    const prev = last.current
+    if (title === prev.title) return // The route changed but its page has not titled itself yet.
+    last.current = { location, title }
+    if (location !== prev.location) setMessage(titleWithoutApp(title))
+  }, [location, title])
+  return <div className="sr-only" aria-live="polite" aria-atomic="true" data-testid="route-announcer">{message}</div>
 }
 
 function DesktopNav({ profile, view }: { profile: Profile; view: ProfileView | null }) {

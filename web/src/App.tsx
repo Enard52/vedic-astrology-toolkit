@@ -3,6 +3,7 @@ import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { Component, lazy, Suspense, useEffect, useState, type ComponentType, type ReactNode } from 'react'
 import { Route, Router, Switch, useLocation, type RouteComponentProps } from 'wouter'
 import { useHashLocation } from 'wouter/use-hash-location'
+import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import LandingPage from '@/pages/LandingPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 import { applyTheme, getSettings, useSettings, watchSystemTheme } from '@/state/settings'
@@ -71,6 +72,7 @@ function PageFallback() {
 
 /** Shown in place of a page (or the whole shell) that failed to load or threw while rendering. */
 function ErrorScreen() {
+  useDocumentTitle(pageTitle('Something went wrong'))
   return (
     <Page width="narrow">
       <Callout tone="error" title="Something went wrong">

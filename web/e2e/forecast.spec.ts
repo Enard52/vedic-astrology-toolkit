@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test as base, type Page } from '@playwright/test'
 
 // The forecast screens with a seeded profile and a fixed clock: Wednesday 14 October 2026,
 // 12:30 in Bengaluru, which is inside that day's Rahu Kalam (12:06-13:35). Everything is
@@ -13,6 +13,23 @@ const PROFILE = {
   updatedAt: '2026-10-01T00:00:00.000Z',
 }
 const NOW = new Date('2026-10-14T12:30:00+05:30')
+
+/**
+ * Every test fails on a console error or an uncaught page error (a React key clash, a failed
+ * render), unless it sets allowConsoleErrors because it breaks the engine on purpose.
+ */
+const test = base.extend<{ allowConsoleErrors: boolean; consoleErrors: void }>({
+  allowConsoleErrors: [false, { option: true }],
+  consoleErrors: [async ({ page, allowConsoleErrors }, use) => {
+    const errors: string[] = []
+    page.on('console', (m) => {
+      if (m.type() === 'error') errors.push(m.text())
+    })
+    page.on('pageerror', (e) => errors.push(e.message))
+    await use()
+    if (!allowConsoleErrors) expect(errors, 'console errors').toEqual([])
+  }, { auto: true }],
+})
 
 const forecastNav = (page: Page) => page.locator('nav[aria-label="Forecasts"]:visible')
 const heading = (page: Page) => page.getByRole('heading', { level: 1 })
@@ -195,6 +212,9 @@ test('an unknown profile id explains itself', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Profile not found' })).toBeVisible()
 })
 
+test.describe('engine failures', () => {
+test.use({ allowConsoleErrors: true })
+
 test('a crashed engine worker is replaced on the next request', async ({ page }) => {
   await open(page, 'today')
   await expect(rating(page)).toBeVisible()
@@ -219,4 +239,110 @@ test('an engine that fails to start offers a working retry', async ({ page }) =>
   block = false
   await page.getByRole('button', { name: 'Try again' }).click()
   await expect(rating(page)).toBeVisible()
+})
+})
+
+test('the Moon card lists a sign and a star change at the same minute as one row', async ({ page }) => {
+  // 6 January 2026: the Moon enters Leo and Magha together (0 degrees Leo).
+  await page.goto(`./?date=2026-01-06#/p/${ID}/today`)
+  await expect(heading(page)).toHaveText('Tuesday, 6 January', { timeout: 45_000 })
+  const moon = page.getByRole('region', { name: 'Moon today' })
+  await expect(moon.getByRole('listitem').filter({ hasText: 'Into Leo and Magha nakshatra' })).toHaveCount(1)
+  await expect(moon.getByRole('listitem').filter({ hasText: /^Into Leo\d/ })).toHaveCount(0)
+})
+
+test('today starts with five leading reasons and shows the rest on request', async ({ page }) => {
+  await open(page, 'today')
+  const reasons = page.getByRole('region', { name: 'What shapes the day' })
+  const cards = reasons.getByRole('listitem')
+  await expect(cards).toHaveCount(5)
+  // The reasons the rating card names ("Lifted most by ...; held back by ...") are among them.
+  const named = await page.getByRole('region', { name: /^(Favourable|Mixed|Challenging)$/ }).locator('p strong').allTextContents()
+  expect(named.length).toBeGreaterThan(0)
+  for (const title of named) await expect(cards.filter({ hasText: title })).toHaveCount(1)
+  const more = reasons.getByRole('button', { name: /^Show all \d+ reasons$/ })
+  const total = Number((await more.textContent())!.match(/\d+/)![0])
+  expect(total).toBeGreaterThan(5)
+  await more.click()
+  await expect(cards).toHaveCount(total)
+  await expect(reasons.getByRole('button', { name: 'Show only the top 5' })).toHaveAttribute('aria-expanded', 'true')
+})
+
+test('each screen titles the page, and a route change announces the new title', async ({ page }) => {
+  await open(page, 'today')
+  await expect(page).toHaveTitle('Today, Wed 14 Oct · Asha · Jyotish Daily')
+  const announcer = page.getByTestId('route-announcer')
+  await expect(announcer).toHaveText('')
+  await forecastNav(page).getByRole('link', { name: 'Week' }).click()
+  await expect(heading(page)).toHaveText('11 – 17 Oct')
+  await expect(page).toHaveTitle('This week, 11 – 17 Oct · Asha · Jyotish Daily')
+  await expect(announcer).toHaveText('This week, 11 – 17 Oct · Asha')
+  // A date step keeps the route: the navigator says the new period itself.
+  await page.getByRole('button', { name: 'Next week' }).click()
+  await expect(page).toHaveTitle('Next week, 18 – 24 Oct · Asha · Jyotish Daily')
+  await expect(announcer).toHaveText('This week, 11 – 17 Oct · Asha')
+  await forecastNav(page).getByRole('link', { name: 'Chart' }).click()
+  await expect(page).toHaveTitle('Birth chart · Asha · Jyotish Daily')
+  await expect(announcer).toHaveText('Birth chart · Asha')
+  await page.goto('./#/settings')
+  await expect(page).toHaveTitle('Settings · Jyotish Daily')
+})
+
+test('quick steps send only the period finally shown to the engine', async ({ page }) => {
+  // Count the year forecasts posted to the worker (Comlink "APPLY" messages for forecast(..., 'year', ...)).
+  await page.addInitScript(() => {
+    const w = window as unknown as { yearCalls: number }
+    w.yearCalls = 0
+    const post = Worker.prototype.postMessage as (this: Worker, ...args: unknown[]) => void
+    Worker.prototype.postMessage = function (this: Worker, ...args: unknown[]) {
+      const m = args[0] as { type?: string; path?: string[]; argumentList?: { value?: unknown }[] } | null
+      if (m?.type === 'APPLY' && m.path?.[0] === 'forecast' && m.argumentList?.[3]?.value === 'year') w.yearCalls++
+      post.apply(this, args)
+    }
+  })
+  await open(page, 'year')
+  await expect(heading(page)).toHaveText('2026')
+  const calls = () => page.evaluate(() => (window as unknown as { yearCalls: number }).yearCalls)
+  const before = await calls()
+  await page.getByRole('button', { name: 'Next year' }).focus()
+  for (let i = 0; i < 5; i++) await page.keyboard.press('ArrowRight')
+  await expect(heading(page)).toHaveText('2031')
+  await expect(page.getByRole('main').getByRole('status').filter({ hasText: 'Updating' })).toHaveCount(0)
+  await expect(rating(page)).toBeVisible()
+  // At least 2031 itself; at most the step already running when the keys were pressed, plus 2031.
+  const sent = await calls() - before
+  expect(sent).toBeGreaterThanOrEqual(1)
+  expect(sent).toBeLessThanOrEqual(2)
+})
+
+test('switching profile computes nothing for the leaving profile at the new birthplace', async ({ page }) => {
+  const ravi = {
+    id: 'e2eravi',
+    birth: { name: 'Ravi', date: '1985-03-02', time: '14:20', timeZone: 'America/New_York', latitude: 40.7128, longitude: -74.006, place: 'New York, USA' },
+    createdAt: '2026-10-01T00:00:00.000Z',
+    updatedAt: '2026-10-01T00:00:00.000Z',
+  }
+  // Every forecast posted to the worker, as "birth date @ place zone".
+  await page.addInitScript((second) => {
+    const stored = JSON.parse(localStorage.getItem('jyotish-daily:profiles:v1')!)
+    if (!stored.profiles.some((p: { id: string }) => p.id === second.id)) {
+      localStorage.setItem('jyotish-daily:profiles:v1', JSON.stringify({ ...stored, profiles: [...stored.profiles, second] }))
+    }
+    const w = window as unknown as { forecasts: string[] }
+    w.forecasts = []
+    const post = Worker.prototype.postMessage as (this: Worker, ...args: unknown[]) => void
+    Worker.prototype.postMessage = function (this: Worker, ...args: unknown[]) {
+      const m = args[0] as { type?: string; path?: string[]; argumentList?: { value?: { date?: string; timeZone?: string } }[] } | null
+      if (m?.type === 'APPLY' && m.path?.[0] === 'forecast') w.forecasts.push(`${m.argumentList?.[0]?.value?.date} @ ${m.argumentList?.[2]?.value?.timeZone}`)
+      post.apply(this, args)
+    }
+  }, ravi)
+  await open(page, 'year')
+  await page.getByRole('button', { name: /Switch profile/ }).click()
+  await page.getByRole('menuitem', { name: /Ravi/ }).click()
+  await expect(page.getByRole('main').getByText('Ravi', { exact: true })).toBeVisible()
+  await expect(rating(page)).toBeVisible()
+  const sent = await page.evaluate(() => (window as unknown as { forecasts: string[] }).forecasts)
+  expect(sent).toContain('1985-03-02 @ America/New_York')
+  expect(sent).not.toContain('1990-05-12 @ America/New_York')
 })

@@ -3,6 +3,7 @@
 // (engine/time.ts): a skipped wall time is an error and a repeated one needs
 // an explicit fold choice. Needs no WebAssembly.
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import { t } from '@/i18n'
 import { Temporal } from 'temporal-polyfill'
 import { fixedOffsetMinutes, isValidTimeZone, localToUtc } from '@/engine/time'
 import type { BirthInput } from '@/engine/types'
@@ -126,30 +127,30 @@ export function checkBirth(d: BirthDraft): BirthCheck {
   let foldOptions: BirthCheck['foldOptions'] = null
 
   const name = d.name.trim()
-  if (!name) errors.name = 'Enter a name for this chart.'
-  else if (name.length > 60) errors.name = 'Keep the name under 60 characters.'
+  if (!name) errors.name = t('birth.nameMissing')
+  else if (name.length > 60) errors.name = t('birth.nameLong')
 
   const year = Number(d.date.slice(0, 4))
-  if (!d.date) errors.date = 'Enter the date of birth.'
-  else if (!isRealDate(d.date)) errors.date = 'Enter a real calendar date.'
-  else if (year < MIN_YEAR || year > MAX_YEAR) errors.date = `Use a year between ${MIN_YEAR} and ${MAX_YEAR}.`
+  if (!d.date) errors.date = t('birth.dateMissing')
+  else if (!isRealDate(d.date)) errors.date = t('birth.dateReal')
+  else if (year < MIN_YEAR || year > MAX_YEAR) errors.date = t('birth.dateRange', { min: MIN_YEAR, max: MAX_YEAR })
 
-  if (!d.time) errors.time = 'Enter the time of birth, as written on the record.'
-  else if (!TIME_RE.test(d.time)) errors.time = 'Enter a time such as 14:35 or 14:35:20.'
+  if (!d.time) errors.time = t('birth.timeMissing')
+  else if (!TIME_RE.test(d.time)) errors.time = t('birth.timeFormat')
 
   const zone = d.timeZone.trim()
   const hasPlace = d.latitude !== null || d.longitude !== null || zone !== ''
   if (!hasPlace) {
-    errors.place = 'Choose the birthplace from the list, or enter coordinates under Advanced.'
+    errors.place = t('birth.place')
   } else {
-    if (d.latitude === null) errors.latitude = 'Enter the latitude.'
-    else if (!Number.isFinite(d.latitude)) errors.latitude = 'Enter decimal degrees, such as 12.2979 or 33.87 S.'
-    else if (Math.abs(d.latitude) >= 90) errors.latitude = 'Latitude must be between -90 and 90 (north is positive).'
-    if (d.longitude === null) errors.longitude = 'Enter the longitude.'
-    else if (!Number.isFinite(d.longitude)) errors.longitude = 'Enter decimal degrees, such as 76.6393 or 74.006 W.'
-    else if (Math.abs(d.longitude) > 180) errors.longitude = 'Longitude must be between -180 and 180 (east is positive).'
-    if (!zone) errors.timeZone = 'Enter a time zone.'
-    else if (!isValidTimeZone(zone)) errors.timeZone = 'Unknown time zone. Use a name such as Asia/Kolkata or an offset such as +05:30.'
+    if (d.latitude === null) errors.latitude = t('birth.latMissing')
+    else if (!Number.isFinite(d.latitude)) errors.latitude = t('birth.latFormat')
+    else if (Math.abs(d.latitude) >= 90) errors.latitude = t('birth.latRange')
+    if (d.longitude === null) errors.longitude = t('birth.lonMissing')
+    else if (!Number.isFinite(d.longitude)) errors.longitude = t('birth.lonFormat')
+    else if (Math.abs(d.longitude) > 180) errors.longitude = t('birth.lonRange')
+    if (!zone) errors.timeZone = t('birth.zoneMissing')
+    else if (!isValidTimeZone(zone)) errors.timeZone = t('birth.zoneUnknown')
   }
 
   if (!errors.date && !errors.time && zone && !errors.timeZone) {
@@ -161,7 +162,7 @@ export function checkBirth(d: BirthDraft): BirthCheck {
           { fold: 0, offsetMinutes: first.offsetMinutes, utc: toIso(first.epochMs) },
           { fold: 1, offsetMinutes: second.offsetMinutes, utc: toIso(second.epochMs) },
         ]
-        if (d.fold === undefined) errors.fold = 'This clock time happened twice that night because the clocks went back. Choose which one.'
+        if (d.fold === undefined) errors.fold = t('birth.fold')
       }
       if (!errors.fold) {
         const chosen = foldOptions && d.fold === 1 ? second : first
@@ -170,15 +171,15 @@ export function checkBirth(d: BirthDraft): BirthCheck {
       }
     } catch {
       // localToUtc only throws here for a wall time skipped by a clock change.
-      errors.time = 'This clock time never happened here: the clocks jumped forward that night. Check the record, which may give standard time.'
+      errors.time = t('birth.gap')
     }
   }
 
   if (!errors.date && year < RELIABLE_ZONE_YEAR && zone && !errors.timeZone && fixedOffsetMinutes(zone) === null) {
-    notes.push(`Time-zone history before ${RELIABLE_ZONE_YEAR} is less certain. Check that the offset shown matches the clock time used where the birth was recorded (war time and local time were common); if not, set the offset under Advanced.`)
+    notes.push(t('birth.oldZone', { year: RELIABLE_ZONE_YEAR }))
   }
   if (d.latitude !== null && Math.abs(d.latitude) > 66 && Math.abs(d.latitude) < 90) {
-    notes.push('Near the poles the Sun can stay up or down all day, so sunrise-based timings may be unavailable.')
+    notes.push(t('birth.polar'))
   }
 
   const ok = Object.keys(errors).length === 0

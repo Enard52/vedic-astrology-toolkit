@@ -1,12 +1,14 @@
 import { LoaderCircle } from 'lucide-react'
 import type { ComponentProps } from 'react'
+import { useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 
-export function Spinner({ className, label = 'Loading' }: { className?: string; label?: string }) {
+export function Spinner({ className, label }: { className?: string; label?: string }) {
+  const { t } = useT()
   return (
     <span role="status" className="inline-flex items-center">
       <LoaderCircle aria-hidden className={cn('size-5 animate-spin text-[var(--accent-text)]', className)} />
-      <span className="sr-only">{label}</span>
+      <span className="sr-only">{label ?? t('common.loading')}</span>
     </span>
   )
 }

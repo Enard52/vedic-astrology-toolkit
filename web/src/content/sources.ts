@@ -12,6 +12,8 @@ export const SOURCES = {
   chandrashtama: 'Chandrashtama: the Moon in the 8th sign from the natal Moon (Phaladeepika ch. 26)',
   moonChange: 'Sunrise-based Vedic day; the Moon\'s sign and star are taken where they rule most of the daytime',
   dasha: 'Vimsottari dasha: BPHS; Rao ch. 16 (PDF 189-202)',
+  dashaPromise: 'Dasha lord read from the birth chart: BPHS ch. 53 v. 49 (lords in angles, trines and the 11th); Rao Table 30 (PDF 152-153), Vipareeta raja yoga (PDF 124); Shadbala (Raman)',
+  functional: 'Functional nature for your ascendant: Rao Table 30 (PDF 152-153); Laghu Parashari',
   dashaTransit: 'Dasha lord in transit from the natal Moon: Rao ch. 25 (PDF 282-308)',
   tithi: 'Rikta tithis and Amavasya: Muhurta Chintamani ch. 1; Drik Panchang muhurta rules',
   vishti: 'Vishti (Bhadra) karana: Muhurta Chintamani ch. 1; Drik Panchang Bhadra notes',

@@ -1,5 +1,6 @@
 import { LocateFixed, MapPin, Search } from 'lucide-react'
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { useT } from '@/i18n'
 import { cityRegion, loadCities, type City, type CityIndex } from '@/lib/cities'
 import { cn } from '@/lib/cn'
 import { inputClass } from './Input'
@@ -22,7 +23,8 @@ type Status = 'idle' | 'loading' | 'ready' | 'error'
  * Type-ahead birthplace search (ARIA 1.2 combobox with a listbox popup). The
  * city table loads on first focus; arrows move, Enter picks, Escape closes.
  */
-export function PlaceSearch({ id, onSelect, onManualEntry, placeholder = 'Start typing a city, e.g. Mysuru', autoFocus, ...aria }: PlaceSearchProps) {
+export function PlaceSearch({ id, onSelect, onManualEntry, placeholder, autoFocus, ...aria }: PlaceSearchProps) {
+  const { t, tp } = useT()
   const listId = useId()
   const [index, setIndex] = useState<CityIndex | null>(null)
   const [status, setStatus] = useState<Status>('idle')
@@ -105,14 +107,14 @@ export function PlaceSearch({ id, onSelect, onManualEntry, placeholder = 'Start 
       }}
       className="mt-1 flex min-h-11 items-center gap-2 rounded-lg font-medium text-[var(--accent-text)] hover:underline hover:underline-offset-4"
     >
-      <LocateFixed aria-hidden className="size-4" /> Enter coordinates instead
+      <LocateFixed aria-hidden className="size-4" /> {t('place.manual')}
     </button>
   )
 
   const showList = open && query.trim() !== ''
   const activeId = showList && results[active] ? `${listId}-${active}` : undefined
   const announcement = status === 'ready' && query.trim()
-    ? results.length ? `${results.length} place${results.length > 1 ? 's' : ''} found` : 'No places found'
+    ? results.length ? tp('place.found', results.length) : t('place.none')
     : ''
 
   return (
@@ -131,7 +133,7 @@ export function PlaceSearch({ id, onSelect, onManualEntry, placeholder = 'Start 
         spellCheck={false}
         enterKeyHint="search"
         autoFocus={autoFocus}
-        placeholder={placeholder}
+        placeholder={placeholder ?? t('place.placeholder')}
         className={cn(inputClass, 'pl-10 pr-10')}
         value={query}
         onFocus={() => {
@@ -148,14 +150,14 @@ export function PlaceSearch({ id, onSelect, onManualEntry, placeholder = 'Start 
         onKeyDown={onKeyDown}
         {...aria}
       />
-      {status === 'loading' && <span className="absolute right-3 top-1/2 -translate-y-1/2"><Spinner className="size-4" label="Loading places" /></span>}
+      {status === 'loading' && <span className="absolute right-3 top-1/2 -translate-y-1/2"><Spinner className="size-4" label={t('place.loading')} /></span>}
       <span className="sr-only" aria-live="polite">{announcement}</span>
 
       <ul
         ref={listRef}
         id={listId}
         role="listbox"
-        aria-label="Matching places"
+        aria-label={t('place.list')}
         hidden={!showList}
         className="glass absolute inset-x-0 top-full z-30 mt-2 max-h-80 overflow-y-auto rounded-2xl bg-[var(--bg)] p-1.5"
       >
@@ -178,7 +180,7 @@ export function PlaceSearch({ id, onSelect, onManualEntry, placeholder = 'Start 
             <span className="min-w-0 flex-1">
               <span className="block truncate font-medium text-[var(--text)]">
                 {city.name}
-                {via && <span className="font-normal text-[var(--text-muted)]"> · also {via}</span>}
+                {via && <span className="font-normal text-[var(--text-muted)]"> · {t('place.also', { name: via })}</span>}
               </span>
               <span className="block truncate text-[0.8rem] text-[var(--text-muted)]">
                 {cityRegion(city)}
@@ -189,14 +191,14 @@ export function PlaceSearch({ id, onSelect, onManualEntry, placeholder = 'Start 
         ))}
         {status === 'ready' && results.length === 0 && (
           <li role="presentation" className="px-3 py-3 text-sm text-[var(--text-muted)]">
-            No match. Try another spelling or add the state after a comma.
+            {t('place.noMatch')}
             {manualAction}
           </li>
         )}
-        {status === 'loading' && <li role="presentation" className="px-3 py-3 text-sm text-[var(--text-muted)]">Loading places…</li>}
+        {status === 'loading' && <li role="presentation" className="px-3 py-3 text-sm text-[var(--text-muted)]">{t('place.loading')}…</li>}
         {status === 'error' && (
           <li role="presentation" className="px-3 py-3 text-sm text-[var(--bad-fg)]">
-            The place list could not be loaded.
+            {t('place.error')}
             {manualAction}
           </li>
         )}

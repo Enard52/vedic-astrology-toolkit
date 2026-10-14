@@ -1,22 +1,26 @@
 // Birth chart: North or South Indian chart with divisional charts, birth details with an
-// export for astrologers, the birth panchanga, planet positions and the Vimsottari timeline.
+// export for astrologers, the birth panchanga, planet positions, planetary strength (Shadbala,
+// Vimsopaka, functional nature), the yogas formed and the Vimsottari timeline.
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { Download, LayoutGrid, ListTree, MapPin, Pencil, Sparkles } from 'lucide-react'
+import { Download, Gauge, LayoutGrid, ListTree, MapPin, Pencil, Printer, Sparkles, Stars } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link, type RouteComponentProps } from 'wouter'
+import { useT } from '@/i18n'
 import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { birthFileName, toToolkitBirth } from '@/state/birthJson'
 import { profileName, useProfile } from '@/state/profiles'
-import { AYANAMSA_OPTIONS, calcSettings, updateSettings, useSettings, YEAR_MODEL_OPTIONS } from '@/state/settings'
+import { calcSettings, updateSettings, useSettings } from '@/state/settings'
 import { Button } from '@/ui/components/Button'
 import { ChartSwitcher, DashaTimeline, PanchangaCard, PlanetTable } from '@/ui/chart'
-import { useChartData } from '@/ui/forecast/data'
+import { useChartData, useStrengths, useYogas } from '@/ui/forecast/data'
 import { longDate } from '@/ui/forecast/dates'
 import { ForecastHeader } from '@/ui/forecast/ForecastHeader'
 import { ForecastDisclaimer, ForecastError, ForecastSkeleton, ProfileMissing } from '@/ui/forecast/ForecastStates'
 import { Panel } from '@/ui/forecast/Section'
 import { useNowJd } from '@/ui/forecast/useForecastDate'
 import { Page } from '@/ui/layout/Page'
+import { StrengthSection } from '@/ui/natal/StrengthSection'
+import { YogaSection } from '@/ui/natal/YogaSection'
 
 function saveJson(name: string, value: unknown) {
   const url = URL.createObjectURL(new Blob([`${JSON.stringify(value, null, 2)}\n`], { type: 'application/json' }))
@@ -28,65 +32,81 @@ function saveJson(name: string, value: unknown) {
 const coordinate = (value: number, pos: string, neg: string) => `${Math.abs(value).toFixed(4)}° ${value >= 0 ? pos : neg}`
 
 export default function ChartPage({ params }: RouteComponentProps<{ id: string }>) {
+  const { t } = useT()
   const profile = useProfile(params.id)
   const settings = useSettings()
   const { data, error, retry } = useChartData(params.id)
+  const strengths = useStrengths(params.id)
+  const yogas = useYogas(params.id)
   const nowJd = useNowJd()
-  useDocumentTitle(pageTitle(profile ? `Birth chart · ${profileName(profile)}` : 'Profile not found'))
+  useDocumentTitle(pageTitle(profile ? `${t('chartPage.eyebrow')} · ${profileName(profile)}` : t('profile.notFound')))
   if (!profile) return <ProfileMissing />
   const { birth } = profile
-  const ayanamsa = AYANAMSA_OPTIONS.find((o) => o.value === settings.ayanamsa)?.label ?? settings.ayanamsa
-  const yearModel = YEAR_MODEL_OPTIONS.find((o) => o.value === settings.yearModel)?.label ?? settings.yearModel
+  const ayanamsa = t(`ayanamsa.${settings.ayanamsa}`)
+  const yearModel = t(`yearModel.${settings.yearModel}`)
   return (
     <Page>
       <ForecastHeader
         profile={profile}
-        eyebrow="Birth chart"
+        eyebrow={t('chartPage.eyebrow')}
         title={longDate(birth.date)}
-        description={<>{birth.time} · {birth.place || coordinate(birth.latitude, 'N', 'S')}</>}
+        description={<>{birth.time} · {birth.place || coordinate(birth.latitude, t('coord.n'), t('coord.s'))}</>}
         action={
-          <Button asChild variant="secondary" size="sm" className="h-11 px-4">
-            <Link href={`/p/${profile.id}/edit`}><Pencil aria-hidden /> Edit details</Link>
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button asChild variant="secondary" size="sm" className="h-11 px-4">
+              <Link href={`/p/${profile.id}/report`}><Printer aria-hidden /> {t('chartPage.report')}</Link>
+            </Button>
+            <Button asChild variant="secondary" size="sm" className="h-11 px-4">
+              <Link href={`/p/${profile.id}/edit`}><Pencil aria-hidden /> {t('chartPage.edit')}</Link>
+            </Button>
+          </div>
         }
       />
       {error ? <ForecastError error={error} onRetry={retry} /> : !data ? <ForecastSkeleton variant="chart" /> : (
         <div className="space-y-4 lg:space-y-6">
           <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-12 lg:gap-6">
-            <Panel title="Chart" icon={<LayoutGrid />} className="lg:col-span-7">
+            <Panel title={t('nav.chart')} icon={<LayoutGrid />} className="lg:col-span-7">
               <ChartSwitcher
                 chart={data.chart}
                 chartStyle={settings.chartStyle}
                 onChartStyleChange={(chartStyle) => updateSettings({ chartStyle })}
-                caption={{ title: birth.name || 'Birth chart', subtitle: `${birth.date} · ${birth.time}\n${birth.place ?? ''}` }}
+                caption={{ title: birth.name || t('chartPage.eyebrow'), subtitle: `${birth.date} · ${birth.time}\n${birth.place ?? ''}` }}
               />
             </Panel>
             <div className="space-y-4 lg:col-span-5 lg:space-y-6">
-              <Panel title="Birth details" icon={<MapPin />}>
+              <Panel title={t('chartPage.details')} icon={<MapPin />}>
                 <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 text-sm">
-                  <Detail term="Date">{longDate(birth.date)}</Detail>
-                  <Detail term="Time">{birth.time} <span className="text-[var(--text-muted)]">({birth.timeZone})</span></Detail>
-                  <Detail term="Place">{birth.place || '—'}</Detail>
-                  <Detail term="Coordinates">{coordinate(birth.latitude, 'N', 'S')}, {coordinate(birth.longitude, 'E', 'W')}</Detail>
-                  <Detail term="Ayanamsa">{ayanamsa} <span className="text-[var(--text-muted)]">({data.chart.ayanamsaDegrees.toFixed(4)}°)</span></Detail>
-                  <Detail term="Nodes · years">{settings.node === 'mean' ? 'Mean node' : 'True node'} · {yearModel}</Detail>
+                  <Detail term={t('field.date')}>{longDate(birth.date)}</Detail>
+                  <Detail term={t('field.time')}>{birth.time} <span className="text-[var(--text-muted)]">({birth.timeZone})</span></Detail>
+                  <Detail term={t('field.place')}>{birth.place || '—'}</Detail>
+                  <Detail term={t('field.coordinates')}>{coordinate(birth.latitude, t('coord.n'), t('coord.s'))}, {coordinate(birth.longitude, t('coord.e'), t('coord.w'))}</Detail>
+                  <Detail term={t('settings.ayanamsa')}>{ayanamsa} <span className="text-[var(--text-muted)]">({data.chart.ayanamsaDegrees.toFixed(4)}°)</span></Detail>
+                  <Detail term={t('chartPage.nodesYears')}>{t(`node.${settings.node}`)} · {yearModel}</Detail>
                 </dl>
                 <div className="mt-4 border-t border-[var(--divider)] pt-4">
                   <Button variant="secondary" className="w-full sm:w-auto" onClick={() => saveJson(birthFileName(birth), toToolkitBirth(birth, calcSettings(settings)))}>
-                    <Download aria-hidden /> Export for astrologers (JSON)
+                    <Download aria-hidden /> {t('chartPage.export')}
                   </Button>
                   <p className="mt-2 text-xs leading-relaxed text-[var(--text-muted)]">
-                    The birth file of the open-source Python toolkit, so an astrologer can recompute everything here.
+                    {t('chartPage.exportText')}
                   </p>
                 </div>
               </Panel>
               <PanchangaCard chart={data.chart} className="glass" />
             </div>
           </div>
-          <Panel title="Planets" description="Sidereal positions at birth" icon={<Sparkles />}>
+          <Panel title={t('chartPage.planets')} description={t('chartPage.planetsText')} icon={<Sparkles />}>
             <PlanetTable chart={data.chart} />
           </Panel>
-          <Panel title="Vimsottari dasha" description="Planetary periods from birth; the running ones are marked" icon={<ListTree />}>
+          <Panel title={t('chartPage.strength')} description={t('chartPage.strengthText')} icon={<Gauge />}>
+            {strengths.error ? <ForecastError error={strengths.error} onRetry={strengths.retry} />
+              : strengths.data ? <StrengthSection strengths={strengths.data} /> : <p className="text-sm text-[var(--text-muted)]">{t('chartPage.strengthLoading')}</p>}
+          </Panel>
+          <Panel title={t('chartPage.yogas')} description={t('chartPage.yogasText')} icon={<Stars />}>
+            {yogas.error ? <ForecastError error={yogas.error} onRetry={yogas.retry} />
+              : yogas.data ? <YogaSection yogas={yogas.data.yogas} /> : <p className="text-sm text-[var(--text-muted)]">{t('chartPage.yogasLoading')}</p>}
+          </Panel>
+          <Panel title={t('chartPage.dasha')} description={t('chartPage.dashaText')} icon={<ListTree />}>
             <DashaTimeline periods={data.dashas} now={nowJd} timeZone={birth.timeZone} />
           </Panel>
         </div>

@@ -5,8 +5,9 @@ import { Leaf, Sparkles } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import { jdToLocal, weekdayOf } from '@/engine/time'
 import type { Forecast } from '@/engine/types'
+import { useT } from '@/i18n'
 import { cn } from '@/lib/cn'
-import { dateParts, longDate, MONTHS, shortDate, WEEKDAYS } from './dates'
+import { dateParts, longDate, shortDate, weekdayShort } from './dates'
 import { RATING_ICON, RATING_TONE, RATING_WORD, scorePercent, TONE_VARS } from './meta'
 import { forecastHref, useForecastLink } from './useForecastDate'
 
@@ -19,9 +20,10 @@ export interface DayPartsProps {
 }
 
 export function WeekStrip({ parts, profileId, today, selected, className }: DayPartsProps & { className?: string }) {
+  const { t } = useT()
   const onClick = useForecastLink()
   return (
-    <ol className={cn('grid grid-cols-7 gap-1.5 sm:gap-2', className)} aria-label="Days of the week">
+    <ol className={cn('grid grid-cols-7 gap-1.5 sm:gap-2', className)} aria-label={t('week.daysAria')}>
       {parts.map((p) => {
         const tone = TONE_VARS[RATING_TONE[p.rating]]
         const Icon = RATING_ICON[p.rating]
@@ -32,7 +34,7 @@ export function WeekStrip({ parts, profileId, today, selected, className }: DayP
             <a
               href={forecastHref(profileId, 'today', p.start)}
               onClick={onClick(profileId, 'today', p.start)}
-              aria-label={`${longDate(p.start)}${isToday ? ', today' : ''}: ${RATING_WORD[p.rating]}, score ${pct}. Open the day`}
+              aria-label={t('week.dayAria', { date: `${longDate(p.start)}${isToday ? `, ${t('common.today')}` : ''}`, rating: RATING_WORD[p.rating], pct })}
               aria-current={isToday ? 'date' : undefined}
               className={cn(
                 'group relative flex flex-col items-center rounded-2xl px-1 pb-2.5 pt-2 ring-1 ring-inset transition-[transform,box-shadow] hover:-translate-y-0.5 active:scale-[0.97]',
@@ -43,7 +45,7 @@ export function WeekStrip({ parts, profileId, today, selected, className }: DayP
               {/* Today keeps its weekday (the word "Today" does not fit a 320 px phone) and gets a dot. */}
               {isToday && <span aria-hidden className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-[var(--accent)] ring-2 ring-[var(--bg)]" />}
               <span className={cn('text-[0.65rem] font-semibold uppercase tracking-[0.08em]', isToday ? 'text-[var(--accent-text)]' : 'text-[var(--text-muted)]')}>
-                {WEEKDAYS[weekdayOf(p.start)]}
+                {weekdayShort(weekdayOf(p.start))}
               </span>
               <span className="font-display text-xl font-semibold tabular-nums leading-tight sm:text-2xl">{dateParts(p.start).day}</span>
               <Icon aria-hidden className="mt-0.5 size-4" style={{ color: tone.fg }} strokeWidth={2.2} />
@@ -64,7 +66,7 @@ const QUIET = { fg: 'var(--text-muted)', bg: 'var(--surface-2)', border: 'var(--
 /** "Fri 2 Oct 15:41", read once to the minute so that the time and its date agree. */
 function instant(jd: number, zone: string): string {
   const p = jdToLocal(jd, zone, 'minute')
-  return `${WEEKDAYS[p.weekday]} ${p.day} ${MONTHS[p.month - 1]} ${p.time}`
+  return `${shortDate(p.date)} ${p.time}`
 }
 
 /** Upcoming entries first, then past ones, each in date order. */
@@ -86,6 +88,7 @@ export interface DayHighlightsProps {
  * is running, upcoming entries come first and past ones are dimmed.
  */
 export function DayHighlights({ forecast, profileId, today, timeZone, className }: DayHighlightsProps) {
+  const { t, n } = useT()
   const onClick = useForecastLink()
   const running = forecast.start <= today && today <= forecast.end
   const byDate = new Map((forecast.parts ?? []).map((p) => [p.start, p]))
@@ -95,8 +98,8 @@ export function DayHighlights({ forecast, profileId, today, timeZone, className 
   }))
   const eighth = upcomingFirst((forecast.highlights?.chandrashtama ?? []).map((w) => ({ w, past: running && jdToLocal(w.endJd, timeZone).date < today })))
   const groups = [
-    { key: 'best', title: 'Best days', icon: Sparkles, tone: TONE_VARS.good, items: days(forecast.highlights?.best), stays: [] as typeof eighth, empty: 'No standout days; steady is fine too.' },
-    { key: 'gentle', title: 'Go gently', icon: Leaf, tone: TONE_VARS.bad, items: days(forecast.highlights?.careful), stays: eighth, empty: 'No difficult days in this stretch.' },
+    { key: 'best', title: t('highlights.best'), icon: Sparkles, tone: TONE_VARS.good, items: days(forecast.highlights?.best), stays: [] as typeof eighth, empty: t('highlights.bestNone') },
+    { key: 'gentle', title: t('highlights.gentle'), icon: Leaf, tone: TONE_VARS.bad, items: days(forecast.highlights?.careful), stays: eighth, empty: t('highlights.gentleNone') },
   ]
   return (
     <div className={cn('grid gap-3 sm:grid-cols-2', className)}>
@@ -115,14 +118,14 @@ export function DayHighlights({ forecast, profileId, today, timeZone, className 
                       href={forecastHref(profileId, 'today', p.start)} onClick={onClick(profileId, 'today', p.start)}
                       className="-mx-1.5 block rounded-lg px-1.5 py-1 transition-colors hover:bg-[var(--hover)]"
                     >
-                      <span className="block text-sm font-semibold text-[var(--text)]">{shortDate(p.start)}{past && <span className="sr-only"> (past)</span>}</span>
+                      <span className="block text-sm font-semibold text-[var(--text)]">{shortDate(p.start)}{past && <span className="sr-only"> {t('common.past')}</span>}</span>
                       <span className="block text-xs leading-snug text-[var(--text-muted)]">{p.headline}</span>
                     </a>
                   </li>
                 ))}
                 {stays.map(({ w, past }) => (
                   <li key={w.startJd} className={cn('py-1', past && 'opacity-60')}>
-                    <span className="block text-sm font-semibold text-[var(--text)]">Moon in your 8th (Chandrashtama){past && <span className="sr-only"> (past)</span>}</span>
+                    <span className="block text-sm font-semibold text-[var(--text)]">{t('highlights.eighth', { name: n.window.Chandrashtama })}{past && <span className="sr-only"> {t('common.past')}</span>}</span>
                     <span className="block text-xs leading-snug text-[var(--text-muted)]">{instant(w.startJd, timeZone)} – {instant(w.endJd, timeZone)}</span>
                   </li>
                 ))}

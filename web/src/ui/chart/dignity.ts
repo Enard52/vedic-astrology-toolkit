@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { SIGN_LORDS } from '@/engine/core'
 import type { Body, Planet, SignIndex } from '@/engine/types'
+import { t } from '@/i18n'
 
 export type Dignity = 'exalted' | 'own' | 'debilitated'
 
@@ -32,6 +33,9 @@ export function dignity(body: Body, sign: SignIndex): Dignity | null {
   return null
 }
 
+/** In the current language (getters read it on use). */
 export const DIGNITY_LABEL: Readonly<Record<Dignity, string>> = {
-  exalted: 'Exalted', own: 'Own sign', debilitated: 'Debilitated',
+  get exalted() { return t('dignity.exalted') },
+  get own() { return t('dignity.own') },
+  get debilitated() { return t('dignity.debilitated') },
 }

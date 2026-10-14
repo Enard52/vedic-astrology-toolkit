@@ -1,6 +1,7 @@
 import { Hourglass, type LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link } from 'wouter'
+import { useT } from '@/i18n'
 import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { Button } from '@/ui/components/Button'
 import { EmptyState } from '@/ui/components/EmptyState'
@@ -13,17 +14,18 @@ export interface PlaceholderPageProps {
 }
 
 /** Stand-in for a page that is not built yet (or a route that does not exist). */
-export default function PlaceholderPage({ title, description = 'This view is being prepared. Check back soon.', icon = Hourglass }: PlaceholderPageProps) {
+export default function PlaceholderPage({ title, description, icon = Hourglass }: PlaceholderPageProps) {
+  const { t } = useT()
   useDocumentTitle(pageTitle(title))
   return (
     <Page width="narrow">
       <EmptyState
         icon={icon}
         title={title}
-        description={description}
+        description={description ?? t('app.placeholder')}
         action={
           <Button asChild variant="secondary">
-            <Link href="/">Back to home</Link>
+            <Link href="/">{t('app.backHome')}</Link>
           </Button>
         }
       />

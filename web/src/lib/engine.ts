@@ -3,9 +3,10 @@
 // returning to a view is instant and prefetches pay off), and a React hook that runs a cached
 // engine call with a retry and drops requests superseded before they were sent.
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { releaseProxy, wrap, type Remote } from 'comlink'
 import type { EngineApi } from '@/engine/api'
+import { getLanguage, subscribeLanguage } from '@/i18n/store'
 
 export type Engine = Remote<EngineApi>
 
@@ -60,7 +61,9 @@ function start(): Promise<Instance> {
   // An uncaught error (a failed load, a WebAssembly abort outside a call) leaves the worker unusable.
   worker.addEventListener('error', (e) => self.kill(new Error(e.message || 'The engine worker failed')))
   const limit = deadline(new Error('The engine did not start in time'))
-  const current = Promise.race([remote.init(), dead, limit.expired]).finally(limit.cancel).then(
+  // A new worker writes English until told otherwise.
+  const ready = remote.init().then(() => (getLanguage() === 'en' ? undefined : remote.setLanguage(getLanguage())))
+  const current = Promise.race([ready, dead, limit.expired]).finally(limit.cancel).then(
     () => self,
     (e: unknown) => {
       self.kill(e instanceof Error ? e : new Error(String(e)))
@@ -70,6 +73,11 @@ function start(): Promise<Instance> {
   )
   return current
 }
+
+// A running worker switches language before any call queued after the change (calls run in order).
+subscribeLanguage(() => {
+  if (instance) runEngine((engine) => engine.setLanguage(getLanguage())).catch(() => {})
+})
 
 /** The shared engine, initialised. A failed start is forgotten so the next call retries. */
 export function getEngine(): Promise<Engine> {
@@ -133,8 +141,18 @@ function peek<T>(key: string): T | undefined {
 /** True when `key` is cached or already being computed, so asking for it adds no work. */
 const known = (key: string) => results.has(key) || pending.has(key)
 
+/**
+ * Results hold text in the language they were computed in, so every key is taken in the current
+ * language: a language change computes afresh, and switching back finds the earlier results.
+ */
+const inLanguage = (key: string, lang = getLanguage()) => `${lang}|${key}`
+
 /** The result for `key`, from the cache, from a call already running, or computed now. */
 export function fetchEngine<T>(key: string, run: (engine: Engine) => Promise<T>): Promise<T> {
+  return fetchKeyed(inLanguage(key), run)
+}
+
+function fetchKeyed<T>(key: string, run: (engine: Engine) => Promise<T>): Promise<T> {
   if (results.has(key)) {
     const value = results.get(key) as T
     remember(key, value)
@@ -178,7 +196,9 @@ interface QueryState<T> {
  * of its own in the worker: a new key asked for while it runs waits for it, and only the latest
  * of the keys that waited is then sent, so five quick steps compute two periods, not five.
  */
-export function useEngineQuery<T>(key: string | null, run: (engine: Engine) => Promise<T>): EngineQuery<T> {
+export function useEngineQuery<T>(baseKey: string | null, run: (engine: Engine) => Promise<T>): EngineQuery<T> {
+  const lang = useSyncExternalStore(subscribeLanguage, getLanguage, getLanguage)
+  const key = baseKey === null ? null : inLanguage(baseKey, lang)
   const [attempt, setAttempt] = useState(0)
   const [state, setState] = useState<QueryState<T>>({ key: null, attempt: 0, data: undefined, error: null })
   /** This hook's request still in the worker, if any. */
@@ -189,7 +209,7 @@ export function useEngineQuery<T>(key: string | null, run: (engine: Engine) => P
     let current = true
     const send = () => {
       if (!current) return // Superseded while waiting: never sent.
-      const p = fetchEngine(key, run)
+      const p = fetchKeyed(key, run)
       inFlight.current = p
       const settled = () => {
         if (inFlight.current === p) inFlight.current = null

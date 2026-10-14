@@ -2,7 +2,7 @@
 // 30 degrees, and Chandrashtama begins and ends exactly at a sign change, so the events of one
 // instant read as a single row ("Into Leo and Magha nakshatra") with a Chandrashtama note.
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { NAKSHATRA_NAMES, SIGN_NAMES } from '@/engine/core'
+import { names, t } from '@/i18n'
 import { jdToLocal } from '@/engine/time'
 import type { TimedEvent } from '@/engine/types'
 
@@ -31,17 +31,17 @@ export function moonMoves(events: readonly TimedEvent[], timeZone: string): Moon
       row = { key, jd: e.jd, date: local.date, label: '', signs: [], stars: [] }
       rows.push(row)
     }
-    if (e.kind === 'moon_nakshatra' && e.nakshatra) row.stars.push(`${NAKSHATRA_NAMES[e.nakshatra - 1]} nakshatra`)
-    else if (e.kind === 'moon_sign' && e.sign !== undefined) row.signs.push(SIGN_NAMES[e.sign])
+    if (e.kind === 'moon_nakshatra' && e.nakshatra) row.stars.push(t('moves.star', { name: names().nakshatra[e.nakshatra - 1] }))
+    else if (e.kind === 'moon_sign' && e.sign !== undefined) row.signs.push(names().sign[e.sign])
     else if (e.kind === 'chandrashtama') {
       // "Begins" carries the 8th sign; the matching sign change normally names it too.
       const begins = e.sign !== undefined
       row.chandrashtama = begins ? 'begins' : 'ends'
-      if (begins) row.signs.push(SIGN_NAMES[e.sign!])
+      if (begins) row.signs.push(names().sign[e.sign!])
     }
   }
   return rows.map(({ signs, stars, chandrashtama, ...row }) => {
-    const names = [...new Set(signs), ...stars]
-    return names.length ? { ...row, label: `Into ${names.join(' and ')}`, chandrashtama } : { ...row, label: 'Chandrashtama ends' }
+    const all = [...new Set(signs), ...stars]
+    return all.length ? { ...row, label: t('moves.into', { names: all.join(t('moves.and')) }), chandrashtama } : { ...row, label: t('moon.cEnds') }
   })
 }

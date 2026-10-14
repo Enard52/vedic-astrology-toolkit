@@ -5,7 +5,7 @@
 import { useEffect, useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react'
 import { addDays, addMonths, weekdayOf } from '@/engine/time'
 import { cn } from '@/lib/cn'
-import { dateParts, longDate, monthWeeks, periodEnd, periodStart, WEEKDAYS, WEEKDAYS_LONG } from './dates'
+import { dateParts, longDate, monthWeeks, periodEnd, periodStart, weekdayLong, weekdayNarrow } from './dates'
 
 export interface DayLook {
   /** Accessible name; defaults to the long date. */
@@ -79,10 +79,10 @@ export function CalendarGrid({
     <table ref={ref} role="grid" aria-label={label} className={cn('w-full table-fixed border-separate', className)} onKeyDown={onKeyDown}>
       <thead>
         <tr>
-          {WEEKDAYS.map((d, i) => (
-            <th key={d} scope="col" abbr={WEEKDAYS_LONG[i]} className="pb-2 text-center text-[0.7rem] font-medium uppercase tracking-[0.08em] text-[var(--text-muted)]">
-              <span aria-hidden>{d.slice(0, 2)}</span>
-              <span className="sr-only">{WEEKDAYS_LONG[i]}</span>
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <th key={i} scope="col" abbr={weekdayLong(i)} className="pb-2 text-center text-[0.7rem] font-medium uppercase tracking-[0.08em] text-[var(--text-muted)]">
+              <span aria-hidden>{weekdayNarrow(i)}</span>
+              <span className="sr-only">{weekdayLong(i)}</span>
             </th>
           ))}
         </tr>

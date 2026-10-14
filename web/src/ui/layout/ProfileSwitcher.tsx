@@ -1,6 +1,7 @@
-import { Check, ChevronDown, Info, Settings, UserPlus, Users } from 'lucide-react'
+import { Check, ChevronDown, HeartHandshake, Info, Settings, UserPlus, Users } from 'lucide-react'
 import { DropdownMenu } from 'radix-ui'
 import { useLocation } from 'wouter'
+import { useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { profileInitials, profileName, type Profile } from '@/state/profiles'
 
@@ -30,16 +31,17 @@ export interface ProfileSwitcherProps {
 
 /** Choose whose chart the tabs show, add a profile, or reach settings. */
 export function ProfileSwitcher({ profiles, active, view }: ProfileSwitcherProps) {
+  const { t } = useT()
   const [, navigate] = useLocation()
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         className="flex h-11 min-w-11 items-center gap-2 rounded-full border border-[var(--surface-border)] bg-[var(--surface-2)] pl-1.5 pr-1.5 text-sm font-medium text-[var(--text)] transition-colors hover:bg-[var(--hover)] data-[state=open]:bg-[var(--hover)] sm:pr-3 md:max-lg:pr-1.5"
-        aria-label={active ? `Profile: ${profileName(active)}. Switch profile` : 'Profiles'}
+        aria-label={active ? t('menu.profileLabel', { name: profileName(active) }) : t('menu.profiles')}
       >
         {active ? <Avatar profile={active} /> : <Users className="mx-1.5 size-5" aria-hidden />}
         {/* Avatar only on narrow tablets, where the header also carries the forecast tabs. */}
-        <span className="hidden max-w-36 truncate sm:block md:max-lg:hidden">{active ? profileName(active) : 'Profiles'}</span>
+        <span className="hidden max-w-36 truncate sm:block md:max-lg:hidden">{active ? profileName(active) : t('menu.profiles')}</span>
         <ChevronDown aria-hidden className="hidden size-4 text-[var(--text-muted)] sm:block md:max-lg:hidden" />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
@@ -51,7 +53,7 @@ export function ProfileSwitcher({ profiles, active, view }: ProfileSwitcherProps
         >
           {profiles.length > 0 && (
             <>
-              <DropdownMenu.Label className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-muted)]">Profiles</DropdownMenu.Label>
+              <DropdownMenu.Label className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-muted)]">{t('menu.profiles')}</DropdownMenu.Label>
               {profiles.map((p) => (
                 <DropdownMenu.Item key={p.id} className={itemClass} onSelect={() => navigate(`/p/${p.id}/${view}`)}>
                   <Avatar profile={p} className="size-7" />
@@ -59,24 +61,27 @@ export function ProfileSwitcher({ profiles, active, view }: ProfileSwitcherProps
                     <span className="block truncate font-medium">{profileName(p)}</span>
                     <span className="block truncate text-xs text-[var(--text-muted)]">{p.birth.place || p.birth.date}</span>
                   </span>
-                  {p.id === active?.id && <Check aria-label="Current profile" className="text-[var(--accent-text)]!" />}
+                  {p.id === active?.id && <Check aria-label={t('menu.current')} className="text-[var(--accent-text)]!" />}
                 </DropdownMenu.Item>
               ))}
               <DropdownMenu.Separator className="my-1.5 h-px bg-[var(--divider)]" />
             </>
           )}
           <DropdownMenu.Item className={itemClass} onSelect={() => navigate('/new')}>
-            <UserPlus aria-hidden /> Add a profile
+            <UserPlus aria-hidden /> {t('menu.add')}
           </DropdownMenu.Item>
           <DropdownMenu.Item className={itemClass} onSelect={() => navigate('/profiles')}>
-            <Users aria-hidden /> Manage profiles
+            <Users aria-hidden /> {t('menu.manage')}
+          </DropdownMenu.Item>
+          <DropdownMenu.Item className={itemClass} onSelect={() => navigate('/match')}>
+            <HeartHandshake aria-hidden /> {t('menu.matching')}
           </DropdownMenu.Item>
           <DropdownMenu.Separator className="my-1.5 h-px bg-[var(--divider)]" />
           <DropdownMenu.Item className={itemClass} onSelect={() => navigate('/settings')}>
-            <Settings aria-hidden /> Settings
+            <Settings aria-hidden /> {t('menu.settings')}
           </DropdownMenu.Item>
           <DropdownMenu.Item className={itemClass} onSelect={() => navigate('/about')}>
-            <Info aria-hidden /> About
+            <Info aria-hidden /> {t('menu.about')}
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>

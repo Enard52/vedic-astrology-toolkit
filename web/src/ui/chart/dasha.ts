@@ -1,5 +1,6 @@
 // Pure helpers for the dasha timeline: the running chain of periods and human spans.
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import { t, tp } from '@/i18n'
 import { dashaChainAt } from '@/engine/dasha'
 
 /** Mean Gregorian year and month in days, for display spans only. */
@@ -34,6 +35,14 @@ export function spokenSpan(days: number): string {
     return `${n} ${units[part.slice(-1)]}${n === 1 ? '' : 's'}`
   }).join(' ')
 }
+
+/** formatSpan in the current language ("2y 3m" -> "2ವ 3ತಿ"). */
+export const localSpan = (days: number): string =>
+  formatSpan(days).replace(/(\d+)([ymd])/g, (_, n: string, unit: string) => t(`span.${unit as 'y' | 'm' | 'd'}`, { n }))
+
+/** spokenSpan in the current language. */
+export const localSpokenSpan = (days: number): string =>
+  formatSpan(days).split(' ').map((part) => tp(`spoken.${part.slice(-1)}`, Number(part.slice(0, -1)))).join(' ')
 
 /** Approximate Gregorian year of a JD, for axis ticks (exact to well under a day). */
 export const jdYear = (jd: number): number => 2000 + (jd - 2451544.5) / YEAR

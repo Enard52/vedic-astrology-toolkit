@@ -7,6 +7,11 @@
 import { useEffect, useSyncExternalStore } from 'react'
 import type { ChartData, ForecastResult } from '@/engine/api'
 import type { ForecastExtras } from '@/engine/extras'
+import type { LordPromise } from '@/engine/promise'
+import type { NatalStrengths } from '@/engine/strengths'
+import type { AnnualChart } from '@/engine/tajaka'
+import type { Planet } from '@/engine/types'
+import type { YogaResult } from '@/engine/yogas'
 import type { BirthInput, DayTimings, Forecast, Horizon, Settings } from '@/engine/types'
 import { prefetchEngine, useEngineQuery, type Engine } from '@/lib/engine'
 import { useActiveProfile, useProfile, type Profile } from '@/state/profiles'
@@ -101,6 +106,42 @@ export function useChartData(profileId: string): Query<ChartData> {
   const birth = profile && birthForEngine(profile.birth)
   const key = birth ? chartKey(birth, settings) : null
   const query = useEngineQuery<ChartData>(key, (engine) => loadChart(birth!, settings)(engine))
+  return { data: query.data, error: query.error ?? undefined, loading: query.loading, retry: query.retry }
+}
+
+/** The birth fields and calculation settings of a profile, or null when it is missing. */
+function useEngineBirth(profileId: string): { birth: BirthInput; settings: Settings } | null {
+  const profile = useProfile(profileId)
+  const settings = calcSettings(useSettings())
+  return profile ? { birth: birthForEngine(profile.birth), settings } : null
+}
+
+export interface NatalYogas {
+  yogas: YogaResult[]
+  promise: Record<Planet, LordPromise>
+}
+
+/** Natal strengths of `profileId` (Shadbala, Vimsopaka, dignities, functional nature). */
+export function useStrengths(profileId: string): Query<NatalStrengths> {
+  const req = useEngineBirth(profileId)
+  const key = req && JSON.stringify(['strengths', req.birth, req.settings])
+  const query = useEngineQuery<NatalStrengths>(key, (engine) => engine.strengths(req!.birth, req!.settings))
+  return { data: query.data, error: query.error ?? undefined, loading: query.loading, retry: query.retry }
+}
+
+/** The 170 yoga rules checked on the birth chart of `profileId`, with each planet's natal promise. */
+export function useYogas(profileId: string): Query<NatalYogas> {
+  const req = useEngineBirth(profileId)
+  const key = req && JSON.stringify(['yogas', req.birth, req.settings])
+  const query = useEngineQuery<NatalYogas>(key, (engine) => engine.yogas(req!.birth, req!.settings))
+  return { data: query.data, error: query.error ?? undefined, loading: query.loading, retry: query.retry }
+}
+
+/** The Tajaka annual chart after `completedYears` completed years; null asks for nothing. */
+export function useAnnualChart(profileId: string, completedYears: number | null): Query<AnnualChart> {
+  const req = useEngineBirth(profileId)
+  const key = req && completedYears !== null ? JSON.stringify(['annual', req.birth, req.settings, completedYears]) : null
+  const query = useEngineQuery<AnnualChart>(key, (engine) => engine.annualChart(req!.birth, req!.settings, completedYears!))
   return { data: query.data, error: query.error ?? undefined, loading: query.loading, retry: query.retry }
 }
 

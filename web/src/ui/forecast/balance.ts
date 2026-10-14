@@ -5,6 +5,7 @@
 // list shows first, so the ones the card names are always among them.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import type { Effect, Forecast, Rating, Reason } from '@/engine/types'
+import { t, tp } from '@/i18n'
 
 /** Reasons that explain context but do not vote in the score (engine/predict.ts INFORMATIONAL_FACTORS). */
 export const UNSCORED_FACTORS: readonly string[] = ['dasha', 'moon_change']
@@ -37,7 +38,7 @@ export function percentages(values: readonly number[]): number[] {
 
 const RATINGS: readonly Rating[] = ['favourable', 'mixed', 'challenging']
 const EFFECTS: readonly Effect[] = [1, 0, -1]
-const EFFECT_WORD: Record<Effect, string> = { 1: 'supportive', 0: 'neutral', [-1]: 'challenging' }
+const EFFECT_KEY = { 1: 'balance.pctSupportive', 0: 'balance.pctNeutral', [-1]: 'balance.pctChallenging' } as const
 
 export function ratingBalance(forecast: Forecast): Balance {
   const parts = forecast.parts ?? []
@@ -45,17 +46,17 @@ export function ratingBalance(forecast: Forecast): Balance {
     const unit = forecast.horizon === 'year' ? 'month' : 'day'
     const slices = RATINGS.flatMap((rating): BalanceSlice[] => {
       const n = parts.filter((p) => p.rating === rating).length
-      return n ? [{ kind: 'rating', rating, share: n / parts.length, label: `${n} ${rating} ${unit}${n > 1 ? 's' : ''}` }] : []
+      return n ? [{ kind: 'rating', rating, share: n / parts.length, label: tp(`balance.${unit}s`, n, { rating: t(`balance.${rating}`) }) }] : []
     })
-    return { title: `${unit === 'day' ? 'Days' : 'Months'} by rating`, slices }
+    return { title: t(unit === 'day' ? 'balance.daysTitle' : 'balance.monthsTitle'), slices }
   }
   const reasons = forecast.reasons.filter(scored)
   const weights = EFFECTS.map((e) => reasons.filter((r) => r.effect === e).reduce((sum, r) => sum + r.weight, 0))
   const total = weights.reduce((a, b) => a + b, 0)
   const pct = percentages(weights)
   const slices = EFFECTS.flatMap((effect, i): BalanceSlice[] =>
-    pct[i] > 0 ? [{ kind: 'effect', effect, share: weights[i] / total, label: `${pct[i]}% ${EFFECT_WORD[effect]}` }] : [])
-  return { title: 'Weight of the reasons', slices }
+    pct[i] > 0 ? [{ kind: 'effect', effect, share: weights[i] / total, label: t(EFFECT_KEY[effect], { pct: pct[i] }) }] : [])
+  return { title: t('balance.weightTitle'), slices }
 }
 
 /**

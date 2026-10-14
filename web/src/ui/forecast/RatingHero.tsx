@@ -5,12 +5,14 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useId } from 'react'
 import type { Forecast, Rating } from '@/engine/types'
+import { rich, useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { Badge } from '@/ui/components/Badge'
 import { ratingBalance, strongestReasons, type BalanceSlice } from './balance'
 import { EFFECT_META, RATING_ICON, RATING_TONE, RATING_WORD, scorePercent, TONE_VARS } from './meta'
 
 export function RatingHero({ forecast, label, className }: { forecast: Forecast; label: string; className?: string }) {
+  useT()
   const id = useId()
   const tone = TONE_VARS[RATING_TONE[forecast.rating]]
   const Icon = RATING_ICON[forecast.rating]
@@ -42,6 +44,7 @@ const sliceMeta = (slice: BalanceSlice) =>
   slice.kind === 'effect' ? EFFECT_META[slice.effect] : { tone: RATING_TONE[slice.rating], icon: RATING_ICON[slice.rating] }
 
 function WhySummary({ forecast }: { forecast: Forecast }) {
+  const { t } = useT()
   const balance = ratingBalance(forecast)
   const { lift, drag } = strongestReasons(forecast.reasons)
   if (!balance.slices.length && !lift && !drag) return null
@@ -69,9 +72,10 @@ function WhySummary({ forecast }: { forecast: Forecast }) {
       )}
       {(lift || drag) && (
         <p className="mt-3 text-pretty text-sm leading-relaxed text-[var(--text-muted)]">
-          {lift && <>Lifted most by <strong className="font-semibold text-[var(--text)]">{lift.title}</strong></>}
+          {lift && rich(t('why.lift'), { title: <strong className="font-semibold text-[var(--text)]">{lift.title}</strong> })}
           {lift && drag && '; '}
-          {drag && <>{lift ? 'held back' : 'Held back'} by <strong className="font-semibold text-[var(--text)]">{drag.title}</strong></>}.
+          {drag && rich(t(lift ? 'why.dragAfter' : 'why.drag'), { title: <strong className="font-semibold text-[var(--text)]">{drag.title}</strong> })}
+          {t('why.end')}
         </p>
       )}
     </div>
@@ -88,6 +92,7 @@ const ARC = (() => {
 })()
 
 function ScoreDial({ score, rating, className }: { score: number; rating: Rating; className?: string }) {
+  const { t } = useT()
   const gradient = useId()
   const reduce = useReducedMotion()
   const pct = scorePercent(score)
@@ -95,7 +100,7 @@ function ScoreDial({ score, rating, className }: { score: number; rating: Rating
   const tone = TONE_VARS[RATING_TONE[rating]]
   const [kx, ky] = point(angle(f))
   return (
-    <svg viewBox="0 0 120 120" className={className} role="img" aria-label={`Score ${pct} out of 100`}>
+    <svg viewBox="0 0 120 120" className={className} role="img" aria-label={t('score.aria', { pct })}>
       <defs>
         <linearGradient id={gradient} x1="0" x2="1" y1="0" y2="0">
           <stop offset="0" style={{ stopColor: 'var(--color-bad)' }} />
@@ -116,7 +121,7 @@ function ScoreDial({ score, rating, className }: { score: number; rating: Rating
         initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : 0.7, duration: 0.25 }}
       />
       <text x="60" y="62" textAnchor="middle" dominantBaseline="middle" className="fill-[var(--text)] font-display text-[30px] font-semibold tabular-nums">{pct}</text>
-      <text x="60" y="86" textAnchor="middle" className="fill-[var(--text-muted)] text-[10px] font-medium uppercase tracking-[0.14em]">score</text>
+      <text x="60" y="86" textAnchor="middle" className="fill-[var(--text-muted)] text-[10px] font-medium uppercase tracking-[0.14em]">{t('score.word')}</text>
     </svg>
   )
 }

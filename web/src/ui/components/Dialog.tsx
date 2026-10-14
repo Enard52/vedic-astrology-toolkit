@@ -1,6 +1,7 @@
 import { X } from 'lucide-react'
 import { Dialog as DialogPrimitive } from 'radix-ui'
 import type { ComponentProps, ReactNode } from 'react'
+import { useT } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { Button } from './Button'
 
@@ -15,6 +16,7 @@ export interface DialogContentProps extends ComponentProps<typeof DialogPrimitiv
 }
 
 export function DialogContent({ className, children, variant = 'center', hideClose = false, ...props }: DialogContentProps) {
+  const { t } = useT()
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="overlay fixed inset-0 z-50 bg-[var(--overlay)] backdrop-blur-[3px]" />
@@ -32,7 +34,7 @@ export function DialogContent({ className, children, variant = 'center', hideClo
         {children}
         {!hideClose && (
           <DialogPrimitive.Close asChild>
-            <Button variant="ghost" size="icon" className="absolute right-2 top-2" aria-label="Close">
+            <Button variant="ghost" size="icon" className="absolute right-2 top-2" aria-label={t('common.close')}>
               <X />
             </Button>
           </DialogPrimitive.Close>

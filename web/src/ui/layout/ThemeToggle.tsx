@@ -1,5 +1,6 @@
 import { Moon, Sun } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
+import { useT } from '@/i18n'
 import { resolveTheme, updateSettings, useSettings } from '@/state/settings'
 import { Button } from '@/ui/components/Button'
 import { Tooltip } from '@/ui/components/Tooltip'
@@ -7,9 +8,10 @@ import { Tooltip } from '@/ui/components/Tooltip'
 /** Flip between the dark and light themes (an explicit choice replaces 'system'). */
 export function ThemeToggle() {
   const { theme } = useSettings()
+  const { t } = useT()
   const current = resolveTheme(theme)
   const next = current === 'dark' ? 'light' : 'dark'
-  const label = `Switch to ${next} theme`
+  const label = t(next === 'dark' ? 'theme.toDark' : 'theme.toLight')
   return (
     <Tooltip content={label}>
       <Button variant="ghost" size="icon" aria-label={label} onClick={() => updateSettings({ theme: next })}>

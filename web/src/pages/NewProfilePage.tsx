@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } 
 import { Link, useLocation, useParams } from 'wouter'
 import { cityLabel, type City } from '@/lib/cities'
 import { cn } from '@/lib/cn'
+import { t, useT } from '@/i18n'
 import { pageTitle, useDocumentTitle } from '@/lib/documentTitle'
 import { getEngine } from '@/lib/engine'
 import {
@@ -19,6 +20,7 @@ import { EmptyState } from '@/ui/components/EmptyState'
 import { Field, Input } from '@/ui/components/Input'
 import { PlaceSearch } from '@/ui/components/PlaceSearch'
 import { SectionHeader } from '@/ui/components/SectionHeader'
+import { civilDate } from '@/ui/forecast/dates'
 import { Page } from '@/ui/layout/Page'
 
 interface FormState {
@@ -43,24 +45,23 @@ function fromProfile(p: Profile): FormState {
   }
 }
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const pad2 = (n: number) => String(n).padStart(2, '0')
 
 /** "28 Apr 1990, 00:20 UTC"; seconds appear when a local-mean-time offset or seconds field produces them. */
 function formatUtc(iso: string): string {
   const d = new Date(iso)
   const s = d.getUTCSeconds()
-  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}, ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}${s ? `:${pad2(s)}` : ''} UTC`
+  const date = `${String(d.getUTCFullYear()).padStart(4, '0')}-${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())}`
+  return `${civilDate(date)}, ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}${s ? `:${pad2(s)}` : ''} UTC`
 }
 
 /** "28 Apr 1990, 05:50" from the form's civil date and time. */
 function formatCivil(date: string, time: string): string {
-  const [y, m, d] = date.split('-').map(Number)
-  return `${d} ${MONTHS[m - 1]} ${y}, ${time}`
+  return `${civilDate(date)}, ${time}`
 }
 
 function formatCoordinates(lat: number, lon: number): string {
-  return `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? 'N' : 'S'}, ${Math.abs(lon).toFixed(4)}° ${lon >= 0 ? 'E' : 'W'}`
+  return `${Math.abs(lat).toFixed(4)}° ${t(lat >= 0 ? 'coord.n' : 'coord.s')}, ${Math.abs(lon).toFixed(4)}° ${t(lon >= 0 ? 'coord.e' : 'coord.w')}`
 }
 
 let zoneNames: string[] | null = null
@@ -71,7 +72,8 @@ const allZones = () => (zoneNames ??= typeof Intl.supportedValuesOf === 'functio
 export default function NewProfilePage() {
   const { id } = useParams<{ id?: string }>()
   const existing = useProfile(id)
-  useDocumentTitle(pageTitle(!id ? 'New profile' : existing ? `Edit ${profileName(existing)}` : 'Profile not found'))
+  const { t } = useT()
+  useDocumentTitle(pageTitle(!id ? t('profiles.new') : existing ? t('profiles.editAria', { name: profileName(existing) }) : t('profile.notFound')))
   // Start the engine while the form is filled in, so the forecast opens without waiting for it.
   useEffect(() => void getEngine().catch(() => {}), [])
   if (id && !existing) {
@@ -79,9 +81,9 @@ export default function NewProfilePage() {
       <Page width="narrow">
         <EmptyState
           icon={UserX}
-          title="Profile not found"
-          description="It may have been deleted, or it was saved in another browser."
-          action={<Button asChild><Link href="/profiles">See your profiles</Link></Button>}
+          title={t('profile.notFound')}
+          description={t('form.notFoundText')}
+          action={<Button asChild><Link href="/profiles">{t('form.seeProfiles')}</Link></Button>}
         />
       </Page>
     )
@@ -90,6 +92,7 @@ export default function NewProfilePage() {
 }
 
 function ProfileForm({ existing }: { existing?: Profile }) {
+  const { lang } = useT()
   const [, navigate] = useLocation()
   const [form, setForm] = useState<FormState>(() => (existing ? fromProfile(existing) : EMPTY))
   const [touched, setTouched] = useState<Set<BirthField>>(() => new Set())
@@ -102,7 +105,8 @@ function ProfileForm({ existing }: { existing?: Profile }) {
       name: form.name, date: form.date, time: form.time, timeZone: form.timeZone, fold: form.fold, place: form.place,
       latitude: parseCoordinate(form.latitude, 'latitude'), longitude: parseCoordinate(form.longitude, 'longitude'),
     }),
-    [form],
+    // The messages are in the current language.
+    [form, lang],
   )
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((f) => ({ ...f, [key]: value }))
@@ -152,30 +156,30 @@ function ProfileForm({ existing }: { existing?: Profile }) {
     <Page>
       <SectionHeader
         level={1}
-        eyebrow={existing ? 'Edit profile' : 'New profile'}
-        title={existing ? 'Edit birth details' : 'When and where were you born?'}
-        description="Use the time on the birth certificate if you have one: the rising sign moves about one degree every four minutes."
+        eyebrow={existing ? t('form.editEyebrow') : t('profiles.new')}
+        title={existing ? t('form.editTitle') : t('form.newTitle')}
+        description={t('form.description')}
       />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_21rem] lg:items-start">
-        <form noValidate onSubmit={onSubmit} className="glass rounded-[var(--radius-card)] p-5 sm:p-8" aria-label="Birth details">
-          <FormSection icon={UserRound} title="Who is this chart for?">
-            <Field id="name" label="Name" error={errorFor('name')} hint="Shown on this device only.">
+        <form noValidate onSubmit={onSubmit} className="glass rounded-[var(--radius-card)] p-5 sm:p-8" aria-label={t('chartPage.details')}>
+          <FormSection icon={UserRound} title={t('form.who')}>
+            <Field id="name" label={t('field.name')} error={errorFor('name')} hint={t('form.nameHint')}>
               {(c) => (
-                <Input {...c} value={form.name} autoComplete="off" maxLength={60} placeholder="e.g. Asha" onChange={(e) => set('name', e.target.value)} onBlur={() => touch('name')} />
+                <Input {...c} value={form.name} autoComplete="off" maxLength={60} placeholder={t('form.namePlaceholder')} onChange={(e) => set('name', e.target.value)} onBlur={() => touch('name')} />
               )}
             </Field>
           </FormSection>
 
-          <FormSection icon={Clock} title="Date and time of birth">
+          <FormSection icon={Clock} title={t('form.when')}>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field id="date" label="Date" error={errorFor('date')}>
+              <Field id="date" label={t('field.date')} error={errorFor('date')}>
                 {(c) => (
                   <Input {...c} type="date" min={`${MIN_YEAR}-01-01`} max={`${MAX_YEAR}-12-31`} value={form.date} onChange={(e) => setWallClock('date', e.target.value)} onBlur={() => touch('date')} />
                 )}
               </Field>
               <div className="relative">
-                <Field id="time" label="Local time" error={errorFor('time')} hint="As written on the birth record.">
+                <Field id="time" label={t('form.localTime')} error={errorFor('time')} hint={t('form.timeHint')}>
                   {(c) => (
                     <Input {...c} type="time" step={form.withSeconds ? 1 : 60} value={form.time} onChange={(e) => setWallClock('time', e.target.value)} onBlur={() => touch('time')} />
                   )}
@@ -185,13 +189,13 @@ function ProfileForm({ existing }: { existing?: Profile }) {
                   className="absolute -top-2 right-0 rounded-md px-2 py-1.5 text-xs font-medium text-[var(--accent-text)] underline-offset-4 hover:underline"
                   onClick={() => setForm((f) => ({ ...f, withSeconds: !f.withSeconds, time: f.withSeconds ? f.time.slice(0, 5) : f.time }))}
                 >
-                  {form.withSeconds ? 'Hide seconds' : 'Add seconds'}
+                  {form.withSeconds ? t('form.hideSeconds') : t('form.addSeconds')}
                 </button>
               </div>
             </div>
           </FormSection>
 
-          <FormSection icon={MapPin} title="Place of birth" last>
+          <FormSection icon={MapPin} title={t('form.where')} last>
             {placeChosen ? (
               <div className="flex items-start gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-2)] p-3.5">
                 <span className="chip hidden size-10 shrink-0 place-items-center rounded-xl sm:grid">
@@ -201,13 +205,13 @@ function ProfileForm({ existing }: { existing?: Profile }) {
                   <p className="font-medium leading-snug" data-testid="chosen-place">{form.place}</p>
                   <p className="mt-0.5 text-[0.8rem] text-[var(--text-muted)]">{formatCoordinates(lat!, lon!)} · {form.timeZone}</p>
                 </div>
-                <Button variant="ghost" size="sm" className="-my-1 -mr-1 h-11 px-3 sm:h-9" onClick={clearPlace} aria-label="Change place">
-                  <Pencil aria-hidden /> <span className="max-sm:sr-only">Change</span>
+                <Button variant="ghost" size="sm" className="-my-1 -mr-1 h-11 px-3 sm:h-9" onClick={clearPlace} aria-label={t('form.changePlace')}>
+                  <Pencil aria-hidden /> <span className="max-sm:sr-only">{t('form.change')}</span>
                 </Button>
               </div>
             ) : (
               <div ref={searchWrap}>
-                <Field id="place" label="Town or city" error={submitted ? check.errors.place : undefined} hint="Type a few letters; old names like Bombay or Mysore work too. Add the state after a comma to narrow it down.">
+                <Field id="place" label={t('place.town')} error={submitted ? check.errors.place : undefined} hint={t('form.placeHint')}>
                   {(c) => <PlaceSearch {...c} onSelect={chooseCity} onManualEntry={enterManually} />}
                 </Field>
               </div>
@@ -218,9 +222,9 @@ function ProfileForm({ existing }: { existing?: Profile }) {
               {check.offsetMinutes !== null && (
                 <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-[var(--text-muted)]">
                   <Badge tone="accent" size="md" data-testid="birth-offset">
-                    <Globe aria-hidden /> {formatOffset(check.offsetMinutes)} at birth
+                    <Globe aria-hidden /> {t('form.atBirth', { offset: formatOffset(check.offsetMinutes) })}
                   </Badge>
-                  {check.utc && <span>Universal time {formatUtc(check.utc)}</span>}
+                  {check.utc && <span>{t('form.universal')} {formatUtc(check.utc)}</span>}
                 </p>
               )}
             </div>
@@ -243,21 +247,21 @@ function ProfileForm({ existing }: { existing?: Profile }) {
               className="mt-4 border-t border-[var(--divider)] pt-2"
               open={advancedOpen}
               onOpenChange={setAdvancedOpen}
-              title={<span>Advanced: enter coordinates, time zone or local mean time</span>}
+              title={<span>{t('form.advanced')}</span>}
             >
               <div className="grid gap-5 pb-1 pt-3 sm:grid-cols-2">
-                <Field id="latitude" label="Latitude" error={errorFor('latitude')} hint="Decimal degrees; north positive, or add S (33.87 S).">
+                <Field id="latitude" label={t('form.latitude')} error={errorFor('latitude')} hint={t('form.latHint')}>
                   {(c) => <Input {...c} autoComplete="off" spellCheck={false} value={form.latitude} placeholder="12.2979" onChange={(e) => set('latitude', e.target.value)} onBlur={() => touch('latitude')} />}
                 </Field>
-                <Field id="longitude" label="Longitude" error={errorFor('longitude')} hint="Decimal degrees; east positive, or add W (74.006 W).">
+                <Field id="longitude" label={t('form.longitude')} error={errorFor('longitude')} hint={t('form.lonHint')}>
                   {(c) => <Input {...c} autoComplete="off" spellCheck={false} value={form.longitude} placeholder="76.6393" onChange={(e) => set('longitude', e.target.value)} onBlur={() => touch('longitude')} />}
                 </Field>
                 <Field
                   id="timeZone"
                   className="sm:col-span-2"
-                  label="Time zone"
+                  label={t('field.timeZone')}
                   error={errorFor('timeZone')}
-                  hint="A zone name such as Asia/Kolkata (follows historical clock changes) or a fixed offset such as +05:30."
+                  hint={t('form.zoneHint')}
                 >
                   {(c) => (
                     <>
@@ -274,46 +278,44 @@ function ProfileForm({ existing }: { existing?: Profile }) {
                     disabled={lon === null || !Number.isFinite(lon) || Math.abs(lon) > 180}
                     onClick={() => setForm((f) => ({ ...f, timeZone: lmtOffset(lon!), fold: undefined }))}
                   >
-                    Use local mean time{lon !== null && Number.isFinite(lon) && Math.abs(lon) <= 180 ? ` (${lmtOffset(lon)})` : ''}
+                    {t('form.lmt')}{lon !== null && Number.isFinite(lon) && Math.abs(lon) <= 180 ? ` (${lmtOffset(lon)})` : ''}
                   </Button>
                   <p className="mt-2 text-[0.8rem] leading-snug text-[var(--text-muted)]">
-                    Before standard time zones, clocks often showed local mean time: four minutes per degree of longitude. Use it only if the
-                    birth record was kept in local time.
+                    {t('form.lmtText')}
                   </p>
                 </div>
-                <Field id="placeLabel" className="sm:col-span-2" label="Place label" optional hint="How this place is shown, e.g. Hospital, Mysuru.">
+                <Field id="placeLabel" className="sm:col-span-2" label={t('form.placeLabel')} optional hint={t('form.placeLabelHint')}>
                   {(c) => <Input {...c} value={form.place} maxLength={120} onChange={(e) => set('place', e.target.value)} />}
                 </Field>
               </div>
             </Disclosure>
             {isFixedZone && !advancedOpen && (
-              <p className="mt-1 text-[0.8rem] text-[var(--text-muted)]">Using the fixed offset {form.timeZone}.</p>
+              <p className="mt-1 text-[0.8rem] text-[var(--text-muted)]">{t('form.fixedOffset', { zone: form.timeZone })}</p>
             )}
           </FormSection>
 
           {submitted && !check.birth && (
-            <Callout tone="error" className="mt-6">Some details need attention. They are marked above.</Callout>
+            <Callout tone="error" className="mt-6">{t('form.needsAttention')}</Callout>
           )}
 
           {/* Save comes first in the DOM so tab order matches the stacked phone layout; row-reverse puts it on the right. */}
           <div className="mt-8 flex flex-col gap-3 border-t border-[var(--divider)] pt-6 sm:flex-row-reverse sm:items-center sm:justify-start">
             <Button type="submit" size="lg">
-              {existing ? 'Save changes' : 'Save and see today'}
+              {existing ? t('form.save') : t('form.saveNew')}
             </Button>
             <Button variant="ghost" asChild>
-              <Link href={existing ? '/profiles' : '/'}>Cancel</Link>
+              <Link href={existing ? '/profiles' : '/'}>{t('common.cancel')}</Link>
             </Button>
           </div>
         </form>
 
-        <aside className="space-y-4 lg:sticky lg:top-24" aria-label="Summary">
+        <aside className="space-y-4 lg:sticky lg:top-24" aria-label={t('form.summary')}>
           <Summary className="hidden lg:block" form={form} offsetMinutes={check.offsetMinutes} utc={check.utc} hasCoordinates={hasCoordinates} lat={lat} lon={lon} />
           <Card className="p-5">
             <p className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-muted)]">
               <ShieldCheck aria-hidden className="mt-0.5 size-5 shrink-0 text-[var(--good-fg)]" />
               <span>
-                <span className="font-semibold text-[var(--text)]">Stays on this device.</span> Birth details are saved in this browser only and
-                every calculation runs here. Nothing is sent anywhere.
+                <span className="font-semibold text-[var(--text)]">{t('form.private')}</span> {t('form.privateText')}
               </span>
             </p>
           </Card>
@@ -351,13 +353,14 @@ interface FoldChoiceProps {
  * "first" and "second" alone are hard to check against a birth record.
  */
 function FoldChoice({ options, time, value, onChange, error }: FoldChoiceProps) {
+  const { t } = useT()
   return (
     <div className="mt-4 rounded-2xl border border-[var(--mixed-border)] bg-[var(--surface-2)] p-3 sm:p-4">
       <p id="fold-label" className="flex gap-2.5 text-sm leading-relaxed">
         <History aria-hidden className="mt-0.5 size-4 shrink-0 text-[var(--mixed-fg)]" />
         <span>
-          <span className="font-semibold">This time happened twice.</span>{' '}
-          <span className="text-[var(--text-muted)]">The clocks went back that night, so {time} came round twice. Which one was it?</span>
+          <span className="font-semibold">{t('form.twice')}</span>{' '}
+          <span className="text-[var(--text-muted)]">{t('form.twiceText', { time })}</span>
         </span>
       </p>
       <RadioGroup.Root
@@ -379,17 +382,17 @@ function FoldChoice({ options, time, value, onChange, error }: FoldChoiceProps) 
             </span>
             <span className="min-w-0">
               <span className="block text-sm font-semibold">
-                {o.fold === 0 ? 'First' : 'Second'} {time} <span className="whitespace-nowrap font-medium text-[var(--text-muted)]">({formatOffset(o.offsetMinutes)})</span>
+                {t(o.fold === 0 ? 'form.first' : 'form.second', { time })} <span className="whitespace-nowrap font-medium text-[var(--text-muted)]">({formatOffset(o.offsetMinutes)})</span>
               </span>
               <span className="mt-0.5 block text-[0.8rem] leading-snug text-[var(--text-muted)]">
-                {o.fold === 0 ? 'Before' : 'After'} the clocks went back
+                {t(o.fold === 0 ? 'form.before' : 'form.after')}
                 <span className="block">{formatUtc(o.utc)}</span>
               </span>
             </span>
           </RadioGroup.Item>
         ))}
       </RadioGroup.Root>
-      {error && <p id="fold-error" className="mt-2 text-[0.8rem] text-[var(--bad-fg)]">Choose the first or second occurrence to continue.</p>}
+      {error && <p id="fold-error" className="mt-2 text-[0.8rem] text-[var(--bad-fg)]">{t('form.chooseFold')}</p>}
     </div>
   )
 }
@@ -405,18 +408,19 @@ interface SummaryProps {
 }
 
 function Summary({ className, form, offsetMinutes, utc, hasCoordinates, lat, lon }: SummaryProps) {
+  const { t } = useT()
   const rows: [string, ReactNode][] = [
-    ['Name', form.name.trim() || null],
-    ['Born', form.date && form.time ? `${formatCivil(form.date, form.time)} local time` : null],
-    ['Place', form.place || null],
-    ['Coordinates', hasCoordinates ? formatCoordinates(lat!, lon!) : null],
-    ['Time zone', form.timeZone || null],
-    ['Offset at birth', offsetMinutes !== null ? formatOffset(offsetMinutes) : null],
-    ['Universal time', utc ? formatUtc(utc) : null],
+    [t('field.name'), form.name.trim() || null],
+    [t('form.born'), form.date && form.time ? t('form.localTimeValue', { value: formatCivil(form.date, form.time) }) : null],
+    [t('field.place'), form.place || null],
+    [t('field.coordinates'), hasCoordinates ? formatCoordinates(lat!, lon!) : null],
+    [t('field.timeZone'), form.timeZone || null],
+    [t('form.offset'), offsetMinutes !== null ? formatOffset(offsetMinutes) : null],
+    [t('form.universal'), utc ? formatUtc(utc) : null],
   ]
   return (
     <Card className={cn('p-5', className)}>
-      <CardTitle className="text-base">Summary</CardTitle>
+      <CardTitle className="text-base">{t('form.summary')}</CardTitle>
       <dl className="mt-3 divide-y divide-[var(--divider)] text-sm">
         {rows.map(([label, value]) => (
           <div key={label} className="flex justify-between gap-4 py-2.5">

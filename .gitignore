@@ -83,3 +83,4 @@ desktop.ini
 web/test-results/
 web/playwright-report/
 web/.cache-cities/
+*.tsbuildinfo

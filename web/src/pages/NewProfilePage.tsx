@@ -1,9 +1,10 @@
 import { Clock, Globe, History, MapPin, Pencil, ShieldCheck, UserRound, UserX, type LucideIcon } from 'lucide-react'
 import { RadioGroup } from 'radix-ui'
-import { useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useLocation, useParams } from 'wouter'
 import { cityLabel, type City } from '@/lib/cities'
 import { cn } from '@/lib/cn'
+import { getEngine } from '@/lib/engine'
 import {
   checkBirth, formatOffset, lmtOffset, MAX_YEAR, MIN_YEAR, parseCoordinate, typedFixedOffset, type BirthField, type FoldOption,
 } from '@/state/birth'
@@ -69,6 +70,8 @@ const allZones = () => (zoneNames ??= typeof Intl.supportedValuesOf === 'functio
 export default function NewProfilePage() {
   const { id } = useParams<{ id?: string }>()
   const existing = useProfile(id)
+  // Start the engine while the form is filled in, so the forecast opens without waiting for it.
+  useEffect(() => void getEngine().catch(() => {}), [])
   if (id && !existing) {
     return (
       <Page width="narrow">

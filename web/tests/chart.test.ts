@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import fixtures from './fixtures/charts.json'
-import { engineApi } from '@/engine/api'
+import { ENGINE_VERSION, engineApi } from '@/engine/api'
 import { BirthInputError, castChart, formatUtcOffset, POLAR_WARNING, validateBirthInput } from '@/engine/chart'
 import { SIGN_NAMES, VARGAS } from '@/engine/core'
 import { ascendant } from '@/engine/ephem'
@@ -314,7 +314,7 @@ describe('birth input validation', () => {
 describe('engineApi', () => {
   it('initialises once and exposes the chart functions', async () => {
     const version = await engineApi.init()
-    expect(version).toEqual({ engine: 1, swisseph: '2.10.03' })
+    expect(version).toEqual({ engine: ENGINE_VERSION, swisseph: '2.10.03' })
     expect(await engineApi.init()).toEqual(version)
     expect(engineApi.castChart(BASE, PRESETS.popular)).toEqual(castChart(BASE, PRESETS.popular))
     expect(engineApi.validateBirthInput({ ...BASE, latitude: 91 })).toHaveLength(1)

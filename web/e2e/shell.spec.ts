@@ -11,11 +11,14 @@ test('landing page leads to the birth-details form', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('When and where were you born?')
 })
 
-test('creates a profile with the city search and opens today', async ({ page }) => {
+const rating = (page: Page) => page.getByRole('heading', { level: 2, name: /^(Favourable|Mixed|Challenging)$/ })
+
+/** Create Asha (Bengaluru, 12 May 1990, 06:00 IST) through the form and return her profile id. */
+async function createAsha(page: Page): Promise<string> {
   await page.goto('./#/new')
   await page.getByLabel('Name', { exact: true }).fill('Asha')
-  await page.getByLabel('Date', { exact: true }).fill('1990-04-28')
-  await page.getByLabel('Local time').fill('05:50')
+  await page.getByLabel('Date', { exact: true }).fill('1990-05-12')
+  await page.getByLabel('Local time').fill('06:00')
 
   // The former name finds the renamed city; arrows and Enter pick it.
   const place = page.getByRole('combobox', { name: 'Town or city' })
@@ -32,18 +35,67 @@ test('creates a profile with the city search and opens today', async ({ page }) 
 
   await page.getByRole('button', { name: 'Save and see today' }).click()
   await expect(page).toHaveURL(/#\/p\/[0-9a-z]{10}\/today$/)
+  return /#\/p\/([0-9a-z]{10})\//.exec(page.url())![1]
+}
+
+test('creates a profile with the city search and opens today', async ({ page }) => {
+  await createAsha(page)
   await expect(forecastNav(page).getByRole('link', { name: 'Today' })).toHaveAttribute('aria-current', 'page')
+  await expect(rating(page)).toBeVisible()
 
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('jyotish-daily:profiles:v1') ?? '{}'))
   expect(stored.profiles).toHaveLength(1)
   expect(stored.profiles[0].birth).toEqual({
-    name: 'Asha', date: '1990-04-28', time: '05:50', timeZone: 'Asia/Kolkata',
+    name: 'Asha', date: '1990-05-12', time: '06:00', timeZone: 'Asia/Kolkata',
     latitude: 12.9719, longitude: 77.5937, place: 'Bengaluru, Karnataka, India',
   })
 
   await page.goto('./#/profiles')
   await expect(page.getByRole('heading', { name: 'Asha', level: 2 })).toBeVisible()
-  await expect(page.getByText('28 Apr 1990, 05:50')).toBeVisible()
+  await expect(page.getByText('12 May 1990, 06:00')).toBeVisible()
+})
+
+test('a new profile gets every forecast and the chart, and the preset moves its dasha dates', async ({ page }) => {
+  const id = await createAsha(page)
+  await expect(rating(page)).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Moon today' })).toContainText('Tara bala')
+  const running = page.getByRole('region', { name: 'Running dasha' })
+  await expect(running).toContainText('Mahadasha')
+  const runningSolar = (await running.textContent())!
+
+  const title = page.getByRole('main').getByRole('heading', { level: 1 })
+  for (const [name, text] of [['Week', /–/], ['Month', /^[A-Z][a-z]+ \d{4}$/], ['Year', /^\d{4}$/]] as const) {
+    await forecastNav(page).getByRole('link', { name }).click()
+    await expect(title).toHaveText(text)
+    await expect(rating(page)).toBeVisible()
+  }
+  await expect(page.getByRole('heading', { name: 'Muntha', level: 2 })).toBeVisible()
+
+  await forecastNav(page).getByRole('link', { name: 'Chart' }).click()
+  await expect(title).toHaveText('Saturday, 12 May 1990')
+  const details = page.getByRole('region', { name: 'Birth details' })
+  await expect(details).toContainText('Solar year')
+  const timeline = page.getByRole('region', { name: 'Vimsottari dasha timeline' })
+  await expect(timeline).toContainText('Mahadasha', { ignoreCase: true })
+  const solar = (await timeline.textContent())!
+
+  // Rao's book counts 360-day dasha years, so every period boundary after birth moves earlier.
+  await page.goto('./#/settings')
+  await page.getByRole('radio', { name: /^Book/ }).click()
+  await expect(page.getByRole('radio', { name: /^Book/ })).toBeChecked()
+  await page.goto(`./#/p/${id}/chart`)
+  await expect(details).toContainText('360-day year')
+  await expect(timeline).not.toHaveText(solar)
+  await page.goto(`./#/p/${id}/today`)
+  await expect(running).toContainText('Mahadasha')
+  await expect(running).not.toHaveText(runningSolar)
+
+  // Back to "Popular software": solar-year dashas again, exactly as before.
+  await page.goto('./#/settings')
+  await page.getByRole('radio', { name: 'Popular' }).click()
+  await page.goto(`./#/p/${id}/chart`)
+  await expect(details).toContainText('Solar year')
+  await expect(timeline).toHaveText(solar)
 })
 
 test('explains missing details and asks which repeated hour was meant', async ({ page }) => {

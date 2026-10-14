@@ -34,12 +34,13 @@ export function ProfileSwitcher({ profiles, active, view }: ProfileSwitcherProps
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
-        className="flex h-11 min-w-11 items-center gap-2 rounded-full border border-[var(--surface-border)] bg-[var(--surface-2)] pl-1.5 pr-1.5 text-sm font-medium text-[var(--text)] transition-colors hover:bg-[var(--hover)] data-[state=open]:bg-[var(--hover)] sm:pr-3"
+        className="flex h-11 min-w-11 items-center gap-2 rounded-full border border-[var(--surface-border)] bg-[var(--surface-2)] pl-1.5 pr-1.5 text-sm font-medium text-[var(--text)] transition-colors hover:bg-[var(--hover)] data-[state=open]:bg-[var(--hover)] sm:pr-3 md:max-lg:pr-1.5"
         aria-label={active ? `Profile: ${profileName(active)}. Switch profile` : 'Profiles'}
       >
         {active ? <Avatar profile={active} /> : <Users className="mx-1.5 size-5" aria-hidden />}
-        <span className="hidden max-w-36 truncate sm:block">{active ? profileName(active) : 'Profiles'}</span>
-        <ChevronDown aria-hidden className="hidden size-4 text-[var(--text-muted)] sm:block" />
+        {/* Avatar only on narrow tablets, where the header also carries the forecast tabs. */}
+        <span className="hidden max-w-36 truncate sm:block md:max-lg:hidden">{active ? profileName(active) : 'Profiles'}</span>
+        <ChevronDown aria-hidden className="hidden size-4 text-[var(--text-muted)] sm:block md:max-lg:hidden" />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content

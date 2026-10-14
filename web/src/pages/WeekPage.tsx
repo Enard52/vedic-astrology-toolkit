@@ -1,6 +1,55 @@
-// Stub until the Week view lands; a later wave replaces this file.
-import PlaceholderPage from './PlaceholderPage'
+// Week: the week's rating, its seven days at a glance (tap one to open it), the best and
+// gentlest days, the reasons and the week's events.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+import { CalendarDays, Milestone } from 'lucide-react'
+import type { RouteComponentProps } from 'wouter'
+import { cn } from '@/lib/cn'
+import { useProfile } from '@/state/profiles'
+import { shortPlaceName, useForecast, useTimingsPlace } from '@/ui/forecast/data'
+import { relativeLabel } from '@/ui/forecast/dates'
+import { DashaChip } from '@/ui/forecast/DashaChip'
+import { EventsTimeline } from '@/ui/forecast/EventsTimeline'
+import { PeriodHeader } from '@/ui/forecast/ForecastHeader'
+import { ForecastDisclaimer, ForecastError, ForecastSkeleton, ProfileMissing } from '@/ui/forecast/ForecastStates'
+import { RatingHero } from '@/ui/forecast/RatingHero'
+import { ReasonList } from '@/ui/forecast/ReasonList'
+import { Panel } from '@/ui/forecast/Section'
+import { useForecastDate } from '@/ui/forecast/useForecastDate'
+import { DayHighlights, WeekStrip } from '@/ui/forecast/WeekStrip'
+import { Page } from '@/ui/layout/Page'
 
-export default function WeekPage() {
-  return <PlaceholderPage title="This week" />
+export default function WeekPage({ params }: RouteComponentProps<{ id: string }>) {
+  const profile = useProfile(params.id)
+  const nav = useForecastDate('week')
+  const { data: forecast, error, loading, retry } = useForecast(params.id, 'week', nav.anchor)
+  const { place } = useTimingsPlace()
+  if (!profile) return <ProfileMissing />
+  const relative = relativeLabel('week', nav.anchor, nav.today)
+  const parts = forecast?.parts ?? []
+  return (
+    <Page>
+      <PeriodHeader profile={profile} horizon="week" nav={nav} loading={loading && forecast !== undefined} />
+      {error ? <ForecastError error={error} onRetry={retry} /> : !forecast ? <ForecastSkeleton /> : (
+        <div className={cn('space-y-4 transition-opacity duration-200 lg:space-y-6', loading && 'opacity-60')}>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
+            <RatingHero forecast={forecast} label={relative ? `${relative}’s outlook` : 'The week’s outlook'} className="lg:col-span-7" />
+            <Panel title="Day by day" description="Tap a day for its timings and detail" icon={<CalendarDays />} className="lg:col-span-5">
+              <WeekStrip parts={parts} profileId={profile.id} today={nav.today} selected={nav.date} />
+              <DayHighlights parts={parts} profileId={profile.id} today={nav.today} className="mt-4" />
+            </Panel>
+          </div>
+          <div className="grid grid-cols-1 items-start gap-4 pt-4 lg:grid-cols-12 lg:gap-6">
+            <ReasonList reasons={forecast.reasons} title="What shapes the week" description="Tap a reason for the detail and its classical source." className="lg:col-span-7" />
+            <div className="space-y-4 lg:col-span-5 lg:space-y-6">
+              <DashaChip chain={forecast.dasha} timeZone={place.timeZone} profileId={profile.id} />
+              <Panel title="Events" description={`Local times in ${shortPlaceName(place)}`} icon={<Milestone />}>
+                <EventsTimeline events={forecast.events} timeZone={place.timeZone} grouped initial={10} />
+              </Panel>
+            </div>
+          </div>
+        </div>
+      )}
+      <ForecastDisclaimer />
+    </Page>
+  )
 }

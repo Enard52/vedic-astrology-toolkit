@@ -35,7 +35,7 @@ export const CAUTION_PHRASE: Readonly<Record<string, string>> = {
   tara_bala: 'keep important starts for another day',
   chandra_bala: 'keep the pace gentle',
   chandrashtama: 'go gently while the Moon crosses your 8th',
-  careful_days: 'go gently on the Chandrashtama days',
+  careful_days: 'go gently on the harder days',
   dasha_transit: 'give your current dasha themes some patience',
   tithi: 'save new ventures for a fuller tithi',
   vishti: 'avoid new starts during Vishti karana',
@@ -72,6 +72,22 @@ export const DAY_HEADLINE_VARIANTS = 2
 export function dayHeadline(rating: Rating, support?: string, caution?: string, variant = 0): string {
   const templates = DAY_TEMPLATES[rating]
   return templates[((variant % templates.length) + templates.length) % templates.length](support, caution)
+}
+
+/** A mixed Chandrashtama day still opens with the 8th-sign Moon; the support comes second. */
+const CHANDRASHTAMA_MIXED: readonly ((support?: string) => string)[] = [
+  (s) => `${capitalize(CAUTION_PHRASE.chandrashtama)}${s ? `; ${s} keeps the day workable` : ''}.`,
+  (s) => `A steady day at best: ${CAUTION_PHRASE.chandrashtama}${s ? `, with ${s} on your side` : ''}.`,
+]
+
+/**
+ * Headline of a Chandrashtama day (the Moon in the 8th sign from the birth Moon for most of the
+ * daytime): its caution always leads. Such a day is rated mixed at best, never favourable.
+ */
+export function chandrashtamaHeadline(rating: Rating, support?: string, variant = 0): string {
+  if (rating !== 'mixed') return dayHeadline('challenging', support, CAUTION_PHRASE.chandrashtama, variant)
+  const n = CHANDRASHTAMA_MIXED.length
+  return CHANDRASHTAMA_MIXED[((variant % n) + n) % n](support)
 }
 
 /**

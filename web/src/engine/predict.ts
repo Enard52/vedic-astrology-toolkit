@@ -7,7 +7,7 @@
 // reuse the days they share.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import {
-  binduNote, CAUTION_PHRASE, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText,
+  binduNote, CAUTION_PHRASE, chandrashtamaHeadline, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText,
   dayHeadline, GOCHARA_TEXT, joinList, MOON_CHANGE_TEXT, MUNTHA_TEXT, NO_SADE_SATI_TEXT, ordinal, PANCHANGA_TEXT,
   PERIOD_TEXT, periodHeadline, PLANET_THEMES, SATURN_PHASE_TEXT, SATURN_PHASE_TITLE, SOURCES, STATION_TEXT,
   SUPPORT_PHRASE, TARA_TEXT, vedhaNote, vipareetaNote, yearHeadline,
@@ -26,7 +26,7 @@ import { bisectInstant } from './search'
 import { nextSolarEvent, solarDayForDate } from './sunrise'
 import { addDays, daysInMonth, formatJd, isValidTimeZone, jdToLocal, localToJd, weekdayOf } from './time'
 import type {
-  BirthInput, Chart, DashaPeriod, Effect, Forecast, Planet, Rating, Reason, Settings, SignIndex, SolarDay, TimedEvent, TimeWindow,
+  BirthInput, Chart, DashaPeriod, Effect, Forecast, PeriodHighlights, Planet, Rating, Reason, Settings, SignIndex, SolarDay, TimedEvent, TimeWindow,
 } from './types'
 
 // ---------------------------------------------------------------------------------------------
@@ -129,6 +129,16 @@ export const MUNTHA_FAVOURABLE_HOUSES: readonly number[] = [1, 2, 3, 5, 9, 10, 1
 
 export const ratingFor = (score: number): Rating =>
   score >= FAVOURABLE_AT ? 'favourable' : score <= CHALLENGING_AT ? 'challenging' : 'mixed'
+
+/**
+ * Rating of a day. A day ruled by Chandrashtama (the Moon in the 8th sign from the birth Moon for
+ * most of the daytime) is the classic day to go slow in panchang practice (PanchangBodh, Hindupad,
+ * AstroVed Chandrashtama calendars), so however its other factors add up it is never
+ * 'favourable', and it is 'challenging' unless they are clearly positive. The score is kept as
+ * computed for the dial and the period averages.
+ */
+export const dayRating = (score: number, chandrashtama: boolean): Rating =>
+  !chandrashtama ? ratingFor(score) : score >= FAVOURABLE_AT ? 'mixed' : 'challenging'
 
 const round = (x: number, digits: number) => Math.round(x * 10 ** digits) / 10 ** digits + 0
 
@@ -551,9 +561,10 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
   })
 
   const eighth = advanceSign(natal.moonSign, 8)
+  const ruled = moonSign === eighth
   const stay = cov.chandrashtama.find((w) => w.startJd < span.end && w.endJd > span.start)
   if (stay) {
-    const weight = moonSign === eighth ? DAY_WEIGHTS.chandrashtama
+    const weight = ruled ? DAY_WEIGHTS.chandrashtama
       : stay.startJd < span.sunset && stay.endJd > span.start ? DAY_WEIGHTS.chandrashtamaPartial : DAY_WEIGHTS.chandrashtamaNight
     const when = stay.startJd <= span.start ? `until ${at(stay.endJd)}` : `from ${at(stay.startJd)}${stay.endJd < span.end ? ` to ${at(stay.endJd)}` : ''}`
     reasons.push({
@@ -562,7 +573,7 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
     })
   }
   // Chandrashtama already counts the 8th-house Moon; Chandra bala would count it twice.
-  if (moonSign !== eighth) {
+  if (!ruled) {
     const cb = chandraBala(natal.moonSign, moonSign)
     reasons.push({
       factor: 'chandra_bala', effect: cb.good ? 1 : -1, weight: cb.good ? CHANDRA_BALA_GOOD : DAY_WEIGHTS.chandraBala,
@@ -607,15 +618,17 @@ export function forecastDay(ctx: PredictContext, date: string): Forecast {
   }
 
   const score = scoreReasons(reasons)
-  const rating = ratingFor(score)
+  const rating = dayRating(score, ruled)
   const timings = span.solarDay ? timingsForSolarDay(span.solarDay, date, ctx.place.timeZone) : undefined
   const support = strongest(reasons, 1, dayPriority)
+  const supportPhrase = support && SUPPORT_PHRASE[support.factor]
   const caution = strongest(reasons, -1, dayPriority)
+  const variant = Number(date.slice(8))
   const forecast: Forecast = {
     horizon: 'day', start: date, end: date, rating, score,
-    headline: dayHeadline(
-      rating, support && SUPPORT_PHRASE[support.factor], caution ? CAUTION_PHRASE[caution.factor] : timings && CAUTION_PHRASE.rahu_kalam, Number(date.slice(8)),
-    ),
+    // On a Chandrashtama day the 8th-sign Moon leads the headline, whatever else weighs more.
+    headline: ruled ? chandrashtamaHeadline(rating, supportPhrase, variant)
+      : dayHeadline(rating, supportPhrase, caution ? CAUTION_PHRASE[caution.factor] : timings && CAUTION_PHRASE.rahu_kalam, variant),
     reasons: sortReasons(reasons),
     events: periodEvents(ctx, span.start, span.end, () => true, 2, true),
     dasha: chain,
@@ -637,34 +650,49 @@ function withoutTimings(day: Forecast): Forecast {
   return light
 }
 
-/** Best and careful days of a run of daily forecasts, as reasons and as headline labels. */
-function dayHighlights(days: readonly Forecast[], maxBest: number, weekday: boolean): { reasons: Reason[]; best?: string; careful?: string } {
+/** "Fri 2 Oct 15:41" (or "2 Oct 15:41"): an instant to the minute in the place's zone. */
+function instantLabel(ctx: PredictContext, jd: number, weekday: boolean): string {
+  const p = jdToLocal(jd, ctx.place.timeZone, 'minute')
+  return `${weekday ? `${WEEKDAYS[p.weekday]} ` : ''}${p.day} ${MONTHS[p.month - 1]} ${p.time}`
+}
+
+/** The Moon holds the 8th sign from the birth Moon for at least part of the daytime. */
+const daytimeChandrashtama = (d: Forecast) => d.reasons.some((r) => r.factor === 'chandrashtama' && r.weight >= DAY_WEIGHTS.chandrashtamaPartial)
+
+/**
+ * The days a week or month summary names, as reasons, headline labels and dates, so that the
+ * summary and the day lists agree. The best days are the highest-scoring favourable days (else the
+ * best day above zero) clear of a daytime Chandrashtama; the careful days are the lowest-scoring
+ * challenging days, so a day rated favourable is never among them. Chandrashtama is given as its
+ * stays with their times rather than as days: a stay that begins in the evening leaves most of its
+ * first day as rated.
+ */
+function dayHighlights(
+  ctx: PredictContext, days: readonly Forecast[], a: number, b: number, max: number, weekday: boolean,
+): { reasons: Reason[]; best?: string; careful?: string; highlights: PeriodHighlights } {
   const reasons: Reason[] = []
-  const ranked = [...days].sort((a, b) => b.score - a.score)
-  let best = ranked.filter((d) => d.rating === 'favourable').slice(0, maxBest)
-  if (!best.length && ranked[0] && ranked[0].score > 0) best = [ranked[0]]
-  const bestDates = best.map((d) => d.start).sort()
-  let bestLabel: string | undefined
-  if (bestDates.length) {
-    bestLabel = dateList(bestDates, weekday)
-    reasons.push({ factor: 'best_days', effect: 1, weight: 1, title: `Best ${bestDates.length > 1 ? 'days' : 'day'}: ${bestLabel}`, text: PERIOD_TEXT.bestDays(bestLabel), source: SOURCES.summary })
+  const pick = (ranked: readonly Forecast[]) => ranked.slice(0, max).map((d) => d.start).sort()
+  const ranked = days.filter((d) => !daytimeChandrashtama(d)).sort((x, y) => y.score - x.score)
+  let best = pick(ranked.filter((d) => d.rating === 'favourable'))
+  if (!best.length && ranked[0] && ranked[0].score > 0) best = [ranked[0].start]
+  const bestLabel = best.length ? dateList(best, weekday) : undefined
+  if (bestLabel) {
+    reasons.push({ factor: 'best_days', effect: 1, weight: 1, title: `Best ${best.length > 1 ? 'days' : 'day'}: ${bestLabel}`, text: PERIOD_TEXT.bestDays(bestLabel), source: SOURCES.summary })
   }
-  const eighth = days.filter((d) => d.reasons.some((r) => r.factor === 'chandrashtama' && r.weight >= DAY_WEIGHTS.chandrashtamaPartial)).map((d) => d.start)
-  let carefulLabel: string | undefined
-  if (eighth.length) {
-    carefulLabel = dateList(eighth, weekday)
+  const careful = pick(days.filter((d) => d.rating === 'challenging').sort((x, y) => x.score - y.score))
+  const carefulLabel = careful.length ? dateList(careful, weekday) : undefined
+  if (carefulLabel) {
+    reasons.push({ factor: 'careful_days', effect: -1, weight: 1, title: `Go gently: ${carefulLabel}`, text: PERIOD_TEXT.toughDays(carefulLabel), source: SOURCES.summary })
+  }
+  const stays = cover(ctx, a, b).chandrashtama.filter((w) => w.startJd < b && w.endJd > a)
+  for (const w of stays) {
+    const [from, to] = [instantLabel(ctx, w.startJd, weekday), instantLabel(ctx, w.endJd, weekday)]
     reasons.push({
-      factor: 'careful_days', effect: -1, weight: 1.5, title: `Go gently: ${carefulLabel}`,
-      text: PERIOD_TEXT.chandrashtamaDays(carefulLabel), source: SOURCES.chandrashtama,
+      factor: 'chandrashtama', effect: -1, weight: 1.5, title: `Moon in your 8th: ${from} – ${to}`,
+      text: PERIOD_TEXT.chandrashtamaStay(from, to), source: SOURCES.chandrashtama,
     })
-  } else {
-    const tough = days.filter((d) => d.rating === 'challenging').map((d) => d.start)
-    if (tough.length) {
-      carefulLabel = dateList(tough, weekday)
-      reasons.push({ factor: 'careful_days', effect: -1, weight: 1, title: `Take care: ${carefulLabel}`, text: PERIOD_TEXT.toughDays(carefulLabel), source: SOURCES.summary })
-    }
   }
-  return { reasons, best: bestLabel, careful: carefulLabel }
+  return { reasons, best: bestLabel, careful: carefulLabel, highlights: { best, careful, chandrashtama: stays } }
 }
 
 /**
@@ -772,7 +800,7 @@ export function forecastWeek(ctx: PredictContext, startDate: string): Forecast {
   const score = mean(days.map((d) => d.score))
   const rating = ratingFor(score)
   const events = periodEvents(ctx, a, b, (e) => e.kind !== 'moon_nakshatra', 2, true)
-  const highlights = dayHighlights(days, 2, true)
+  const highlights = dayHighlights(ctx, days, a, b, 2, true)
   const reasons = [
     ...highlights.reasons,
     ...slowBackdrop(ctx, (a + b) / 2, ' this week'),
@@ -783,7 +811,7 @@ export function forecastWeek(ctx: PredictContext, startDate: string): Forecast {
   return {
     horizon: 'week', start: dates[0], end: dates[6], rating, score,
     headline: periodHeadline('week', rating, highlights.best, highlights.careful),
-    reasons: sortReasons(reasons), events, parts: days, dasha: days[0].dasha,
+    reasons: sortReasons(reasons), events, parts: days, dasha: days[0].dasha, highlights: highlights.highlights,
   }
 }
 
@@ -834,7 +862,7 @@ function monthForecast(ctx: PredictContext, year: number, month: number, withPar
   const score = mean(days.map((d) => d.score))
   const rating = ratingFor(score)
   const events = periodEvents(ctx, a, b, (e) => e.kind !== 'moon_sign' && e.kind !== 'moon_nakshatra', 2, true)
-  const highlights = dayHighlights(days, 3, false)
+  const highlights = dayHighlights(ctx, days, a, b, 3, false)
   const isMvStation = (e: TimedEvent) => (e.body === 'Mercury' || e.body === 'Venus') && (e.kind === 'retrograde' || e.kind === 'direct')
   const reasons = [
     ...transitStretches(ctx, events, a, b, 'all month', true),
@@ -849,7 +877,7 @@ function monthForecast(ctx: PredictContext, year: number, month: number, withPar
   const forecast: Forecast = {
     horizon: 'month', start: first, end: dates.at(-1)!, rating, score,
     headline: periodHeadline('month', rating, highlights.best, highlights.careful),
-    reasons: sortReasons(reasons), events, dasha: days[0].dasha,
+    reasons: sortReasons(reasons), events, dasha: days[0].dasha, highlights: highlights.highlights,
   }
   if (withParts) forecast.parts = days.map(withoutTimings)
   return forecast

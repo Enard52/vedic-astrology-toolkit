@@ -25,8 +25,11 @@ export interface EngineVersion {
   swisseph: string
 }
 
-/** 2: forecasts (predict.ts) and their extras joined the API. */
-export const ENGINE_VERSION = 2
+/**
+ * 2: forecasts (predict.ts) and their extras joined the API. 3: Chandrashtama days are never
+ * rated favourable; weeks and months carry their highlights.
+ */
+export const ENGINE_VERSION = 3
 
 export interface ChartData {
   chart: Chart

@@ -5,12 +5,13 @@ import { moonLongitude, planetPositions, sunLongitude } from '@/engine/ephem'
 import { gochara } from '@/engine/gochara'
 import { chandrashtamaWindows } from '@/engine/moon'
 import {
-  balanceFactor, CHALLENGING_AT, CHANDRA_BALA_GOOD, contextFor, createContext, DAY_WEIGHTS, FAVOURABLE_AT, forecastDay, forecastMonth, forecastWeek,
+  balanceFactor, CHALLENGING_AT, CHANDRA_BALA_GOOD, contextFor, createContext, DAY_WEIGHTS, dayRating, FAVOURABLE_AT, forecastDay, forecastMonth, forecastWeek,
   forecastYear, GOCHARA_SHARES, gocharaAt, INFORMATIONAL_FACTORS, munthaForYear, ratingFor, scoreReasons, vedicDateAt, type PredictContext,
 } from '@/engine/predict'
 import { solarDayForDate } from '@/engine/sunrise'
 import { addDays, daysInMonth, localToJd } from '@/engine/time'
 import { PLANETS, PRESETS, type BirthInput, type Forecast, type Rating, type Reason } from '@/engine/types'
+import { CAUTION_PHRASE } from '@/content'
 import { loadSwe } from './helpers/swe'
 
 type Fixture = { id: string; input: { datetime: string; timezone?: string; latitude: number; longitude: number } }
@@ -27,6 +28,8 @@ const BIRTH = bookExample118()
 /** A synthetic December birth in New York (DST zone, Moon in Cancer). */
 const NEW_YORK = { latitude: 40.7128, longitude: -74.006, timeZone: 'America/New_York' }
 const NY_BIRTH: BirthInput = { date: '1985-12-02', time: '23:10', ...NEW_YORK }
+/** The e2e profile, born in Bengaluru. */
+const ASHA: BirthInput = { date: '1990-05-12', time: '06:00', timeZone: 'Asia/Kolkata', latitude: 12.9719, longitude: 77.5937 }
 const MINUTE = 1 / 1440
 
 const fresh = () => createContext(BIRTH, PRESETS.popular, BENGALURU)
@@ -44,7 +47,9 @@ function checkReasons(f: Forecast) {
   expect(f.headline).not.toMatch(/undefined/)
   expect(f.score).toBeGreaterThanOrEqual(-1)
   expect(f.score).toBeLessThanOrEqual(1)
-  expect(f.rating).toBe(ratingFor(f.score))
+  // A day ruled by Chandrashtama is capped (dayRating); every other rating follows the score.
+  const ruled = f.horizon === 'day' && f.reasons.some((r) => r.factor === 'chandrashtama' && r.weight === DAY_WEIGHTS.chandrashtama)
+  expect(f.rating).toBe(dayRating(f.score, ruled))
 }
 
 const byFactor = (f: Forecast, factor: string) => f.reasons.filter((r) => r.factor === factor)
@@ -269,6 +274,82 @@ describe('forecasts for book Example 118 in Bengaluru', () => {
     expect(byFactor(year, 'sade_sati')).toEqual([])
     expect(sade.map((r) => r.title)).toEqual(['Ardhashtama Shani from 23 Feb 2028'])
     expect(sade.every((r) => r.effect === -1 && !/Sade Sati runs/.test(r.text))).toBe(true)
+  })
+})
+
+describe('Chandrashtama days and period highlights', () => {
+  beforeAll(async () => {
+    await loadSwe()
+  })
+
+  const ruledBy = (d: Forecast) => byFactor(d, 'chandrashtama').some((r) => r.weight === DAY_WEIGHTS.chandrashtama)
+
+  /** The summary, its reasons and Forecast.highlights name the same days, and never a favourable day as careful. */
+  function checkHighlights(period: Forecast) {
+    const h = period.highlights!
+    const parts = new Map(period.parts!.map((p) => [p.start, p]))
+    for (const d of h.careful) expect(parts.get(d)!.rating, d).toBe('challenging')
+    for (const d of h.best) {
+      expect(parts.get(d)!.score, d).toBeGreaterThan(0)
+      expect(byFactor(parts.get(d)!, 'chandrashtama').every((r) => r.weight < DAY_WEIGHTS.chandrashtamaPartial), d).toBe(true)
+    }
+    for (const dates of [h.best, h.careful]) expect(dates).toEqual([...dates].sort())
+    const label = (factor: string) => byFactor(period, factor)[0]?.title.split(': ')[1]
+    expect(label('best_days') !== undefined).toBe(h.best.length > 0)
+    expect(label('careful_days') !== undefined).toBe(h.careful.length > 0)
+    for (const factor of ['best_days', 'careful_days']) if (label(factor)) expect(period.headline).toContain(label(factor))
+    const a = localToJd(period.start, BENGALURU.timeZone)
+    const b = localToJd(addDays(period.end, 2), BENGALURU.timeZone)
+    expect(h.chandrashtama.every((w) => w.startJd < b && w.endJd > a)).toBe(true)
+    expect(byFactor(period, 'chandrashtama')).toHaveLength(h.chandrashtama.length)
+  }
+
+  it('never rates a day ruled by Chandrashtama favourable, over 2026-2027 for three charts', () => {
+    let ruled = 0
+    for (const birth of [BIRTH, ASHA, NY_BIRTH]) {
+      const ctx = createContext(birth, PRESETS.popular, BENGALURU)
+      for (let y = 2026; y <= 2027; y++) {
+        for (let m = 1; m <= 12; m++) {
+          const month = forecastMonth(ctx, y, m)
+          checkHighlights(month)
+          for (const d of month.parts!.filter(ruledBy)) {
+            ruled++
+            expect(d.rating, d.start).toBe(d.score >= FAVOURABLE_AT ? 'mixed' : 'challenging')
+            expect(d.headline.toLowerCase(), d.start).toContain(CAUTION_PHRASE.chandrashtama.toLowerCase())
+          }
+        }
+      }
+    }
+    expect(ruled).toBeGreaterThan(150)
+    expect(dayRating(0.5, true)).toBe('mixed')
+    expect(dayRating(0.1, true)).toBe('challenging')
+    expect(dayRating(0.1, false)).toBe('mixed')
+  })
+
+  it('keeps the score but caps the rating: the 8th-sign Moon leads the headline', () => {
+    const asha = createContext(ASHA, PRESETS.popular, BENGALURU)
+    // Saturn in the 6th (weight 3.12) used to outvote Chandrashtama here and rate the day favourable.
+    expect(forecastDay(asha, '2027-09-23')).toMatchObject({
+      rating: 'mixed', score: 0.201, headline: 'A steady day at best: go gently while the Moon crosses your 8th, with a favourable Moon star on your side.',
+    })
+    expect(forecastDay(fresh(), '2026-10-07')).toMatchObject({ rating: 'challenging', score: -0.13 })
+  })
+
+  it('names the same best and careful days in the month summary and its highlights, with Chandrashtama by its times', () => {
+    const asha = createContext(ASHA, PRESETS.popular, BENGALURU)
+    const october = forecastMonth(asha, 2026, 10)
+    checkHighlights(october)
+    expect(october.highlights).toMatchObject({ best: ['2026-10-07', '2026-10-09', '2026-10-14'], careful: ['2026-10-18', '2026-10-22', '2026-10-30'] })
+    expect(october.headline).toBe('A mixed month: best around 7 Oct, 9 Oct and 14 Oct, go gently around 18 Oct, 22 Oct and 30 Oct.')
+    // 2 Oct is rated favourable until the Moon enters the 8th at 15:41, so it is not a careful day.
+    expect(october.parts![1]).toMatchObject({ start: '2026-10-02', rating: 'favourable' })
+    expect(byFactor(october, 'chandrashtama').map((r) => r.title)).toEqual([
+      'Moon in your 8th: 2 Oct 15:41 – 4 Oct 18:32', 'Moon in your 8th: 29 Oct 22:07 – 1 Nov 00:01',
+    ])
+    const week = forecastWeek(asha, '2026-10-11')
+    checkHighlights(week)
+    expect(week.highlights).toEqual({ best: ['2026-10-14', '2026-10-15'], careful: ['2026-10-12', '2026-10-17'], chandrashtama: [] })
+    expect(week.headline).toBe('A supportive week, brightest on Wed 14 – Thu 15 Oct; go gently on Mon 12 Oct and Sat 17 Oct.')
   })
 })
 

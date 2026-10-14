@@ -41,7 +41,7 @@ export default function MonthPage({ params }: RouteComponentProps<{ id: string }
             <Panel title="Calendar" description="Each day’s rating; open one for its timings" icon={<CalendarRange />} className="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1">
               <MonthCalendar key={nav.anchor} parts={parts} month={nav.anchor} profileId={profile.id} today={nav.today} selected={nav.date} />
             </Panel>
-            <DayHighlights parts={parts} profileId={profile.id} today={nav.today} className="lg:col-span-7" />
+            <DayHighlights forecast={forecast} profileId={profile.id} today={nav.today} timeZone={place.timeZone} className="lg:col-span-7" />
           </div>
           <div className="grid grid-cols-1 items-start gap-4 pt-4 lg:grid-cols-12 lg:gap-6">
             <ReasonList reasons={forecast.reasons} title="What shapes the month" description="Tap a reason for the detail and its classical source." className="lg:col-span-7" />

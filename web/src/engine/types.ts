@@ -215,6 +215,17 @@ export interface Forecast {
   dasha: DashaPeriod[]
   /** Day timings for the day view. */
   timings?: DayTimings
+  /** Week and month: the days the summary names, so every view lists the same ones. */
+  highlights?: PeriodHighlights
+}
+
+export interface PeriodHighlights {
+  /** Best days, in date order. */
+  best: string[]
+  /** Days to take gently (the lowest-scoring challenging days), in date order. */
+  careful: string[]
+  /** Stays of the Moon in the 8th sign from the birth Moon (Chandrashtama) that touch the period. */
+  chandrashtama: TimeWindow[]
 }
 
 export const DISCLAIMER =

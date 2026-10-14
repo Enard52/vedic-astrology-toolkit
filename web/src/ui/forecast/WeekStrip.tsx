@@ -3,10 +3,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { Leaf, Sparkles } from 'lucide-react'
 import type { CSSProperties } from 'react'
-import { weekdayOf } from '@/engine/time'
+import { jdToLocal, weekdayOf } from '@/engine/time'
 import type { Forecast } from '@/engine/types'
 import { cn } from '@/lib/cn'
-import { dateParts, longDate, shortDate, WEEKDAYS } from './dates'
+import { dateParts, longDate, MONTHS, shortDate, WEEKDAYS } from './dates'
 import { RATING_ICON, RATING_TONE, RATING_WORD, scorePercent, TONE_VARS } from './meta'
 import { forecastHref, useForecastLink } from './useForecastDate'
 
@@ -61,38 +61,69 @@ export function WeekStrip({ parts, profileId, today, selected, className }: DayP
 /** Neutral look for a group with nothing in it: an empty "Go gently" box should not look like a warning. */
 const QUIET = { fg: 'var(--text-muted)', bg: 'var(--surface-2)', border: 'var(--surface-border)' }
 
-/** The two strongest days of a rating, in date order. */
-function strongest(parts: readonly Forecast[], rating: Forecast['rating'], sign: 1 | -1): Forecast[] {
-  return parts.filter((p) => p.rating === rating).sort((a, b) => sign * (b.score - a.score)).slice(0, 2).sort((a, b) => (a.start < b.start ? -1 : 1))
+/** "Fri 2 Oct 15:41", read once to the minute so that the time and its date agree. */
+function instant(jd: number, zone: string): string {
+  const p = jdToLocal(jd, zone, 'minute')
+  return `${WEEKDAYS[p.weekday]} ${p.day} ${MONTHS[p.month - 1]} ${p.time}`
 }
 
-/** Best days (highest favourable scores) and days to take gently (challenging), as links. */
-export function DayHighlights({ parts, profileId, className }: DayPartsProps & { className?: string }) {
+/** Upcoming entries first, then past ones, each in date order. */
+const upcomingFirst = <T extends { past: boolean }>(items: readonly T[]) => [...items.filter((x) => !x.past), ...items.filter((x) => x.past)]
+
+export interface DayHighlightsProps {
+  /** A week or month forecast: its highlights name the days (as its headline does), its parts describe them. */
+  forecast: Forecast
+  profileId: string
+  today: string
+  /** Zone of the place the forecast was computed for. */
+  timeZone: string
+  className?: string
+}
+
+/**
+ * The days the period's summary names (Forecast.highlights) as links: best days, days to take
+ * gently and the Moon's stays in the 8th sign (Chandrashtama) with their times. While the period
+ * is running, upcoming entries come first and past ones are dimmed.
+ */
+export function DayHighlights({ forecast, profileId, today, timeZone, className }: DayHighlightsProps) {
   const onClick = useForecastLink()
+  const running = forecast.start <= today && today <= forecast.end
+  const byDate = new Map((forecast.parts ?? []).map((p) => [p.start, p]))
+  const days = (dates: readonly string[] = []) => upcomingFirst(dates.flatMap((d) => {
+    const p = byDate.get(d)
+    return p ? [{ p, past: running && d < today }] : []
+  }))
+  const eighth = upcomingFirst((forecast.highlights?.chandrashtama ?? []).map((w) => ({ w, past: running && jdToLocal(w.endJd, timeZone).date < today })))
   const groups = [
-    { key: 'best', title: 'Best days', icon: Sparkles, tone: TONE_VARS.good, items: strongest(parts, 'favourable', 1), empty: 'No standout days; steady is fine too.' },
-    { key: 'gentle', title: 'Go gently', icon: Leaf, tone: TONE_VARS.bad, items: strongest(parts, 'challenging', -1), empty: 'No difficult days in this stretch.' },
+    { key: 'best', title: 'Best days', icon: Sparkles, tone: TONE_VARS.good, items: days(forecast.highlights?.best), stays: [] as typeof eighth, empty: 'No standout days; steady is fine too.' },
+    { key: 'gentle', title: 'Go gently', icon: Leaf, tone: TONE_VARS.bad, items: days(forecast.highlights?.careful), stays: eighth, empty: 'No difficult days in this stretch.' },
   ]
   return (
     <div className={cn('grid gap-3 sm:grid-cols-2', className)}>
-      {groups.map(({ key, title, icon: Icon, tone: groupTone, items, empty }) => {
-        const tone = items.length ? groupTone : QUIET
+      {groups.map(({ key, title, icon: Icon, tone: groupTone, items, stays, empty }) => {
+        const tone = items.length || stays.length ? groupTone : QUIET
         return (
           <section key={key} aria-label={title} className="rounded-2xl p-3.5 ring-1 ring-inset" style={{ background: tone.bg, '--tw-ring-color': tone.border } as CSSProperties}>
             <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: tone.fg }}>
               <Icon aria-hidden className="size-4" />{title}
             </h3>
-            {items.length ? (
+            {items.length || stays.length ? (
               <ul className="mt-2 space-y-1">
-                {items.map((p) => (
-                  <li key={p.start}>
+                {items.map(({ p, past }) => (
+                  <li key={p.start} className={cn(past && 'opacity-60')}>
                     <a
                       href={forecastHref(profileId, 'today', p.start)} onClick={onClick(profileId, 'today', p.start)}
                       className="-mx-1.5 block rounded-lg px-1.5 py-1 transition-colors hover:bg-[var(--hover)]"
                     >
-                      <span className="block text-sm font-semibold text-[var(--text)]">{shortDate(p.start)}</span>
+                      <span className="block text-sm font-semibold text-[var(--text)]">{shortDate(p.start)}{past && <span className="sr-only"> (past)</span>}</span>
                       <span className="block text-xs leading-snug text-[var(--text-muted)]">{p.headline}</span>
                     </a>
+                  </li>
+                ))}
+                {stays.map(({ w, past }) => (
+                  <li key={w.startJd} className={cn('py-1', past && 'opacity-60')}>
+                    <span className="block text-sm font-semibold text-[var(--text)]">Moon in your 8th (Chandrashtama){past && <span className="sr-only"> (past)</span>}</span>
+                    <span className="block text-xs leading-snug text-[var(--text-muted)]">{instant(w.startJd, timeZone)} – {instant(w.endJd, timeZone)}</span>
                   </li>
                 ))}
               </ul>

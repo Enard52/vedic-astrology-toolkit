@@ -1,11 +1,13 @@
-import { CircleHelp } from 'lucide-react'
+import { CircleHelp, House, RotateCw } from 'lucide-react'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
-import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react'
+import { Component, lazy, Suspense, useEffect, useState, type ComponentType, type ReactNode } from 'react'
 import { Route, Router, Switch, useLocation, type RouteComponentProps } from 'wouter'
 import { useHashLocation } from 'wouter/use-hash-location'
 import LandingPage from '@/pages/LandingPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 import { applyTheme, getSettings, useSettings, watchSystemTheme } from '@/state/settings'
+import { Button } from '@/ui/components/Button'
+import { Callout } from '@/ui/components/Callout'
 import { Skeleton } from '@/ui/components/Spinner'
 import { TooltipProvider } from '@/ui/components/Tooltip'
 import { AppLayout } from '@/ui/layout/AppLayout'
@@ -14,10 +16,14 @@ import { Page } from '@/ui/layout/Page'
 // Apply the saved theme before the first render to avoid a flash.
 applyTheme(getSettings().theme)
 
-const NewProfilePage = lazy(() => import('@/pages/NewProfilePage'))
-const ProfilesPage = lazy(() => import('@/pages/ProfilesPage'))
-const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
-const AboutPage = lazy(() => import('@/pages/AboutPage'))
+const loadNewProfilePage = () => import('@/pages/NewProfilePage')
+const loadProfilesPage = () => import('@/pages/ProfilesPage')
+const loadSettingsPage = () => import('@/pages/SettingsPage')
+const loadAboutPage = () => import('@/pages/AboutPage')
+const NewProfilePage = lazy(loadNewProfilePage)
+const ProfilesPage = lazy(loadProfilesPage)
+const SettingsPage = lazy(loadSettingsPage)
+const AboutPage = lazy(loadAboutPage)
 
 type ForecastPage = ComponentType<RouteComponentProps<{ id: string }>>
 
@@ -63,6 +69,55 @@ function PageFallback() {
   )
 }
 
+/** Shown in place of a page (or the whole shell) that failed to load or threw while rendering. */
+function ErrorScreen() {
+  return (
+    <Page width="narrow">
+      <Callout tone="error" title="Something went wrong">
+        <p>This screen could not be shown. Reloading the page usually fixes it, for example after the app has been updated.</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Button size="sm" onClick={() => window.location.reload()}>
+            <RotateCw aria-hidden />
+            Reload the page
+          </Button>
+          <Button size="sm" variant="secondary" asChild>
+            <a href="#/">
+              <House aria-hidden />
+              Go home
+            </a>
+          </Button>
+        </div>
+      </Callout>
+    </Page>
+  )
+}
+
+interface BoundaryProps {
+  /** The route: a new one gives the children another try. */
+  resetKey: string
+  children: ReactNode
+}
+
+/**
+ * Catches a page chunk that failed to download (React.lazy rethrows it) or any render error, so
+ * the app shows ErrorScreen instead of going blank. React logs the error to the console itself.
+ */
+class ErrorBoundary extends Component<BoundaryProps, { failed: boolean; resetKey: string }> {
+  state = { failed: false, resetKey: this.props.resetKey }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  static getDerivedStateFromProps(props: BoundaryProps, state: { resetKey: string }) {
+    return props.resetKey === state.resetKey ? null : { failed: false, resetKey: props.resetKey }
+  }
+
+  render() {
+    return this.state.failed ? <ErrorScreen /> : this.props.children
+  }
+}
+
 function Routes() {
   const [location] = useLocation()
   return (
@@ -74,25 +129,39 @@ function Routes() {
         exit={{ opacity: 0, y: -6, transition: { duration: 0.12, ease: 'easeIn' } }}
         transition={{ duration: 0.22, ease: [0.2, 0.8, 0.2, 1] }}
       >
-        <Suspense fallback={<PageFallback />}>
-          <Switch location={location}>
-            <Route path="/" component={LandingPage} />
-            <Route path="/new" component={NewProfilePage} />
-            <Route path="/profiles" component={ProfilesPage} />
-            <Route path="/settings" component={SettingsPage} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/p/:id/edit" component={NewProfilePage} />
-            <Route path="/p/:id/today" component={TodayPage} />
-            <Route path="/p/:id/week" component={WeekPage} />
-            <Route path="/p/:id/month" component={MonthPage} />
-            <Route path="/p/:id/year" component={YearPage} />
-            <Route path="/p/:id/chart" component={ChartPage} />
-            {DevChartPage && <Route path="/dev/chart" component={DevChartPage} />}
-            <Route component={NotFound} />
-          </Switch>
-        </Suspense>
+        <ErrorBoundary resetKey={location}>
+          <Suspense fallback={<PageFallback />}>
+            <Switch location={location}>
+              <Route path="/" component={LandingPage} />
+              <Route path="/new" component={NewProfilePage} />
+              <Route path="/profiles" component={ProfilesPage} />
+              <Route path="/settings" component={SettingsPage} />
+              <Route path="/about" component={AboutPage} />
+              <Route path="/p/:id/edit" component={NewProfilePage} />
+              <Route path="/p/:id/today" component={TodayPage} />
+              <Route path="/p/:id/week" component={WeekPage} />
+              <Route path="/p/:id/month" component={MonthPage} />
+              <Route path="/p/:id/year" component={YearPage} />
+              <Route path="/p/:id/chart" component={ChartPage} />
+              {DevChartPage && <Route path="/dev/chart" component={DevChartPage} />}
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
+        </ErrorBoundary>
       </motion.div>
     </AnimatePresence>
+  )
+}
+
+/** The layout and the current page; an error in the layout itself still leaves a way out. */
+function Shell() {
+  const [location] = useLocation()
+  return (
+    <ErrorBoundary resetKey={location}>
+      <AppLayout>
+        <Routes />
+      </AppLayout>
+    </ErrorBoundary>
   )
 }
 
@@ -103,8 +172,10 @@ export default function App() {
     return watchSystemTheme(theme)
   }, [theme])
   useEffect(() => {
-    // Fetch the forecast screens' code as soon as the browser is idle, so no tab switch waits for it.
-    const preload = () => FORECAST_PAGES.forEach((page) => void page.preload().catch(() => {}))
+    // Fetch every screen's code as soon as the browser is idle, so no tab switch waits for it and
+    // a tab left open across a deploy never asks for a chunk the new build has replaced.
+    const loaders = [...FORECAST_PAGES.map((page) => page.preload), loadNewProfilePage, loadProfilesPage, loadSettingsPage, loadAboutPage]
+    const preload = () => loaders.forEach((load) => void load().catch(() => {}))
     if (typeof requestIdleCallback === 'function') {
       const id = requestIdleCallback(preload, { timeout: 1000 })
       return () => cancelIdleCallback(id)
@@ -117,9 +188,7 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <TooltipProvider>
         <Router hook={useHashLocation}>
-          <AppLayout>
-            <Routes />
-          </AppLayout>
+          <Shell />
         </Router>
       </TooltipProvider>
     </MotionConfig>

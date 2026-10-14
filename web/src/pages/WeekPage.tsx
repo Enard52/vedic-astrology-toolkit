@@ -35,7 +35,7 @@ export default function WeekPage({ params }: RouteComponentProps<{ id: string }>
             <RatingHero forecast={forecast} label={relative ? `${relative}’s outlook` : 'The week’s outlook'} className="lg:col-span-7" />
             <Panel title="Day by day" description="Tap a day for its timings and detail" icon={<CalendarDays />} className="lg:col-span-5">
               <WeekStrip parts={parts} profileId={profile.id} today={nav.today} selected={nav.date} />
-              <DayHighlights parts={parts} profileId={profile.id} today={nav.today} className="mt-4" />
+              <DayHighlights forecast={forecast} profileId={profile.id} today={nav.today} timeZone={place.timeZone} className="mt-4" />
             </Panel>
           </div>
           <div className="grid grid-cols-1 items-start gap-4 pt-4 lg:grid-cols-12 lg:gap-6">

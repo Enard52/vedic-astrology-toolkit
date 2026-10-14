@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  binduNote, CAUTION_PHRASE, DAY_HEADLINE_VARIANTS, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText, DASHA_THEMES,
+  binduNote, CAUTION_PHRASE, chandrashtamaHeadline, DAY_HEADLINE_VARIANTS, CHANDRASHTAMA_TEXT, CHANDRA_BALA_TEXT, dashaChangeText, dashaCombination, dashaTransitText, DASHA_THEMES,
   dayHeadline, GOCHARA_TEXT, HOUSE_THEMES, joinList, MOON_CHANGE_TEXT, MUNTHA_TEXT, NO_SADE_SATI_TEXT, ordinal, PANCHANGA_TEXT,
   PERIOD_TEXT, periodHeadline, PLANET_THEMES, SATURN_PHASE_TEXT, SATURN_PHASE_TITLE, SOURCES, STATION_TEXT, SUPPORT_PHRASE, TARA_TEXT,
   vedhaNote, vipareetaNote, yearHeadline,
@@ -28,7 +28,7 @@ function allTexts(): string[] {
     MOON_CHANGE_TEXT, NO_SADE_SATI_TEXT, ...Object.values(SATURN_PHASE_TEXT), ...Object.values(SATURN_PHASE_TITLE),
     ...Object.values(SUPPORT_PHRASE), ...Object.values(CAUTION_PHRASE), ...Object.values(SOURCES),
     PANCHANGA_TEXT.amavasya, PANCHANGA_TEXT.rikta('Navami'), PANCHANGA_TEXT.vishti('until 11:20'),
-    PERIOD_TEXT.bestDays('Tue 20 Oct'), PERIOD_TEXT.chandrashtamaDays('Sat 24 – Sun 25 Oct'), PERIOD_TEXT.toughDays('Fri 23 Oct'),
+    PERIOD_TEXT.bestDays('Tue 20 Oct'), PERIOD_TEXT.chandrashtamaStay('Fri 2 Oct 15:41', 'Sun 4 Oct 18:32'), PERIOD_TEXT.toughDays('Fri 23 Oct'),
     PERIOD_TEXT.sadeSatiSpan('1 Jan 2020', '29 Mar 2025'), PERIOD_TEXT.nextSadeSati('Dec 2046'), PERIOD_TEXT.tajakaYear('8 Mar 2026', '9 Mar 2027'),
   ]
   for (const p of PLANETS) {
@@ -89,6 +89,16 @@ describe('interpretation library', () => {
         for (const c of cautions) {
           lines.push(yearHeadline(r, s, c))
           for (let v = 0; v < DAY_HEADLINE_VARIANTS; v++) lines.push(dayHeadline(r, s, c, v))
+        }
+      }
+      for (const s of supports) {
+        for (let v = 0; v < DAY_HEADLINE_VARIANTS; v++) {
+          const h = chandrashtamaHeadline(r, s, v)
+          // The 8th-sign Moon leads: it comes before whatever supports the day.
+          const at = (x: string) => h.toLowerCase().indexOf(x.toLowerCase())
+          expect(at(CAUTION_PHRASE.chandrashtama), h).toBeGreaterThanOrEqual(0)
+          if (s) expect(at(CAUTION_PHRASE.chandrashtama), h).toBeLessThan(at(s))
+          lines.push(h)
         }
       }
       for (const best of [undefined, 'Tue 20 Oct', '19, 24 and 30 Oct']) {

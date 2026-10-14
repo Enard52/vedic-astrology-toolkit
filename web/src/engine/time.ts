@@ -61,22 +61,34 @@ export function localToUtc(input: Pick<BirthInput, 'date' | 'time' | 'timeZone' 
   return { epochMs: asUtcMs - offsetMinutes * 60_000, offsetMinutes }
 }
 
-/** UTC epoch milliseconds to JD UT1 via swe_utc_to_jd (same call as the toolkit). */
+const UNIX_EPOCH_JD = 2440587.5
+const DAY_MS = 86_400_000
+
+/**
+ * UTC epoch milliseconds to a Julian Day number. Pure arithmetic that treats UTC as UT1
+ * (they differ by under 0.9 s), so dates and times can be scheduled and displayed without
+ * loading the ephemeris. Birth instants use birthToJd, which matches the toolkit exactly.
+ */
 export function epochMsToJd(epochMs: number): number {
+  return epochMs / DAY_MS + UNIX_EPOCH_JD
+}
+
+/** Julian Day number to UTC epoch milliseconds; the inverse of epochMsToJd. */
+export function jdToEpochMs(jd: number): number {
+  return (jd - UNIX_EPOCH_JD) * DAY_MS
+}
+
+/** UTC epoch milliseconds to JD UT1 via swe_utc_to_jd, the same call as the toolkit's to_jd. */
+function epochMsToJdUt1(epochMs: number): number {
   const d = new Date(Math.floor(epochMs))
   const second = d.getUTCSeconds() + (epochMs - Math.floor(epochMs / 1000) * 1000) / 1000
   return swe().utcToJd(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), second).ut1
 }
 
-/** JD UT1 to UTC epoch milliseconds via swe_jdut1_to_utc. */
-export function jdToEpochMs(jd: number): number {
-  const u = swe().jdut1ToUtc(jd)
-  return Date.UTC(u.year, u.month - 1, u.day, u.hour, u.minute) + u.second * 1000
-}
-
+/** Birth time to JD UT1, reproducing the Python toolkit (needs the ephemeris loaded). */
 export function birthToJd(input: Pick<BirthInput, 'date' | 'time' | 'timeZone' | 'fold'>): { jd: number; utc: string; offsetMinutes: number } {
   const { epochMs, offsetMinutes } = localToUtc(input)
-  return { jd: epochMsToJd(epochMs), utc: new Date(Math.round(epochMs)).toISOString(), offsetMinutes }
+  return { jd: epochMsToJdUt1(epochMs), utc: new Date(Math.round(epochMs)).toISOString(), offsetMinutes }
 }
 
 /** Offset east of UTC (minutes) in `zone` at an instant. */
@@ -102,9 +114,13 @@ export interface LocalParts {
 
 const pad = (n: number, w = 2) => String(n).padStart(w, '0')
 
-/** Wall-clock fields in `zone` for a JD UT1 instant. */
-export function jdToLocal(jd: number, zone: string): LocalParts {
-  const epochMs = jdToEpochMs(jd)
+/**
+ * Wall-clock fields in `zone` for an instant. Rounds to the millisecond (or to the
+ * minute) first, so Julian Day floating-point noise cannot turn 00:00 into 23:59 the day before.
+ */
+export function jdToLocal(jd: number, zone: string, round: 'ms' | 'minute' = 'ms'): LocalParts {
+  const unit = round === 'minute' ? 60_000 : 1
+  const epochMs = Math.round(jdToEpochMs(jd) / unit) * unit
   const offsetMinutes = offsetMinutesAt(zone, epochMs)
   const d = new Date(epochMs + offsetMinutes * 60_000)
   const year = d.getUTCFullYear(), month = d.getUTCMonth() + 1, day = d.getUTCDate()
@@ -115,20 +131,23 @@ export function jdToLocal(jd: number, zone: string): LocalParts {
   }
 }
 
-/** JD UT1 of a local wall time on a civil date (gaps resolve forward, overlaps to the first). */
+/** Julian Day of a local wall time on a civil date (gaps resolve forward, overlaps to the first). No ephemeris needed. */
 export function localToJd(date: string, zone: string, time = '00:00'): number {
   const local = parseLocal(date, time)
   const fixed = fixedOffsetMinutes(zone)
-  if (fixed !== null) return birthToJd({ date, time, timeZone: zone }).jd
+  if (fixed !== null) return epochMsToJd(localToUtc({ date, time, timeZone: zone }).epochMs)
   const zdt = local.toZonedDateTime(zone, { disambiguation: 'compatible' })
   return epochMsToJd(zdt.epochMilliseconds)
 }
 
 export type JdFormat = 'time' | 'date' | 'datetime' | 'weekday-date'
 
-/** Human-readable local time for UI labels, e.g. "07:42", "14 Oct 2026", "Wed 14 Oct". */
+/**
+ * Human-readable local time for UI labels, e.g. "07:42", "14 Oct 2026", "Wed 14 Oct".
+ * Times round to the nearest minute, as published panchangs do. No ephemeris needed.
+ */
 export function formatJd(jd: number, zone: string, style: JdFormat = 'datetime'): string {
-  const p = jdToLocal(jd, zone)
+  const p = jdToLocal(jd, zone, style === 'time' || style === 'datetime' ? 'minute' : 'ms')
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const date = `${p.day} ${months[p.month - 1]} ${p.year}`

@@ -1,0 +1,62 @@
+/* Chart-specific tokens layered on the app tokens in src/index.css.
+   Planet hues loosely follow the classical graha colours (Sun copper, Moon white,
+   Mars red, Mercury green, Jupiter gold, Venus pale pink, Saturn dark blue, nodes smoky)
+   and are tuned for >= 4.5:1 contrast on each theme's surfaces. */
+:root {
+  --planet-sun: #ffb067;
+  --planet-moon: #dbe4ff;
+  --planet-mars: #ff8a80;
+  --planet-mercury: #6ee7b7;
+  --planet-jupiter: #fde68a;
+  --planet-venus: #f9a8d4;
+  --planet-saturn: #93c5fd;
+  --planet-rahu: #c4b5fd;
+  --planet-ketu: #e2c08d;
+  --planet-asc: var(--color-saffron-400);
+
+  /* Opaque enough that the page's starfield does not show through as stray dots. */
+  --chart-fill: rgb(18 26 51 / 0.82);
+  --chart-line: rgb(203 213 255 / 0.2);
+  --chart-frame: rgb(248 189 87 / 0.6);
+  --chart-lagna-from: rgb(248 189 87 / 0.2);
+  --chart-lagna-to: rgb(248 189 87 / 0.03);
+  --chart-sign: #7d89ad;
+  --chart-degree: #a9b3cf;
+  --chart-retro: #fb7185;
+  --chart-highlight: rgb(248 189 87 / 0.16);
+  --chart-highlight-line: rgb(248 189 87 / 0.55);
+
+  --badge-good: var(--color-good);
+  --badge-own: var(--color-saffron-400);
+  --badge-bad: var(--color-bad);
+  --badge-retro: #a99cf8;
+}
+
+:root[data-theme='light'] {
+  --planet-sun: #c2410c;
+  --planet-moon: #475569;
+  --planet-mars: #b91c1c;
+  --planet-mercury: #047857;
+  --planet-jupiter: #a16207;
+  --planet-venus: #be185d;
+  --planet-saturn: #1d4ed8;
+  --planet-rahu: #6d28d9;
+  --planet-ketu: #78716c;
+  --planet-asc: #b45309;
+
+  --chart-fill: #fffdf8;
+  --chart-line: rgb(20 26 46 / 0.2);
+  --chart-frame: rgb(212 134 26 / 0.75);
+  --chart-lagna-from: rgb(240 165 48 / 0.22);
+  --chart-lagna-to: rgb(240 165 48 / 0.04);
+  --chart-sign: #756b59;
+  --chart-degree: #4b5470;
+  --chart-retro: #e11d48;
+  --chart-highlight: rgb(240 165 48 / 0.16);
+  --chart-highlight-line: rgb(212 134 26 / 0.6);
+
+  --badge-good: #047857;
+  --badge-own: #b45309;
+  --badge-bad: #be123c;
+  --badge-retro: #6d28d9;
+}

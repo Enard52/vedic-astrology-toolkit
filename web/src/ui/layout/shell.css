@@ -1,0 +1,271 @@
+/* Shell tokens and effects layered on the foundation tokens in src/index.css.
+   Every colour that carries text has a light-theme value meeting WCAG AA. */
+@import '@fontsource-variable/fraunces/wght-italic.css';
+
+:root {
+  --accent-text: var(--color-saffron-300);
+  --accent-soft: rgb(248 189 87 / 0.13);
+  --focus-ring: rgb(248 189 87 / 0.3);
+  --focus-ring-bad: rgb(251 113 133 / 0.4);
+  /* Selected segment/tab fill: neutral on navy (orange tints turn muddy there). */
+  --selected-bg: rgb(255 255 255 / 0.09);
+  --chip-bg: linear-gradient(135deg, rgb(248 189 87 / 0.2), rgb(139 124 246 / 0.16));
+  --btn-primary-bg: linear-gradient(180deg, #ffd790 0%, #f6b445 55%, #ec9d26 100%);
+  --btn-primary-fg: #1f1406;
+  --btn-primary-shadow: inset 0 1px 0 rgb(255 255 255 / 0.45), 0 10px 28px -10px rgb(240 165 48 / 0.6);
+  --surface-2: rgb(255 255 255 / 0.045);
+  --surface-3: rgb(255 255 255 / 0.08);
+  --hover: rgb(255 255 255 / 0.07);
+  --input-bg: rgb(7 10 22 / 0.55);
+  --input-border: rgb(255 255 255 / 0.3);
+  --divider: rgb(255 255 255 / 0.08);
+  --card-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 24px 48px -28px rgb(0 0 0 / 0.7);
+  --overlay: rgb(3 5 12 / 0.62);
+  --nav-bg: rgb(11 16 32 / 0.74);
+  --good-fg: #6ee7b7;
+  --good-bg: rgb(52 211 153 / 0.12);
+  --good-border: rgb(52 211 153 / 0.3);
+  --mixed-fg: #fcd34d;
+  --mixed-bg: rgb(251 191 36 / 0.12);
+  --mixed-border: rgb(251 191 36 / 0.3);
+  --bad-fg: #fda4af;
+  --bad-bg: rgb(251 113 133 / 0.12);
+  --bad-border: rgb(251 113 133 / 0.32);
+  --glow-1: rgb(139 124 246 / 0.22);
+  --glow-2: rgb(240 165 48 / 0.1);
+  --glow-3: rgb(56 189 248 / 0.07);
+  --star-opacity: 1;
+  --wheel-stroke: rgb(255 211 138 / 0.5);
+  --wheel-faint: rgb(255 255 255 / 0.12);
+  --heading-gradient: linear-gradient(100deg, #ffe0a3 0%, #f8bd57 45%, #c4b5fd 100%);
+}
+
+:root[data-theme='light'] {
+  --accent-text: #8a4f06;
+  --accent-soft: rgb(212 134 26 / 0.12);
+  --focus-ring: rgb(212 134 26 / 0.32);
+  --focus-ring-bad: rgb(190 18 60 / 0.3);
+  --selected-bg: rgb(212 134 26 / 0.11);
+  --chip-bg: linear-gradient(135deg, rgb(240 165 48 / 0.18), rgb(139 124 246 / 0.12));
+  --btn-primary-bg: linear-gradient(180deg, #ffd081 0%, #f5ab3d 60%, #e9961f 100%);
+  --btn-primary-fg: #2a1a04;
+  --btn-primary-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 0 0 1px rgb(168 100 14 / 0.3), 0 10px 24px -12px rgb(212 134 26 / 0.7);
+  --surface-2: rgb(255 255 255 / 0.65);
+  --surface-3: rgb(15 23 42 / 0.06);
+  --hover: rgb(15 23 42 / 0.055);
+  --input-bg: rgb(255 255 255 / 0.92);
+  --input-border: rgb(15 23 42 / 0.42);
+  --divider: rgb(15 23 42 / 0.09);
+  --card-shadow: 0 1px 2px rgb(15 23 42 / 0.05), 0 20px 44px -28px rgb(70 45 10 / 0.3);
+  --overlay: rgb(20 26 46 / 0.38);
+  --nav-bg: rgb(250 248 243 / 0.82);
+  --good-fg: #047857;
+  --good-bg: rgb(16 185 129 / 0.12);
+  --good-border: rgb(4 120 87 / 0.28);
+  --mixed-fg: #92400e;
+  --mixed-bg: rgb(245 158 11 / 0.15);
+  --mixed-border: rgb(146 64 14 / 0.28);
+  --bad-fg: #be123c;
+  --bad-bg: rgb(244 63 94 / 0.1);
+  --bad-border: rgb(190 18 60 / 0.28);
+  --glow-1: rgb(139 124 246 / 0.14);
+  --glow-2: rgb(240 165 48 / 0.2);
+  --glow-3: rgb(56 189 248 / 0.08);
+  --star-opacity: 0;
+  --wheel-stroke: rgb(168 100 14 / 0.55);
+  --wheel-faint: rgb(15 23 42 / 0.12);
+  --heading-gradient: linear-gradient(100deg, #9a5a07 0%, #8a4f06 45%, #5b3fc4 100%);
+}
+
+::selection {
+  background: rgb(248 189 87 / 0.32);
+}
+
+/* Component classes live in the components layer so Tailwind utilities can override them. */
+@layer components {
+  /* Fixed night-sky backdrop behind every page. */
+  .sky {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(55rem 38rem at 8% -12%, var(--glow-1), transparent 62%),
+      radial-gradient(48rem 30rem at 100% -4%, var(--glow-2), transparent 60%),
+      radial-gradient(44rem 36rem at 60% 115%, var(--glow-3), transparent 62%),
+      var(--bg);
+  }
+
+  .stars {
+    opacity: var(--star-opacity);
+    transition: opacity 0.4s ease;
+  }
+
+  .glass {
+    background: var(--bg-elevated);
+    border: 1px solid var(--surface-border);
+    box-shadow: var(--card-shadow);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .text-gradient {
+    background: var(--heading-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Tinted square behind a feature icon. */
+  .chip {
+    background: var(--chip-bg);
+    color: var(--accent-text);
+    box-shadow: inset 0 0 0 1px rgb(248 189 87 / 0.18);
+  }
+
+  .btn-primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-fg);
+    box-shadow: var(--btn-primary-shadow);
+  }
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.twinkle {
+  animation: twinkle var(--twinkle, 5s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.spin-slow,
+.spin-reverse {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: spin 240s linear infinite;
+}
+
+.spin-reverse {
+  animation-duration: 420s;
+  animation-direction: reverse;
+}
+
+.float {
+  animation: float 7s ease-in-out infinite;
+}
+
+/* Radix dialog and sheet transitions (Radix waits for these before unmounting). */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.overlay[data-state='open'] {
+  animation: fade-in 0.2s ease-out;
+}
+.overlay[data-state='closed'] {
+  animation: fade-in 0.15s ease-in reverse forwards;
+}
+.pop[data-state='open'] {
+  animation: pop-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pop[data-state='closed'] {
+  animation: pop-in 0.14s ease-in reverse forwards;
+}
+.sheet[data-state='open'] {
+  animation: sheet-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sheet[data-state='closed'] {
+  animation: sheet-in 0.2s ease-in reverse forwards;
+}
+
+.tip[data-state='delayed-open'],
+.tip[data-state='instant-open'] {
+  animation: fade-in 0.15s ease-out;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@layer components {
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-3);
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.07), transparent);
+    animation: shimmer 1.6s infinite;
+  }
+}
+
+/* index.css shortens animations under reduced motion; infinite loops must stop outright. */
+@media (prefers-reduced-motion: reduce) {
+  .twinkle,
+  .spin-slow,
+  .spin-reverse,
+  .float,
+  .skeleton::after {
+    animation: none !important;
+  }
+}
+
+/* index.css draws an unlayered :focus-visible outline, which outranks Tailwind's
+   layered outline-* utilities. Text fields show focus with their own accent
+   border and ring (see Input.tsx), and containers focused from script
+   (tabindex="-1", such as <main> after "Skip to content") need no ring. */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex='-1']:focus-visible {
+  outline: none;
+}

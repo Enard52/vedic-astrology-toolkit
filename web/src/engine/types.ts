@@ -136,6 +136,8 @@ export interface TimedEvent {
   kind: EventKind
   body?: Planet
   sign?: SignIndex
+  /** Nakshatra 1..27 for nakshatra events. */
+  nakshatra?: number
   /** Short plain-language label, e.g. "Jupiter enters Leo". */
   title: string
   /** Optional one-line explanation of what it means for the user. */
